@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "test": "jest",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",

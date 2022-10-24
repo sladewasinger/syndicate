@@ -1,8 +1,11 @@
 import { GameData } from '../models/GameData';
+import { StateEvent } from '../StateEvents';
+import { StateName } from '../StateNames';
 
 export interface State {
-    name: string;
-    onEnter(): void;
-    onExit(): void;
-    update(gameData: GameData): string
+  name: StateName;
+  onEnter(gameData: GameData): void;
+  onExit(gameData: GameData): void;
+  update(gameData: GameData): StateName;
+  event(eventName: StateEvent, gameData: GameData): StateName;
 }

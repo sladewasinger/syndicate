@@ -1,8 +1,9 @@
 import { GameData } from '../models/GameData';
+import { StateName } from '../StateNames';
 import { State } from './State';
 
 export class TurnStart implements State {
-    name: string = 'TurnStart';
+    name: StateName = StateName.TurnStart;
 
     onEnter(): void {
     }
@@ -10,7 +11,11 @@ export class TurnStart implements State {
     onExit(): void {
     }
 
-    update(gameData: GameData): string {
-        return 'RollDice';
+    update(gameData: GameData): StateName {
+        return StateName.PreDiceRoll;
+    }
+
+    event(eventName: string, gameData: GameData): StateName {
+        return this.name;
     }
 }
