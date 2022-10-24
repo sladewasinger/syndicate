@@ -31,7 +31,7 @@ export class PreDiceRoll implements State {
       gameData.currentPlayer.position + gameData.dice.reduce((cur, next) => cur + next, 0);
 
     if (gameData.currentPlayer.targetPosition > gameData.tiles.length) {
-      gameData.currentPlayer.targetPosition -= gameData.tiles.length;
+      gameData.currentPlayer.targetPosition = gameData.currentPlayer.position % gameData.tiles.length;
     }
 
     return StateName.PostDiceRoll;

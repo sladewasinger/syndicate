@@ -1,6 +1,6 @@
 import { Tile } from './ITile';
 import crypto from 'crypto';
-import { GameData } from '../../models/GameData';
+import { GameData } from '../models/GameData';
 
 export class StartTile implements Tile {
   id: string;

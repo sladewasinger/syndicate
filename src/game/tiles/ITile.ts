@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { GameData } from '../../models/GameData';
+import { GameData } from '../models/GameData';
 
 export interface Tile {
   name: string;

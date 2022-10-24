@@ -1,6 +1,6 @@
-import { PropertyTile } from '../states/tiles/PropertyTile';
-import { StartTile } from '../states/tiles/StartTile';
-import { Tile } from '../states/tiles/ITile';
+import { PropertyTile } from '../tiles/PropertyTile';
+import { StartTile } from '../tiles/StartTile';
+import { Tile } from '../tiles/ITile';
 import { Player } from './Player';
 
 export class GameData {

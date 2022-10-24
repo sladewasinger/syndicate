@@ -2,7 +2,7 @@ import { GameData } from '../models/GameData';
 import { StateEvent } from '../StateEvents';
 import { StateName } from '../StateNames';
 import { State } from './State';
-import { PropertyTile } from './tiles/PropertyTile';
+import { PropertyTile } from '../tiles/PropertyTile';
 
 export class LandedOnTile implements State {
   name: StateName = StateName.LandedOnTile;

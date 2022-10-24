@@ -11,9 +11,9 @@ export class PostDiceRoll implements State {
   onExit(gameData: GameData): void {}
 
   update(gameData: GameData): StateName {
-    gameData.currentPlayer.position += gameData.dice.reduce((cur, next) => cur + next, 0);
-    if (gameData.currentPlayer.position > gameData.tiles.length) {
-      gameData.currentPlayer.position -= gameData.tiles.length;
+    gameData.currentPlayer.position += 1; // Move one tile at a time
+    if (gameData.currentPlayer.position >= gameData.tiles.length) {
+      gameData.currentPlayer.position = 0; // Wrap around
     }
     if (gameData.currentPlayer.position == gameData.currentPlayer.targetPosition) {
       return StateName.LandedOnTile;

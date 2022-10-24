@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import { GameData } from '../../models/GameData';
-import { Player } from '../../models/Player';
+import { GameData } from '../models/GameData';
+import { Player } from '../models/Player';
 import { Tile as ITile } from './ITile';
 
 export class PropertyTile implements ITile {
