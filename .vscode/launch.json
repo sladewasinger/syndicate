@@ -25,7 +25,7 @@
       "type": "node",
       "request": "launch",
       "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/jest/bin/jest.js", "--runInBand"],
-      "console": "externalTerminal", // integratedTerminal does not work if default terminal is wsl
+      "console": "internalConsole", // integratedTerminal does not work if default terminal is wsl
       "internalConsoleOptions": "neverOpen"
     }
   ]
