@@ -23,5 +23,5 @@
     //   }
     // ]
   },
-  "ignorePatterns": ["**/*.test.ts"]
+  "ignorePatterns": ["**/*.test.ts", "**/*.spec.ts", "**/*.d.ts", "dist", "node_modules", "jest.config.js"]
 }
