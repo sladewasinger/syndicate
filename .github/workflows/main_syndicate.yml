@@ -31,7 +31,8 @@ jobs:
           npm run build
           cd .. && echo "cd .."
           mkdir dist/node_modules && echo "mkdir dist/node_modules"
-         dir ./
+          dir ./
+
           cp -r ./node_moduels/ dist/node_modules
 
       - name: Upload artifact for deployment job
