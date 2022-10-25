@@ -30,16 +30,14 @@ jobs:
           npm install
           npm run build
           cd ..
-          mkdir -p output/dist
-          cp -r dist/* output/dist
-          cp -r node_modules/ output/node_modules
-          dir output
+          cp -r node_modules/ dist/node_modules
+          dir dist
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: ouput
+          path: dist
 
   deploy:
     runs-on: ubuntu-latest
