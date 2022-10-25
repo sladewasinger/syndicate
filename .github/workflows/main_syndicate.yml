@@ -32,11 +32,11 @@ jobs:
           cd ..
           mkdir output
           mkdir output/dist
-          mkdir output/app
-          mkdir output/app/node_modules
+          mkdir output/dist/app
+          mkdir output/dist/app/node_modules
           cp -r dist/* output/dist
           cp -r node_modules/ output/node_modules
-          cp -r app/node_modules output/dist/app/node_modules
+          cp -r app/node_modules output/dist/node_modules
           tree ./output
 
       - name: Upload artifact for deployment job
