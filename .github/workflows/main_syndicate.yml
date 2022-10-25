@@ -27,7 +27,7 @@ jobs:
           npm run build
           # npm run test
           cd app
-          npm install --omit=dev
+          npm install
           npm run build
           cd ..
           cp -r node_modules/ dist/node_modules
