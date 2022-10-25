@@ -31,7 +31,7 @@ jobs:
           npm run build
           cd .. && echo "cd .."
           mkdir dist/node_modules && echo "mkdir dist/node_modules"
-          tree ./
+          tree ./dist/node_modules && echo "tree ./dist/node_modules"
 
           cp -r ./node_moduels/ dist/node_modules
 
