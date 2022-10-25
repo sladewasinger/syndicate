@@ -29,7 +29,7 @@ jobs:
           cd app
           npm install
           npm run build
-          cd ../
+          cd .. && echo "cd ...""
           mkdir dist/node_modules
           cp -r ./node_moduels/ dist/node_modules
 
