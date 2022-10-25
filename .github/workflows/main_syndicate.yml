@@ -36,7 +36,7 @@ jobs:
           mkdir output/app/node_modules
           cp -r dist/* output/dist
           cp -r node_modules/ output/node_modules
-          cp -r dist/app/node_modules output/dist/app/node_modules
+          cp -r app/node_modules output/dist/app/node_modules
           tree ./output
 
       - name: Upload artifact for deployment job
