@@ -65,4 +65,4 @@ jobs:
           app-name: 'syndicate'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7454F49FC82B46E6AF34F7D50C5A615E }}
-          package: ./dist
+          package: .
