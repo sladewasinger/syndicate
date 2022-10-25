@@ -30,7 +30,7 @@ jobs:
           npm install
           npm run build
           cd ..
-          cp node_moduels/ dist/node_modules
+          cp -r node_moduels/ dist/node_modules
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
