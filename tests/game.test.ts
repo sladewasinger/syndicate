@@ -1,4 +1,4 @@
-import { Game } from './../src/game/Game.js';
+import { Game } from './../src/game/Game';
 import { Player } from '../src/game/models/Player';
 import { StateEvent } from '../src/game/StateEvents';
 import { StateName } from '../src/game/StateNames';
