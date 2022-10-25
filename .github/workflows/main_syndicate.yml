@@ -30,6 +30,7 @@ jobs:
           npm install
           npm run build
           cd ..
+          mkdir dist/node_modules
           cp -r -a node_moduels/ dist/node_modules
 
       - name: Upload artifact for deployment job
