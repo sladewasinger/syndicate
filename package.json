@@ -4,6 +4,7 @@
   "description": "An online board-game",
   "scripts": {
     "start": "ts-node ./src/index.ts",
+    "build": "tsc -p ./",
     "test": "jest",
     "dev": "nodemon ./src/index.ts",
     "lint": "eslint ."
