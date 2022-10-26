@@ -9,6 +9,7 @@ import { SocketData } from './io/SocketData';
 import { ServerToClientEvents } from './io/ServerToClientEvents';
 import { SocketError } from './io/SocketError';
 import { GameData } from '../game/models/GameData';
+import { IClientGameData } from '../game/models/IClientGameData';
 
 export class Engine {
   port: string | number;
@@ -44,7 +45,7 @@ export class Engine {
       this.createUser(socket.id);
 
       socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log(`a user disconnected: ${socket.id}`);
         this.removeUser(socket.id);
       });
 
@@ -61,6 +62,11 @@ export class Engine {
       socket.on('joinLobby', (key, callback) => {
         console.log(`joinLobby: ${key}`);
         this.joinLobby(socket.id, key, callback);
+      });
+
+      socket.on('startGame', (callback) => {
+        console.log('startGame');
+        this.startGame(socket.id, callback);
       });
     });
   }
@@ -120,7 +126,7 @@ export class Engine {
     callback(null, key);
   }
 
-  startGame(socketId: string, callback: (error: SocketError | null, data: GameData | null) => void) {
+  startGame(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
     const user = this.users.find((u) => u.socketId === socketId);
     if (!user) {
       callback({ code: 'user_not_found', message: 'User not found' }, null);
@@ -133,8 +139,13 @@ export class Engine {
       return;
     }
 
-    lobby.users.forEach((user) => {
-      this.io?.to(user.socketId).emit('startGame');
-    });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    lobby.startGame(this.io!);
+    if (!lobby.game) {
+      callback({ code: 'game_not_found', message: 'Game not found' }, null);
+      return;
+    }
+
+    callback(null, lobby.game.getClientGameData(socketId));
   }
 }

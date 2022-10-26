@@ -7,6 +7,8 @@ import { PreDiceRoll } from './states/PreDiceRoll';
 import { PostDiceRoll } from './states/PostDiceRoll';
 import { TurnStart } from './states/TurnStart';
 import { LandedOnTile } from './states/LandedOnTile';
+import { IClientGameData } from './models/IClientGameData';
+import { User } from '../engine/models/User';
 
 export class Game {
   stateMachine: StateMachine;
@@ -25,6 +27,21 @@ export class Game {
 
   update() {
     this.stateMachine.update();
+  }
+
+  getClientGameData(playerId: string): IClientGameData {
+    return <IClientGameData>{
+      myId: playerId,
+      players: this.stateMachine.gameData.players,
+      dice: this.stateMachine.gameData.dice,
+      currentPlayer: this.stateMachine.gameData.currentPlayer,
+      tiles: this.stateMachine.gameData.tiles.map((t) => t.getClientTile(this.stateMachine.gameData)),
+      state: this.stateMachine.currentState.name,
+    };
+  }
+
+  getPlayers() {
+    return this.stateMachine.gameData.players;
   }
 
   rollDice() {

@@ -17,7 +17,21 @@ export class Engine {
   }
 
   start() {
-    this.socket.emit('registerName', 'player1id', (error: any, result: any) => {
+    this.socket.emit('registerName', 'player1name', (error: any, result: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+    this.socket.emit('createLobby', (error: any, result: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+    this.socket.emit('startGame', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {

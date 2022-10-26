@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { GameData } from '../models/GameData';
 import { Player } from '../models/Player';
-import { Tile as ITile } from './ITile';
+import { IClientTile, ITile as ITile } from './ITile';
 
 export class DistrictTile implements ITile {
   id: string;
@@ -9,13 +9,14 @@ export class DistrictTile implements ITile {
   buildingCount: number = 0;
   skyscraper: boolean = false;
   buyable: boolean = true;
+  type: string = 'district';
 
   constructor(
     public name: string,
     public price: number,
     public entranceFees: number[],
-    public housePrice: number,
-    public hotelPrice: number
+    public buildingPrice: number,
+    public skyscraperPrice: number
   ) {
     if (entranceFees.length !== 6) {
       throw new Error('entranceFees array must have 6 elements');
@@ -33,5 +34,12 @@ export class DistrictTile implements ITile {
       gameData.currentPlayer.money -= this.entranceFee(gameData);
       this.owner.money += this.entranceFee(gameData);
     }
+  }
+
+  getClientTile(gameData: GameData): IClientTile {
+    return <IClientTile>{
+      ...this,
+      rent: this.entranceFee(gameData),
+    };
   }
 }

@@ -1,6 +1,6 @@
 import { DistrictTile } from '../tiles/PropertyTile';
 import { StartTile } from '../tiles/StartTile';
-import { Tile } from '../tiles/ITile';
+import { ITile } from '../tiles/ITile';
 import { Player } from './Player';
 import { PrisonTile } from '../tiles/PrisonTile';
 
@@ -8,7 +8,7 @@ export class GameData {
   players: Player[] = [];
   dice: number[] = [];
   diceOverride: number[] | null = null;
-  tiles: Tile[] = [];
+  tiles: ITile[] = [];
   winner: Player | null = null;
   private _log: string[] = [];
 
@@ -41,7 +41,7 @@ export class GameData {
     ];
   }
 
-  get currentTile(): Tile {
+  get currentTile(): ITile {
     return this.tiles[this.currentPlayer.position];
   }
 

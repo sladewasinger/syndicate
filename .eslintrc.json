@@ -14,7 +14,8 @@
     "semi": "off",
     "@typescript-eslint/semi": "error",
     "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/strict-boolean-expressions": "off"
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-non-null-assertion": "warn"
     // "@typescript-eslint/strict-boolean-expressions": [
     //   2,
     //   {
