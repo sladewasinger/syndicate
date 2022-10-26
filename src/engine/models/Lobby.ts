@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { Server } from 'socket.io';
+import { Game } from '../../game/Game';
 import { Player } from '../../game/models/Player';
 import { ClientToServerEvents } from '../io/ClientToServerEvents';
 import { InterServerEvents } from '../io/InterServerEvents';

@@ -8,7 +8,6 @@ import { PostDiceRoll } from './states/PostDiceRoll';
 import { TurnStart } from './states/TurnStart';
 import { LandedOnTile } from './states/LandedOnTile';
 import { IClientGameData } from './models/IClientGameData';
-import { User } from '../engine/models/User';
 
 export class Game {
   stateMachine: StateMachine;
