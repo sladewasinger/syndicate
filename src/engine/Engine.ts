@@ -19,13 +19,13 @@ export class Engine {
   constructor() {
     // Use the port that Azure provides or default to 3000. Without this, the deployment will fail:
     // Should be 8080 in Azure
-    this.port = process.env.PORT || 443;
+    this.port = process.env.PORT || 3000;
   }
 
   start() {
     const app = express();
-    const path = __dirname + '/app/';
-    app.use(express.static(path));
+    //const path = __dirname + '/app/';
+    app.use(express.static('app'));
 
     const server = createServer(app);
     server.listen(this.port, () => {

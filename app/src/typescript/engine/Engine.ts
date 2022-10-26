@@ -2,12 +2,15 @@ import { io, Socket } from 'socket.io-client';
 
 export class Engine {
   socket: Socket<any, any>;
-  port: string | number;
 
   constructor() {
     console.log('Engine constructor');
-    this.port = 443;
-    this.socket = io(`http://localhost:${this.port}`);
+    console.log(window.location.port);
+    if (window.location.port == '3001') {
+      this.socket = io('http://localhost:3000');
+    } else {
+      this.socket = io('https://syndicate.azurewebsites.net');
+    }
     this.socket.on('connect', () => {
       console.log('connected');
     });
