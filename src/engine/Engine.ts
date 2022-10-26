@@ -8,6 +8,7 @@ import { InterServerEvents } from './io/InterServerEvents';
 import { SocketData } from './io/SocketData';
 import { ServerToClientEvents } from './io/ServerToClientEvents';
 import { SocketError } from './io/SocketError';
+import { GameData } from '../game/models/GameData';
 
 export class Engine {
   port: string | number;
@@ -16,22 +17,30 @@ export class Engine {
   io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> | undefined;
 
   constructor() {
-    // Use the port that AWS provides or default to 3000. Without this, the deployment will fail:
-    this.port = process.env.PORT || 3000;
+    // Use the port that Azure provides or default to 3000. Without this, the deployment will fail:
+    // Should be 8080 in Azure
+    this.port = process.env.PORT || 443;
   }
 
   start() {
     const app = express();
-    app.use(express.static('app'));
+    const path = __dirname + '/app/';
+    app.use(express.static(path));
 
     const server = createServer(app);
     server.listen(this.port, () => {
       console.log(`socket io server listening on *:${this.port}`);
     });
 
-    this.io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
+    this.io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, {
+      cors: {
+        origin: '*', // TODO: Change this to localhost:30001 && syndicate.azurewebsites.net
+        methods: ['GET', 'POST'],
+      },
+    });
 
     this.io.on('connection', (socket) => {
+      console.log(`a user connected: ${socket.id}`);
       this.createUser(socket.id);
 
       socket.on('disconnect', () => {
@@ -72,7 +81,7 @@ export class Engine {
     this.users = this.users.filter((u) => u.socketId !== socketId);
   }
 
-  registerName(socketId: string, name: string, callback: (error: SocketError | null, data: string) => void) {
+  registerName(socketId: string, name: string, callback: (error: SocketError | null, data: string | null) => void) {
     const user = this.users.find((u) => u.socketId === socketId);
     if (!user) {
       this.createUser(socketId);
@@ -82,10 +91,10 @@ export class Engine {
     callback(null, name);
   }
 
-  createLobby(socketId: string, callback: (error: SocketError | null, data: string) => void) {
+  createLobby(socketId: string, callback: (error: SocketError | null, data: string | null) => void) {
     const user = this.users.find((u) => u.socketId === socketId);
     if (!user) {
-      callback({ code: 'user_not_found', message: 'User not found' }, '');
+      callback({ code: 'user_not_found', message: 'User not found' }, null);
       return;
     }
     const lobby = new Lobby();
@@ -94,7 +103,7 @@ export class Engine {
     callback(null, lobby.id);
   }
 
-  joinLobby(socketId: string, key: string, callback: (error: SocketError | null, data: string) => void) {
+  joinLobby(socketId: string, key: string, callback: (error: SocketError | null, data: string | null) => void) {
     const user = this.users.find((u) => u.socketId === socketId);
     if (!user) {
       callback({ code: 'user_not_found', message: 'User not found' }, '');
@@ -103,11 +112,29 @@ export class Engine {
 
     const lobby = this.lobbies.find((l) => l.id.toUpperCase() === key.toUpperCase());
     if (!lobby) {
-      callback({ code: 'lobby_not_found', message: 'Lobby not found' }, '');
+      callback({ code: 'lobby_not_found', message: 'Lobby not found' }, null);
       return;
     }
 
-    lobby.users.push(user);
+    lobby.addUser(user);
     callback(null, key);
+  }
+
+  startGame(socketId: string, callback: (error: SocketError | null, data: GameData | null) => void) {
+    const user = this.users.find((u) => u.socketId === socketId);
+    if (!user) {
+      callback({ code: 'user_not_found', message: 'User not found' }, null);
+      return;
+    }
+
+    const lobby = this.lobbies.find((l) => l.users.find((u) => u.socketId === socketId));
+    if (!lobby) {
+      callback({ code: 'lobby_not_found', message: 'Lobby not found' }, null);
+      return;
+    }
+
+    lobby.users.forEach((user) => {
+      this.io?.to(user.socketId).emit('startGame');
+    });
   }
 }

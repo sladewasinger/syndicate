@@ -1,9 +1,9 @@
 <script setup lang="ts">
-console.log("gameview");
-</script>
+import { Engine } from '@/typescript/engine/Engine';
 
+const engine = new Engine();
+engine.start();
+</script>
 <template>
-  <main>
-    Welcome to the game. xgjhbjnkm
-  </main>
+  <main>Welcome to the game.</main>
 </template>

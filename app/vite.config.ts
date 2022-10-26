@@ -16,4 +16,7 @@ export default defineConfig({
     outDir: '../dist/app',
     emptyOutDir: true,
   },
+  server: {
+    port: 3001,
+  },
 });

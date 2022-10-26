@@ -1,3 +1,5 @@
+export type ErrorCode = 'user_not_found' | 'lobby_not_found' | 'lobby_full';
+
 export class SocketError {
-  constructor(public code: string, public message: string) {}
+  constructor(public code: ErrorCode, public message: string) {}
 }
