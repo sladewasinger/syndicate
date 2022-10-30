@@ -1,4 +1,4 @@
-import { DistrictTile } from '../tiles/PropertyTile';
+import { DistrictTile } from '../tiles/DistrictTile';
 import { StartTile } from '../tiles/StartTile';
 import { ITile } from '../tiles/ITile';
 import { Player } from './Player';

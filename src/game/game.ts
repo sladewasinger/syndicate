@@ -8,7 +8,6 @@ import { PostDiceRoll } from './states/PostDiceRoll';
 import { TurnStart } from './states/TurnStart';
 import { LandedOnTile } from './states/LandedOnTile';
 import { IClientGameData } from './models/IClientGameData';
-import { User } from '../engine/models/User';
 
 export class Game {
   stateMachine: StateMachine;
@@ -42,6 +41,25 @@ export class Game {
 
   getPlayers() {
     return this.stateMachine.gameData.players;
+  }
+
+  removePlayer(playerId: string) {
+    const player = this.stateMachine.gameData.players.find((p) => p.id === playerId);
+    if (player) {
+      const ownedProperties = this.stateMachine.gameData.tiles
+        .filter((t) => t.buyable)
+        .filter((t) => t.owner?.id === playerId);
+      for (const property of ownedProperties) {
+        property.owner = null;
+        property.mortgaged = false;
+      }
+      this.stateMachine.gameData.players = this.stateMachine.gameData.players.filter((p) => p.id !== playerId);
+      if (this.stateMachine.gameData.players.length === 1) {
+        this.stateMachine.setState('GameOver');
+      } else if (player === this.stateMachine.gameData.currentPlayer) {
+        this.stateMachine.setState('TurnStart');
+      }
+    }
   }
 
   rollDice() {

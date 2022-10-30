@@ -6,6 +6,8 @@ export class PrisonTile implements ITile {
   name = 'Prison';
   buyable = false;
   type: string = 'prison';
+  owner = null;
+  mortgaged = false;
 
   constructor() {
     this.id = 'prison';

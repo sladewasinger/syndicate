@@ -6,6 +6,8 @@ export class StartTile implements ITile {
   id: string;
   buyable: boolean = false;
   type: string = 'start';
+  owner = null;
+  mortgaged = false;
 
   constructor(public name: string) {
     this.id = crypto.randomUUID();

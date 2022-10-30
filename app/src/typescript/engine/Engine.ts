@@ -1,11 +1,12 @@
 import { io, Socket } from 'socket.io-client';
+import { Board } from './Board';
 
 export class Engine {
   socket: Socket<any, any>;
-
+  board: Board;
   constructor() {
-    console.log('Engine constructor');
-    console.log(window.location.port);
+    this.board = new Board();
+
     if (window.location.port == '3001') {
       this.socket = io('http://localhost:3000');
     } else {
@@ -17,6 +18,7 @@ export class Engine {
   }
 
   start() {
+    this.board.drawBoardInitial();
     this.socket.emit('registerName', 'player1name', (error: any, result: any) => {
       if (error) {
         console.error(error);
@@ -32,6 +34,16 @@ export class Engine {
       }
     });
     this.socket.emit('startGame', (error: any, result: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+  }
+
+  rollDice() {
+    this.socket.emit('rollDice', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {

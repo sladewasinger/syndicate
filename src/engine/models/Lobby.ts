@@ -32,6 +32,8 @@ export class Lobby {
       if (this.owner?.socketId === user.socketId) {
         this.owner = this.users[0] || null;
       }
+
+      this.game?.removePlayer(user.socketId);
     }
   }
 
