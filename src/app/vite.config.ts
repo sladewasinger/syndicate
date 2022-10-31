@@ -13,7 +13,7 @@ export default defineConfig({
   },
   build: {
     // Vite (file watching) does not work with WSL 2 terminal -- use any other terminal instead.
-    outDir: '../dist/app',
+    outDir: '../../dist/app',
     emptyOutDir: true,
   },
   server: {
