@@ -1,4 +1,5 @@
-import { IClientTile, ITile } from './ITile';
+import { ITile } from './ITile';
+import { IClientTile } from './IClientTile';
 import crypto from 'crypto';
 import { GameData } from '../models/GameData';
 

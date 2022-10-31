@@ -1,4 +1,4 @@
-import { IClientTile, ITile } from '../tiles/ITile';
+import { IClientTile } from '../tiles/IClientTile';
 import { Player } from './Player';
 
 export interface IClientGameData {

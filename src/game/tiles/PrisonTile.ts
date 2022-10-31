@@ -1,5 +1,6 @@
 import { GameData } from '../models/GameData';
-import { IClientTile, ITile } from './ITile';
+import { ITile } from './ITile';
+import { IClientTile } from './IClientTile';
 
 export class PrisonTile implements ITile {
   id: string;

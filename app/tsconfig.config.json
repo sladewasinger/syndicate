@@ -4,6 +4,6 @@
   "compilerOptions": {
     "composite": true,
     "types": ["node"],
-    "outDir": "../dist2/dist"
+    "outDir": "../dist/dist"
   }
 }

@@ -1,7 +1,8 @@
 import crypto from 'crypto';
 import { GameData } from '../models/GameData';
 import { Player } from '../models/Player';
-import { IClientTile, ITile as ITile } from './ITile';
+import { ITile as ITile } from './ITile';
+import { IClientTile } from './IClientTile';
 
 export class DistrictTile implements ITile {
   id: string;

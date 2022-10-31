@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import type { IClientGameData } from '../../../../src/game/models/IClientGameData';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -6,7 +7,7 @@ export class Board {
   width: number;
   height: number;
   container: PIXI.Container;
-  resizeTimer: NodeJS.Timeout = <any>{};
+  resizeTimer: number | undefined;
 
   constructor() {
     const canvas = document.getElementById('gameCanvas');
@@ -37,7 +38,7 @@ export class Board {
     this.container.scale.set(scale);
   }
 
-  drawBoardInitial() {
+  drawBoardInitial(gameState: IClientGameData) {
     const board = new PIXI.Graphics();
     board.lineStyle(1, 0x000000, 1);
     board.beginFill(0x000000, 1);
