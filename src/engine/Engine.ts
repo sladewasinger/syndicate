@@ -1,15 +1,14 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import { Lobby } from './models/Lobby';
-import { User } from './models/User';
 import { createServer } from 'http';
-import { ClientToServerEvents } from './io/ClientToServerEvents';
-import { InterServerEvents } from './io/InterServerEvents';
-import { SocketData } from './io/SocketData';
-import { ServerToClientEvents } from './io/ServerToClientEvents';
-import { SocketError } from './io/SocketError';
-import { GameData } from '../game/models/GameData';
-import { IClientGameData } from '../game/models/IClientGameData';
+import { ClientToServerEvents } from '../app/src/shared/models/io/ClientToServerEvents';
+import { InterServerEvents } from '../app/src/shared/models/io/InterServerEvents';
+import { SocketData } from '../app/src/shared/models/io/SocketData';
+import { ServerToClientEvents } from '../app/src/shared/models/io/ServerToClientEvents';
+import { SocketError } from '../app/src/shared/models/io/SocketError';
+import { IClientGameData } from 'app/src/shared/models/IClientGameData';
+import { Lobby } from '../app/src/shared/models/Lobby';
+import { User } from '../app/src/shared/models/User';
 
 export class Engine {
   port: string | number;

@@ -1,10 +1,11 @@
 {
-  "exclude": ["node_modules", "dist", "tests/**/*.test.ts", "app/**/*.*"],
+  "exclude": ["node_modules", "dist", "tests/**/*.test.ts"],
+  "include": ["src/**/*", "../app/src/shared/**/*"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "baseUrl": "./src",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true
