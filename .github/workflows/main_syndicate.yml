@@ -26,10 +26,10 @@ jobs:
           npm install --omit=dev
           npm run build
           # npm run test
-          cd app
+          cd src/app
           npm install
           npm run build
-          cd ..
+          cd ../..
           cp -r node_modules/ dist/node_modules
           dir dist
 

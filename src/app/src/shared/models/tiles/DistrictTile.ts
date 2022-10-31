@@ -17,6 +17,7 @@ export class DistrictTile implements ITile {
   constructor(
     public name: string,
     public price: number,
+    public color: number,
     public entranceFees: number[],
     public buildingPrice: number,
     public skyscraperPrice: number

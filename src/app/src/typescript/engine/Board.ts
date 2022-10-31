@@ -1,3 +1,4 @@
+import type { DistrictTile } from '@/shared/models/tiles/DistrictTile';
 import { TileType } from '@/shared/models/tiles/TileType';
 import * as PIXI from 'pixi.js';
 import type { IClientGameData } from '../../shared/models/IClientGameData';
@@ -62,6 +63,51 @@ export class Board {
         x: this.width - tileHeight - tileWidth,
         y: this.height - tileHeight,
       },
+      {
+        index: 2,
+        x: this.width - tileHeight - tileWidth * 2,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 3,
+        x: this.width - tileHeight - tileWidth * 3,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 4,
+        x: this.width - tileHeight - tileWidth * 4,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 5,
+        x: this.width - tileHeight - tileWidth * 5,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 6,
+        x: this.width - tileHeight - tileWidth * 6,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 7,
+        x: this.width - tileHeight - tileWidth * 7,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 8,
+        x: this.width - tileHeight - tileWidth * 8,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 9,
+        x: this.width - tileHeight - tileWidth * 9,
+        y: this.height - tileHeight,
+      },
+      {
+        index: 10,
+        x: 0,
+        y: this.height - tileHeight,
+      },
     ];
 
     for (let i = 0; i < boardPositions.length; i++) {
@@ -69,8 +115,14 @@ export class Board {
       if (tile.type == TileType.Start) {
         const startTile = new StartTileRender(boardPositions[i].x, boardPositions[i].y, this.container, tile);
       } else if (tile.type == TileType.District) {
-        const tileRender = new DistrictTileRender(boardPositions[i].x, boardPositions[i].y, this.container, tile);
+        const tileRender = new DistrictTileRender(
+          boardPositions[i].x,
+          boardPositions[i].y,
+          this.container,
+          <DistrictTile>(<unknown>tile)
+        );
       } else if (tile.type == TileType.Prison) {
+        const prisonTile = new StartTileRender(boardPositions[i].x, boardPositions[i].y, this.container, tile);
       }
     }
   }

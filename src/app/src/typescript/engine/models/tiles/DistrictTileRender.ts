@@ -23,18 +23,20 @@ export class DistrictTileRender {
 
     const colorBar = new PIXI.Graphics();
     colorBar.lineStyle(1, 0x000000, 1);
-    colorBar.beginFill((<any>this.tile).color, 1);
-    colorBar.drawRect(0, 0, this.width, 10);
+    colorBar.beginFill(this.tile.color, 1);
+    colorBar.drawRect(0, 0, this.width, 20);
     colorBar.endFill();
     districtTileContainer.addChild(colorBar);
 
-    const indexText = new PIXI.Text(`${this.tile.name}`, {
+    const nameText = new PIXI.Text(`${this.tile.name}`, {
+      fontFamily: 'Arial',
+      fontSize: 16,
       wordWrap: true,
       wordWrapWidth: this.width,
     });
-    indexText.x = 0;
-    indexText.y = 0;
-    districtTileContainer.addChild(indexText);
+    nameText.x = 0;
+    nameText.y = colorBar.height;
+    districtTileContainer.addChild(nameText);
 
     this.container.addChild(districtTileContainer);
   }
