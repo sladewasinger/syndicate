@@ -7,7 +7,7 @@
     "module": "commonjs",
     "outDir": "../dist",
     "rootDir": "./",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true

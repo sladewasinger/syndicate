@@ -11,7 +11,7 @@ export class Engine {
     this.board = new Board();
 
     if (window.location.port == '3001') {
-      this.socket = io('http://localhost:8080');
+      this.socket = io('http://localhost:3000');
     } else {
       this.socket = io('https://syndicate.azurewebsites.net');
     }

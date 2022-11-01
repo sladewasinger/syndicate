@@ -1,14 +1,14 @@
 import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-import { IClientGameData } from 'models/IClientGameData';
-import { ClientToServerEvents } from 'models/io/ClientToServerEvents';
-import { InterServerEvents } from 'models/io/InterServerEvents';
-import { ServerToClientEvents } from 'models/io/ServerToClientEvents';
-import { SocketData } from 'models/io/SocketData';
-import { SocketError } from 'models/io/SocketError';
 import { Lobby } from '../models/Lobby';
 import { User } from '../models/User';
+import { IClientGameData } from '../models/IClientGameData';
+import { ClientToServerEvents } from '../models/io/ClientToServerEvents';
+import { InterServerEvents } from '../models/io/InterServerEvents';
+import { ServerToClientEvents } from '../models/io/ServerToClientEvents';
+import { SocketData } from '../models/io/SocketData';
+import { SocketError } from '../models/io/SocketError';
 
 export class Engine {
   port: string | number;
@@ -17,9 +17,9 @@ export class Engine {
   io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> | undefined;
 
   constructor() {
-    // Use the port that Azure provides or default to 3001. Without this, the deployment will fail:
+    // Use the port that Azure provides or default to 3000. Without this, the deployment will fail:
     // Should be 8080 in Azure
-    this.port = process.env.PORT || 8080;
+    this.port = process.env.PORT || 3000;
   }
 
   start() {

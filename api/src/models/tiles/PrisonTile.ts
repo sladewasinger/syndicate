@@ -1,4 +1,4 @@
-import { Player } from 'models/Player';
+import { Player } from '../../models/Player';
 import type { GameData } from '../GameData';
 import type { IClientTile } from './IClientTile';
 import type { ITile } from './ITile';

@@ -50,7 +50,7 @@ export class Game {
         .filter((t) => t.buyable)
         .filter((t) => t.owner?.id === playerId);
       for (const property of ownedProperties) {
-        property.owner = null;
+        property.owner = undefined;
         property.mortgaged = false;
       }
       this.stateMachine.gameData.players = this.stateMachine.gameData.players.filter((p) => p.id !== playerId);
