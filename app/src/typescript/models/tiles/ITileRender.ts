@@ -10,5 +10,4 @@ export interface ITileRenderArgs {
   x: number;
   y: number;
   rotation: number;
-  flipColorBar: boolean;
 }

@@ -18,11 +18,8 @@ export class DistrictTileRender implements ITileRender {
     const colorBar = new PIXI.Graphics();
     colorBar.lineStyle(2, 0x000000, 1);
     colorBar.beginFill(this.tile.color, 1);
-    if (!args.flipColorBar) {
-      colorBar.drawRect(0, 0, this.width, this.height * 0.2);
-    } else {
-      colorBar.drawRect(0, this.height * 0.8, this.width, this.height * 0.2);
-    }
+    colorBar.drawRect(0, 0, this.width, this.height * 0.2);
+
     colorBar.endFill();
 
     const tileText = new PIXI.Text(this.tile.name, {

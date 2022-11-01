@@ -76,7 +76,6 @@ export class Board {
           x: pos.x - renderTile.width / 2,
           y: pos.y - renderTile.height / 2,
           rotation: pos.rotation,
-          flipColorBar: pos.flipColorBar || false,
         },
         this.container
       );
