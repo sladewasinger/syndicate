@@ -1,5 +1,6 @@
 import type { Player } from './Player';
 import { DistrictTile } from './tiles/DistrictTile';
+import { GoToPrisonTile } from './tiles/GoToPrisonTile';
 import type { ITile } from './tiles/ITile';
 import { ParkTile } from './tiles/ParkTile';
 import { PrisonTile } from './tiles/PrisonTile';
@@ -11,6 +12,7 @@ export class GameData {
   diceOverride: number[] | null = null;
   tiles: ITile[] = [];
   winner: Player | null = null;
+  shuffle: boolean = false;
   private _log: string[] = [];
 
   constructor() {
@@ -45,7 +47,7 @@ export class GameData {
       new DistrictTile('27th Street', 400, 0xff0000, [50, 200, 600, 1400, 1700, 2000], 200, 200),
       new DistrictTile('28th Street', 400, 0xff0000, [50, 200, 600, 1400, 1700, 2000], 200, 200),
       new DistrictTile('29th Street', 400, 0xff0000, [50, 200, 600, 1400, 1700, 2000], 200, 200),
-      new ParkTile(),
+      new GoToPrisonTile(),
       new DistrictTile('31st Street', 300, 0xff0000, [26, 130, 390, 900, 1100, 1275], 200, 200),
       new DistrictTile('32nd Street', 350, 0xff0000, [35, 175, 500, 1100, 1300, 1500], 200, 200),
       new DistrictTile('33rd Street', 400, 0xff0000, [50, 200, 600, 1400, 1700, 2000], 200, 200),
@@ -56,6 +58,19 @@ export class GameData {
       new DistrictTile('38th Street', 400, 0xff0000, [50, 200, 600, 1400, 1700, 2000], 200, 200),
       new DistrictTile('39th Street', 400, 0xff0000, [50, 200, 600, 1400, 1700, 2000], 200, 200),
     ];
+
+    if (this.shuffle) {
+      for (let i = this.tiles.length - 1; i > 0; i--) {
+        if (i == 0 || i == 10 || i == 20 || i == 30) {
+          continue;
+        }
+        let j;
+        do {
+          j = Math.floor(Math.random() * (i + 1));
+        } while (j == 0 || j == 10 || j == 20 || j == 30);
+        [this.tiles[i], this.tiles[j]] = [this.tiles[j], this.tiles[i]];
+      }
+    }
   }
 
   get currentTile(): ITile {
