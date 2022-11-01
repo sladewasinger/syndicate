@@ -2,7 +2,7 @@
   "exclude": ["node_modules", "dist"],
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
-    "types": ["node", "jest", "@types/jest"],
+    "types": ["node", "jest"],
     "target": "ESNext",
     "module": "commonjs",
     "outDir": "../dist",
