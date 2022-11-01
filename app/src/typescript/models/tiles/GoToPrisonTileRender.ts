@@ -1,14 +1,14 @@
 import { TILE_HEIGHT } from '@/typescript/BoardPositions';
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from './IClientTile';
-import type { ITileRender } from './ITileRender';
+import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
 export class GoToPrisonTileRender implements ITileRender {
   width: number = TILE_HEIGHT;
   height: number = TILE_HEIGHT;
   constructor(public tile: IClientTile) {}
 
-  drawInitial(x: number, y: number, rotation: number, container: PIXI.Container) {
+  drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const tileBackground = new PIXI.Graphics();
     tileBackground.lineStyle(1, 0x000000, 1);
     tileBackground.beginFill(0xffffff, 1);
@@ -30,9 +30,9 @@ export class GoToPrisonTileRender implements ITileRender {
     tileContainer.addChild(tileBackground, tileText);
     tileContainer.pivot.x = tileContainer.width / 2;
     tileContainer.pivot.y = tileContainer.height / 2;
-    tileContainer.x = x;
-    tileContainer.y = y;
-    tileContainer.rotation = rotation;
+    tileContainer.x = args.x;
+    tileContainer.y = args.y;
+    tileContainer.rotation = args.rotation;
     container.addChild(tileContainer);
   }
 }

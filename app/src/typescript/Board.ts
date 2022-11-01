@@ -71,7 +71,15 @@ export class Board {
       }
       const pos = boardPositions[i];
       console.log(pos);
-      renderTile.drawInitial(pos.x - renderTile.width / 2, pos.y - renderTile.height / 2, pos.rotation, this.container);
+      renderTile.drawInitial(
+        {
+          x: pos.x - renderTile.width / 2,
+          y: pos.y - renderTile.height / 2,
+          rotation: pos.rotation,
+          flipColorBar: pos.flipColorBar || false,
+        },
+        this.container
+      );
     }
   }
 

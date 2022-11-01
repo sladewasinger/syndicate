@@ -2,10 +2,7 @@ export const BOARD_WIDTH = 1800;
 export const BOARD_HEIGHT = 1800;
 export const TILE_WIDTH = BOARD_WIDTH / 12;
 export const TILE_HEIGHT = (TILE_WIDTH * 3) / 2;
-const errorOffset = {
-  x: 0,
-  y: 0,
-};
+
 export const boardPositions = [
   {
     i: 0,
@@ -138,54 +135,63 @@ export const boardPositions = [
     x: 0 + TILE_HEIGHT + TILE_WIDTH,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 22,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 2,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 23,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 3,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 24,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 4,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 25,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 5,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 26,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 6,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 27,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 7,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 28,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 8,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 29,
     x: 0 + TILE_HEIGHT + TILE_WIDTH * 9,
     y: 0 + TILE_HEIGHT,
     rotation: 0,
+    flipColorBar: true,
   },
   {
     i: 30,
