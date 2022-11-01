@@ -19,7 +19,7 @@ export class Engine {
   constructor() {
     // Use the port that Azure provides or default to 3001. Without this, the deployment will fail:
     // Should be 8080 in Azure
-    this.port = process.env.PORT || 3000;
+    this.port = process.env.PORT || 8080;
   }
 
   start() {
