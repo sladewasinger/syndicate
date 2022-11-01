@@ -1,8 +1,8 @@
 import { Game } from '../src/game/Game';
-import { Player } from '../src/game/models/Player';
-import { StateEvent } from '../src/game/StateEvents';
-import { StateName } from '../src/game/StateNames';
+import { StateEvent } from '../src/game/states/StateEvents';
+import { StateName } from '../src/game/states/StateNames';
 import { TurnStart } from '../src/game/states/TurnStart';
+import { Player } from '../src/models/Player';
 
 describe('Game', () => {
   it('should create a new game', () => {

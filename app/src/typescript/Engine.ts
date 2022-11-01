@@ -1,4 +1,6 @@
-import { io, Socket } from "socket.io-client";
+import { io, Socket } from 'socket.io-client';
+import { Board } from './Board';
+import type { IClientGameData } from './models/IClientGameData';
 
 export class Engine {
   socket: Socket<any, any>;
@@ -8,40 +10,36 @@ export class Engine {
   constructor() {
     this.board = new Board();
 
-    if (window.location.port == "3001") {
-      this.socket = io("http://localhost:3000");
+    if (window.location.port == '3001') {
+      this.socket = io('http://localhost:3000');
     } else {
-      this.socket = io("https://syndicate.azurewebsites.net");
+      this.socket = io('https://syndicate.azurewebsites.net');
     }
-    this.socket.on("connect", () => {
-      console.log("connected");
+    this.socket.on('connect', () => {
+      console.log('connected');
     });
-    this.socket.on("gameData", (gameData: any) => {
+    this.socket.on('gameData', (gameData: any) => {
       console.log(gameData);
       this.gameData = gameData;
     });
   }
 
   start() {
-    this.socket.emit(
-      "registerName",
-      "player1name",
-      (error: any, result: any) => {
-        if (error) {
-          console.error(error);
-        } else {
-          console.log(result);
-        }
-      }
-    );
-    this.socket.emit("createLobby", (error: any, result: any) => {
+    this.socket.emit('registerName', 'player1name', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {
         console.log(result);
       }
     });
-    this.socket.emit("startGame", (error: any, result: any) => {
+    this.socket.emit('createLobby', (error: any, result: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+    this.socket.emit('startGame', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {
@@ -52,7 +50,7 @@ export class Engine {
   }
 
   rollDice() {
-    this.socket.emit("rollDice", (error: any, result: any) => {
+    this.socket.emit('rollDice', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {

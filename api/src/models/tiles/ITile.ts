@@ -8,7 +8,7 @@ export interface ITile {
   id: string;
   buyable: boolean;
   type: TileType;
-  owner: Player | null;
+  owner: Player | undefined;
   mortgaged: boolean;
   onLanded(gameData: GameData): void;
   getClientTile(gameData: GameData): IClientTile;

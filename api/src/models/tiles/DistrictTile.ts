@@ -7,7 +7,7 @@ import { TileType } from './TileType';
 
 export class DistrictTile implements ITile {
   id: string;
-  owner: Player | null;
+  owner: Player | undefined;
   buildingCount: number = 0;
   skyscraper: boolean = false;
   buyable: boolean = true;
@@ -26,7 +26,6 @@ export class DistrictTile implements ITile {
       throw new Error('entranceFees array must have 6 elements');
     }
     this.id = randomUUID();
-    this.owner = null;
   }
 
   entranceFee(gameData: GameData) {
@@ -41,9 +40,20 @@ export class DistrictTile implements ITile {
   }
 
   getClientTile(gameData: GameData): IClientTile {
-    return <IClientTile>{
-      ...this,
+    const clientTile: IClientTile = {
+      id: this.id,
+      name: this.name,
+      color: this.color,
+      buyable: this.buyable,
+      type: this.type,
+      price: this.price,
+      owner: this.owner?.id,
+      entranceFees: this.entranceFees,
+      buildingPrice: this.buildingPrice,
+      skyscraperPrice: this.skyscraperPrice,
+      skyscraper: this.skyscraper,
       rent: this.entranceFee(gameData),
     };
+    return clientTile;
   }
 }

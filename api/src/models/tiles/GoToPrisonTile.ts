@@ -1,19 +1,19 @@
 import { Player } from 'models/Player';
-import type { GameData } from '../GameData';
-import type { IClientTile } from './IClientTile';
-import type { ITile } from './ITile';
+import { GameData } from '../GameData';
+import { IClientTile } from './IClientTile';
+import { ITile } from './ITile';
 import { TileType } from './TileType';
 
-export class PrisonTile implements ITile {
+export class GoToPrisonTile implements ITile {
   id: string;
-  name = 'Prison';
+  name = 'Go to Prison';
   buyable = false;
-  type: TileType = TileType.Prison;
+  type: TileType = TileType.GoToPrison;
   owner: Player | undefined;
   mortgaged = false;
 
   constructor() {
-    this.id = 'prison';
+    this.id = 'goToPrison';
   }
 
   onLanded(gameData: GameData): void {}

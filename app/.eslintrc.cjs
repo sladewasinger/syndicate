@@ -12,4 +12,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
   },
+  rules: {
+    'quotes': ['error', 'single'],
+    'prettier/singleQuote': true,
+  }
 };

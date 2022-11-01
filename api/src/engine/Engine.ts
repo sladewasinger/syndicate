@@ -17,7 +17,7 @@ export class Engine {
   io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> | undefined;
 
   constructor() {
-    // Use the port that Azure provides or default to 3000. Without this, the deployment will fail:
+    // Use the port that Azure provides or default to 3001. Without this, the deployment will fail:
     // Should be 8080 in Azure
     this.port = process.env.PORT || 3000;
   }
@@ -34,7 +34,7 @@ export class Engine {
 
     this.io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, {
       cors: {
-        origin: '*', // TODO: Change this to localhost:30001 && syndicate.azurewebsites.net
+        origin: '*', // TODO: Change this to localhost:&& syndicate.azurewebsites.net
         methods: ['GET', 'POST'],
       },
     });
