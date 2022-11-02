@@ -1,8 +1,8 @@
 import type { GameData } from '../../models/GameData';
-import { DistrictTile } from '../../models/tiles/DistrictTile';
 import { StateName } from './StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
+import { DistrictTile } from '@/models/tiles/DistrictTile';
 
 export class LandedOnTile implements IGameState {
   name: StateName = StateName.LandedOnTile;

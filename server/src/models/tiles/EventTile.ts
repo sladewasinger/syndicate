@@ -1,9 +1,9 @@
 import { randomUUID } from 'crypto';
 import { GameData } from '../GameData';
 import { Player } from '../Player';
-import { IClientTile } from './IClientTile';
+import type { IClientTile } from '~shared/models/tiles/IClientTile';
 import { ITile } from './ITile';
-import { TileType } from './TileType';
+import { TileType } from '~shared/models/Tiles/TileType';
 
 export class EventTile implements ITile {
   name: string = 'Event';

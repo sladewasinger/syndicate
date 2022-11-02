@@ -1,7 +1,7 @@
 import type { GameData } from '../GameData';
 import type { Player } from '../Player';
 import type { IClientTile } from './IClientTile';
-import type { TileType } from './TileType';
+import { TileType } from '~shared/models/Tiles/TileType';
 
 export interface ITile {
   name: string;

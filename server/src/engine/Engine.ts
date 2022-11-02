@@ -3,12 +3,12 @@ import { Server } from 'socket.io';
 import { createServer } from 'http';
 import { Lobby } from '../models/Lobby';
 import { User } from '../models/User';
-import { IClientGameData } from '../models/IClientGameData';
 import { ClientToServerEvents } from '../models/io/ClientToServerEvents';
 import { InterServerEvents } from '../models/io/InterServerEvents';
 import { ServerToClientEvents } from '../models/io/ServerToClientEvents';
 import { SocketData } from '../models/io/SocketData';
 import { SocketError } from '../models/io/SocketError';
+import { IClientGameData } from '~shared/models/IClientGameData';
 
 export class Engine {
   port: string | number;

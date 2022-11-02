@@ -3,14 +3,14 @@
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
     "paths": {
-      "@/*": ["src/*"],
-      "~shared/*": ["../shared/"]
+      "@/*": ["./src/*"],
+      "~shared/*": ["../shared/*"]
     },
     "types": ["node"],
     "target": "ESNext",
     "module": "commonjs",
     "outDir": "../dist",
-    "rootDir": "./src",
+    "rootDirs": ["./src", "../shared"],
     "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",
