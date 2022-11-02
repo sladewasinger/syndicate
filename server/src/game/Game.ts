@@ -8,7 +8,7 @@ import { GameData } from '../models/GameData';
 import type { IClientGameData } from '../models/IClientGameData';
 import type { Player } from '../models/Player';
 import { StateEvent } from './states/StateEvents';
-import { IBuyableTile } from 'src/models/tiles/ITile';
+import { IBuyableTile } from '@/models/tiles/ITile';
 
 export class Game {
   stateMachine: StateMachine;

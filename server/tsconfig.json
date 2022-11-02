@@ -2,18 +2,17 @@
   "exclude": ["node_modules", "dist", "tests/**/*.test.ts"],
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"],
-      "~shared/*": ["../shared/*"]
-    },
     "types": ["node"],
     "target": "ESNext",
     "module": "commonjs",
     "outDir": "../dist",
     "rootDirs": ["./src", "../shared"],
-    "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "~shared/*": ["../shared/*"]
+    }
   }
 }
