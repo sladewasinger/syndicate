@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { Board } from './Board';
-import type { IClientGameData } from 'src/../../shared/models/IClientGameData';
+import type { IClientGameData } from './models/shared/IClientGameData';
 
 export class Engine {
   socket: Socket<any, any>;
