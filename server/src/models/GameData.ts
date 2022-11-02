@@ -1,5 +1,6 @@
 import type { Player } from './Player';
 import { DistrictTile } from './tiles/DistrictTile';
+import { EventTile } from './tiles/EventTile';
 import { GoToPrisonTile } from './tiles/GoToPrisonTile';
 import type { ITile } from './tiles/ITile';
 import { ParkTile } from './tiles/ParkTile';
@@ -19,6 +20,7 @@ export class GameData {
     this.tiles = [
       new StartTile(),
       new DistrictTile('1st Street', 60, 0xff0000, [2, 10, 30, 90, 160, 250], 50, 50),
+      new EventTile(),
       new DistrictTile('2nd Street', 60, 0xff0000, [4, 20, 60, 180, 320, 450], 50, 50),
       new DistrictTile('3rd Street', 100, 0xff0000, [6, 30, 90, 270, 400, 550], 50, 50),
       new DistrictTile('4th Street', 100, 0xff0000, [6, 30, 90, 270, 400, 550], 50, 50),

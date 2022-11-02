@@ -6,7 +6,7 @@ export interface IClientTile {
   color: number;
   buyable: boolean;
   type: TileType;
-  price: number;
+  price: number | undefined;
   owner: string | undefined;
   entranceFees: number[] | undefined;
   buildingPrice: number | undefined;

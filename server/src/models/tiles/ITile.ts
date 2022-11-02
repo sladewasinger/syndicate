@@ -9,7 +9,6 @@ export interface ITile {
   buyable: boolean;
   type: TileType;
   owner: Player | undefined;
-  mortgaged: boolean;
   onLanded(gameData: GameData): void;
   getClientTile(gameData: GameData): IClientTile;
 }
