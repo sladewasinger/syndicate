@@ -5,10 +5,10 @@ import { PostDiceRoll } from './states/PostDiceRoll';
 import { TurnStart } from './states/TurnStart';
 import { LandedOnTile } from './states/LandedOnTile';
 import { GameData } from '../models/GameData';
-import type { IClientGameData } from '../models/IClientGameData';
-import type { Player } from '../models/Player';
 import { StateEvent } from './states/StateEvents';
 import { IBuyableTile } from 'src/models/tiles/ITile';
+import { IClientGameData } from 'src/models/shared/IClientGameData';
+import { Player } from 'src/models/shared/Player';
 
 export class Game {
   stateMachine: StateMachine;

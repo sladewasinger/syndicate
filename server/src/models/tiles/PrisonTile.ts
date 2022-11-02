@@ -1,8 +1,8 @@
-import { Player } from '../../models/Player';
 import type { GameData } from '../GameData';
-import type { IClientTile } from './IClientTile';
+import { IClientTile } from '../shared/IClientTile';
+import { Player } from '../shared/Player';
+import { TileType } from '../shared/TileType';
 import type { ITile } from './ITile';
-import { TileType } from 'src/../../shared/models/Tiles/TileType';
 
 export class PrisonTile implements ITile {
   id: string;

@@ -5,7 +5,7 @@ import type { ClientToServerEvents } from './io/ClientToServerEvents';
 import type { InterServerEvents } from './io/InterServerEvents';
 import type { ServerToClientEvents } from './io/ServerToClientEvents';
 import type { SocketData } from './io/SocketData';
-import { Player } from './Player';
+import { Player } from './shared/Player';
 import type { User } from './User';
 
 export class Lobby {

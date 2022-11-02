@@ -1,12 +1,12 @@
 {
   "exclude": ["node_modules", "dist", "tests/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../shared/**/*.ts"],
+  "include": ["src/**/*.ts", "src/models/shared/**/*.ts"],
   "compilerOptions": {
     "types": ["node"],
     "target": "ESNext",
     "module": "commonjs",
     "outDir": "../dist",
-    "rootDirs": ["./src", "../shared"],
+    "rootDirs": ["./src", "src/models/shared"],
     "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",

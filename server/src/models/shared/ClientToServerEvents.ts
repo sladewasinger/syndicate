@@ -1,4 +1,4 @@
-import type { IClientGameData } from '../IClientGameData';
+import type { IClientGameData } from './IClientGameData';
 import type { SocketError } from './SocketError';
 
 export interface ClientToServerEvents {
