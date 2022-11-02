@@ -1,5 +1,33 @@
 {
   "editor.tabSize": 2,
   "javascript.preferences.quoteStyle": "single",
-  "typescript.preferences.quoteStyle": "single"
+  "typescript.preferences.quoteStyle": "single",
+
+  // Theme:
+  "workbench.colorTheme": "Box UK Contrast (rainglow)",
+  "editor.tokenColorCustomizations": {
+    "[Box UK Contrast (rainglow)]": {
+      //"keywords": "#da4a56"
+      // "functions": "#F1FAEE",
+      // "variables": "#A8DADC",
+      // "types": "#457B9D"
+      // "keywords": "#2EC486",
+      // "functions": "#FF9F1c",
+      // "numbers": "#4998ff",
+      "types": "#5dda37"
+    }
+  },
+  "workbench.colorCustomizations": {
+    // "activityBar.background": "#141414",
+    // "activityBar.inactiveForeground": "#000000",
+    // "tokenColors": [".vscode/color-theme.jsonc"]
+    "sideBar.background": "#020202",
+    "sideBarSectionHeader.background": "#111111",
+    "sideBarSectionHeader.foreground": "#aaaaaa",
+    "editor.background": "#050505",
+    "editorGutter.background": "#050505",
+    "terminal.border": "#ff2a2a",
+    "panel.background": "#050505",
+    "terminal.background": "#020202"
+  }
 }
