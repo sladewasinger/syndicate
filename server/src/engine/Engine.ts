@@ -8,7 +8,7 @@ import { InterServerEvents } from '../models/io/InterServerEvents';
 import { ServerToClientEvents } from '../models/io/ServerToClientEvents';
 import { SocketData } from '../models/io/SocketData';
 import { SocketError } from '../models/io/SocketError';
-import { IClientGameData } from '~shared/models/IClientGameData';
+import { IClientGameData } from 'src/../../shared/models/IClientGameData';
 
 export class Engine {
   port: string | number;

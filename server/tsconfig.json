@@ -10,10 +10,6 @@
     "baseUrl": "./",
     "strict": true,
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "paths": {
-      "@/*": ["./src/*"],
-      "~shared/*": ["../shared/*"]
-    }
+    "esModuleInterop": true
   }
 }

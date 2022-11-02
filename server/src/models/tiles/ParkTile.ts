@@ -1,8 +1,8 @@
-import { Player } from '~shared/models/Player';
+import { Player } from 'src/../../shared/models/Player';
 import { GameData } from '../GameData';
 import { IClientTile } from './IClientTile';
 import { ITile } from './ITile';
-import { TileType } from '~shared/models/Tiles/TileType';
+import { TileType } from 'src/../../shared/models/Tiles/TileType';
 
 export class ParkTile implements ITile {
   id: string;

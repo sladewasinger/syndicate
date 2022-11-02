@@ -1,6 +1,6 @@
 import { TILE_HEIGHT } from '@/typescript/BoardPositions';
 import * as PIXI from 'pixi.js';
-import type { IClientTile } from '~shared/models/tiles/IClientTile';
+import type { IClientTile } from 'src/../../shared/models/tiles/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
 export class GoToPrisonTileRender implements ITileRender {

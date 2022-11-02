@@ -1,4 +1,4 @@
-import { Player } from '~shared/models/Player';
+import { Player } from 'src/../../shared/models/Player';
 import { DistrictTile } from './tiles/DistrictTile';
 import { EventTile } from './tiles/EventTile';
 import { GoToPrisonTile } from './tiles/GoToPrisonTile';

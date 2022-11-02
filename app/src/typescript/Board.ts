@@ -5,9 +5,9 @@ import { StartTileRender } from './models/tiles/StartTileRender';
 import { boardPositions, TILE_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from './BoardPositions';
 import { ParkTileRender } from './models/tiles/ParkTileRender';
 import { GoToPrisonTileRender } from './models/tiles/GoToPrisonTileRender';
-import type { IClientGameData } from '~shared/models/IClientGameData';
-import type { IClientTile } from '~shared/models/tiles/IClientTile';
-import { TileType } from '~shared/models/tiles/TileType';
+import type { IClientGameData } from 'src/../../shared/models/IClientGameData';
+import type { IClientTile } from 'src/../../shared/models/tiles/IClientTile';
+import { TileType } from 'src/../../shared/models/tiles/TileType';
 
 export class Board {
   canvas: HTMLCanvasElement;

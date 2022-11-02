@@ -1,9 +1,9 @@
 import { randomUUID } from 'crypto';
 import type { GameData } from '../GameData';
 import type { Player } from '../Player';
-import type { IClientTile } from '~shared/models/tiles/IClientTile';
+import type { IClientTile } from 'src/../../shared/models/tiles/IClientTile';
 import type { IBuyableTile, ITile } from './ITile';
-import { TileType } from '~shared/models/tiles/TileType';
+import { TileType } from 'src/../../shared/models/tiles/TileType';
 
 export class DistrictTile implements IBuyableTile {
   id: string;
