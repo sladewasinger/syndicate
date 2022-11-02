@@ -5,4 +5,6 @@ export enum TileType {
   GoToPrison = 'goToPrison',
   Park = 'PublicPark',
   Event = 'Event',
+  Tax = 'Tax',
+  Subway = 'Subway',
 }

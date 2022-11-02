@@ -5,9 +5,12 @@ import { StartTileRender } from './models/tiles/StartTileRender';
 import { boardPositions, TILE_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from './BoardPositions';
 import { ParkTileRender } from './models/tiles/ParkTileRender';
 import { GoToPrisonTileRender } from './models/tiles/GoToPrisonTileRender';
-import type { IClientGameData } from 'src/../../shared/models/IClientGameData';
-import type { IClientTile } from '../shared/IClientTile';
-import { TileType } from 'src/shared/models/TileType';
+import type { IClientGameData } from './models/shared/IClientGameData';
+import type { IClientTile } from './models/shared/IClientTile';
+import { TileType } from './models/shared/TileType';
+import { EventTileRender } from './models/tiles/EventTileRender';
+import { TaxTileRender } from './models/tiles/TaxTileRender';
+import { SubwayTileRender } from './models/tiles/SubwayTileRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -70,7 +73,6 @@ export class Board {
         continue;
       }
       const pos = boardPositions[i];
-      console.log(pos);
       renderTile.drawInitial(
         {
           x: pos.x - renderTile.width / 2,
@@ -94,6 +96,14 @@ export class Board {
         return new ParkTileRender(tile);
       case TileType.GoToPrison:
         return new GoToPrisonTileRender(tile);
+      case TileType.Event:
+        return new EventTileRender(tile);
+      case TileType.Tax:
+        return new TaxTileRender(tile);
+      case TileType.Subway:
+        return new SubwayTileRender(tile);
+      default:
+        return undefined;
     }
   }
 }

@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
-export class DistrictTileRender implements ITileRender {
+export class SubwayTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
   constructor(public tile: IClientTile) {}
@@ -15,25 +15,35 @@ export class DistrictTileRender implements ITileRender {
     tileBackground.drawRect(0, 0, this.width, this.height);
     tileBackground.endFill();
 
-    const colorBar = new PIXI.Graphics();
-    colorBar.lineStyle(2, 0x000000, 1);
-    colorBar.beginFill(this.tile.color, 1);
-    colorBar.drawRect(0, 0, this.width, this.height * 0.2);
-    colorBar.endFill();
+    const price = new PIXI.Text(`$${this.tile.price}`, {
+      fill: 0x000000,
+      fontSize: this.height * 0.14,
+    });
+    price.pivot.x = price.width / 2;
+    price.x = this.width / 2;
+    price.y = this.height - price.height;
+
+    const subwayIcon = PIXI.Sprite.from('subway.png');
+    const scale = Math.min(this.width / subwayIcon.width, this.height / subwayIcon.height) * 0.7;
+    subwayIcon.scale.x = scale;
+    subwayIcon.scale.y = scale;
+    subwayIcon.x = (this.width - subwayIcon.width) / 2;
+    subwayIcon.y = this.height - subwayIcon.height - price.height - 5;
 
     const tileText = new PIXI.Text(this.tile.name, {
       fill: 0x000000,
-      fontSize: this.height * 0.14,
+      fontSize: this.height * 0.12,
       wordWrap: true,
-      wordWrapWidth: this.width,
+      wordWrapWidth: this.width * 0.9,
       align: 'center',
     });
     tileText.pivot.x = tileText.width / 2;
+    tileText.pivot.y = tileText.height / 2;
     tileText.x = this.width / 2;
-    tileText.y = colorBar.height;
+    tileText.y = this.height * 0.2;
 
     const tileContainer = new PIXI.Container();
-    tileContainer.addChild(tileBackground, colorBar, tileText);
+    tileContainer.addChild(tileBackground, subwayIcon, price, tileText);
     tileContainer.x = args.x;
     tileContainer.y = args.y;
     tileContainer.pivot.x = this.width / 2;

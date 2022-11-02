@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
-export class DistrictTileRender implements ITileRender {
+export class EventTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
   constructor(public tile: IClientTile) {}
@@ -15,12 +15,6 @@ export class DistrictTileRender implements ITileRender {
     tileBackground.drawRect(0, 0, this.width, this.height);
     tileBackground.endFill();
 
-    const colorBar = new PIXI.Graphics();
-    colorBar.lineStyle(2, 0x000000, 1);
-    colorBar.beginFill(this.tile.color, 1);
-    colorBar.drawRect(0, 0, this.width, this.height * 0.2);
-    colorBar.endFill();
-
     const tileText = new PIXI.Text(this.tile.name, {
       fill: 0x000000,
       fontSize: this.height * 0.14,
@@ -29,11 +23,12 @@ export class DistrictTileRender implements ITileRender {
       align: 'center',
     });
     tileText.pivot.x = tileText.width / 2;
+    tileText.pivot.y = tileText.height / 2;
     tileText.x = this.width / 2;
-    tileText.y = colorBar.height;
+    tileText.y = this.height / 2;
 
     const tileContainer = new PIXI.Container();
-    tileContainer.addChild(tileBackground, colorBar, tileText);
+    tileContainer.addChild(tileBackground, tileText);
     tileContainer.x = args.x;
     tileContainer.y = args.y;
     tileContainer.pivot.x = this.width / 2;
