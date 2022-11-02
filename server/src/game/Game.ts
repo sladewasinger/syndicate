@@ -8,6 +8,7 @@ import { GameData } from '../models/GameData';
 import type { IClientGameData } from '../models/IClientGameData';
 import type { Player } from '../models/Player';
 import { StateEvent } from './states/StateEvents';
+import { IBuyableTile } from 'src/models/tiles/ITile';
 
 export class Game {
   stateMachine: StateMachine;
@@ -48,6 +49,7 @@ export class Game {
     if (player) {
       const ownedProperties = this.stateMachine.gameData.tiles
         .filter((t) => t.buyable)
+        .map((t) => t as IBuyableTile)
         .filter((t) => t.owner?.id === playerId);
       for (const property of ownedProperties) {
         property.owner = undefined;

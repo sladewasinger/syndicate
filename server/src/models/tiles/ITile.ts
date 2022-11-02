@@ -12,3 +12,7 @@ export interface ITile {
   onLanded(gameData: GameData): void;
   getClientTile(gameData: GameData): IClientTile;
 }
+
+export interface IBuyableTile extends ITile {
+  mortgaged: boolean;
+}

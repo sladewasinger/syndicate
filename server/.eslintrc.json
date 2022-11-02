@@ -1,5 +1,6 @@
 {
   "root": true,
+  "tsConfigRootDir": "__dirname",
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": { "project": ["./api/tsconfig.json"] },

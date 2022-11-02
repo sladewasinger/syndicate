@@ -2,6 +2,10 @@
   "exclude": ["node_modules", "dist", "tests/**/*.test.ts"],
   "include": ["src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
+    "paths": {
+      "@/*": ["src/*"],
+      "~shared/*": ["../shared/"]
+    },
     "types": ["node"],
     "target": "ESNext",
     "module": "commonjs",

@@ -10,7 +10,6 @@ export class EventTile implements ITile {
   id: string;
   owner: Player | undefined;
   buyable: boolean = false;
-  mortgaged: boolean = false;
   type: TileType = TileType.Event;
 
   constructor() {

@@ -2,10 +2,10 @@ import { randomUUID } from 'crypto';
 import type { GameData } from '../GameData';
 import type { Player } from '../Player';
 import type { IClientTile } from './IClientTile';
-import type { ITile } from './ITile';
+import type { IBuyableTile, ITile } from './ITile';
 import { TileType } from './TileType';
 
-export class DistrictTile implements ITile {
+export class DistrictTile implements IBuyableTile {
   id: string;
   owner: Player | undefined;
   buildingCount: number = 0;

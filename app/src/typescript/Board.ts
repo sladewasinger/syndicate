@@ -2,12 +2,12 @@ import * as PIXI from 'pixi.js';
 import { DistrictTileRender } from './models/tiles/DistrictTileRender';
 import { PrisonTileRender } from './models/tiles/PrisonTileRender';
 import { StartTileRender } from './models/tiles/StartTileRender';
-import type { IClientGameData } from './models/IClientGameData';
-import type { IClientTile } from './models/tiles/IClientTile';
-import { TileType } from './models/tiles/TileType';
 import { boardPositions, TILE_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from './BoardPositions';
 import { ParkTileRender } from './models/tiles/ParkTileRender';
 import { GoToPrisonTileRender } from './models/tiles/GoToPrisonTileRender';
+import type { IClientGameData } from '~shared/models/IClientGameData';
+import type { IClientTile } from '~shared/models/tiles/IClientTile';
+import { TileType } from '~shared/models/tiles/TileType';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -35,8 +35,8 @@ export class Board {
     });
     this.container = this.app.stage;
     window.addEventListener('resize', () => {
-      clearTimeout(this.resizeTimer);
-      this.resizeTimer = setTimeout(this.resize.bind(this), 250);
+      window.clearTimeout(this.resizeTimer);
+      this.resizeTimer = window.setTimeout(this.resize.bind(this), 250);
     });
     this.resize();
   }
