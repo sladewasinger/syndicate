@@ -33,7 +33,7 @@ jobs:
           npm run build
 
           cd ../
-          cp -r api/node_modules/ dist/node_modules
+          cp -r server/node_modules/ dist/node_modules
           dir dist
 
       - name: Upload artifact for deployment job
