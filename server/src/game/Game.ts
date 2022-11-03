@@ -12,6 +12,20 @@ import { Player } from 'src/models/shared/Player';
 
 export class Game {
   stateMachine: StateMachine;
+  colors: number[] = [
+    0x0000ff, // blue
+    0xff0000, // red
+    0x00ff00, // green
+    0xffff00, // yellow
+    0xff00ff, // magenta
+    0x00ffff, // cyan
+    0xffa500, // orange
+    0x800080, // purple
+    0x800000, // maroon
+    0x000080, // navy
+    0x808000, // olive
+    0x008080, // teal
+  ];
 
   constructor(players: Player[]) {
     const gameData = new GameData();
@@ -62,6 +76,26 @@ export class Game {
         this.stateMachine.setState('TurnStart');
       }
     }
+  }
+
+  startGame() {
+    for (let i = 0; i < this.stateMachine.gameData.players.length; i++) {
+      const player = this.stateMachine.gameData.players[i];
+      const color = this.colors[i % this.colors.length];
+      this.resetPlayer(player, color);
+    }
+  }
+
+  addPlayer(player: Player) {
+    this.resetPlayer(player, this.colors[this.stateMachine.gameData.players.length % this.colors.length]);
+    this.stateMachine.gameData.players.push(player);
+  }
+
+  private resetPlayer(player: Player, color: number) {
+    player.money = 1500;
+    player.position = 0;
+    player.properties = [];
+    player.color = color;
   }
 
   rollDice() {

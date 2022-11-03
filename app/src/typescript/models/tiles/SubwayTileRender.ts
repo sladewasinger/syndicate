@@ -6,7 +6,11 @@ import type { ITileRender, ITileRenderArgs } from './ITileRender';
 export class SubwayTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
-  constructor(public tile: IClientTile) {}
+  subwayTexture: PIXI.Texture<PIXI.Resource>;
+  constructor(public tile: IClientTile) {
+    // load subway image
+    this.subwayTexture = PIXI.Texture.from('subway.png');
+  }
 
   drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const tileBackground = new PIXI.Graphics();
@@ -23,10 +27,10 @@ export class SubwayTileRender implements ITileRender {
     price.x = this.width / 2;
     price.y = this.height - price.height;
 
-    const subwayIcon = PIXI.Sprite.from('subway.png');
+    // pixi sprite from texture
+    const subwayIcon = new PIXI.Sprite(args.textures['subway']);
     const scale = Math.min(this.width / subwayIcon.width, this.height / subwayIcon.height) * 0.7;
-    subwayIcon.scale.x = scale;
-    subwayIcon.scale.y = scale;
+    subwayIcon.scale = new PIXI.Point(scale, scale);
     subwayIcon.x = (this.width - subwayIcon.width) / 2;
     subwayIcon.y = this.height - subwayIcon.height - price.height - 5;
 

@@ -19,6 +19,7 @@ export class Board {
   height: number;
   container: PIXI.Container;
   resizeTimer: number | undefined;
+  textures: { [key: string]: PIXI.Texture<PIXI.Resource> } = {};
 
   constructor() {
     const canvas = document.getElementById('gameCanvas');
@@ -42,6 +43,8 @@ export class Board {
       this.resizeTimer = window.setTimeout(this.resize.bind(this), 250);
     });
     this.resize();
+
+    this.textures['subway'] = PIXI.Texture.from('subway2.png');
   }
 
   resize() {
@@ -78,6 +81,7 @@ export class Board {
           x: pos.x - renderTile.width / 2,
           y: pos.y - renderTile.height / 2,
           rotation: pos.rotation,
+          textures: this.textures,
         },
         this.container
       );

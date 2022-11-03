@@ -42,6 +42,7 @@ export class Lobby {
       return;
     }
     this.game = new Game(this.users.map((u) => new Player(u.name || u.socketId.substring(0, 4), u.socketId)));
+    this.game.startGame();
 
     this.users.forEach((user) => {
       io.to(user.socketId).emit('startGame');

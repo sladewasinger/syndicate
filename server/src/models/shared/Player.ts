@@ -5,6 +5,7 @@ export class Player {
   money: number;
   position: number;
   properties: string[] = [];
+  color: number = 0;
 
   constructor(name: string, id: string) {
     this.name = name;

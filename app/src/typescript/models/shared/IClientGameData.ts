@@ -1,10 +1,10 @@
 import type { IClientTile } from './IClientTile';
-import type { Player } from './Player';
+import type { IClientPlayer } from './IClientPlayer';
 
 export interface IClientGameData {
   myId: string;
-  players: Player[];
-  currentPlayer: Player;
+  players: IClientPlayer[];
+  currentPlayer: IClientPlayer;
   dice: number[];
   tiles: IClientTile[];
   state: string;
