@@ -11,6 +11,8 @@ import { TileType } from './models/shared/TileType';
 import { EventTileRender } from './models/tiles/EventTileRender';
 import { TaxTileRender } from './models/tiles/TaxTileRender';
 import { SubwayTileRender } from './models/tiles/SubwayTileRender';
+import { PlayersRender } from './PlayersRender';
+import { RenderData } from './RenderData';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -19,7 +21,9 @@ export class Board {
   height: number;
   container: PIXI.Container;
   resizeTimer: number | undefined;
+  playersRender: PlayersRender | undefined;
   textures: { [key: string]: PIXI.Texture<PIXI.Resource> } = {};
+  renderData: RenderData;
 
   constructor() {
     const canvas = document.getElementById('gameCanvas');
@@ -45,6 +49,9 @@ export class Board {
     this.resize();
 
     this.textures['subway'] = PIXI.Texture.from('subway2.png');
+
+    this.renderData = new RenderData();
+    this.renderData.renderTiles = [];
   }
 
   resize() {
@@ -53,6 +60,10 @@ export class Board {
     this.canvas.width = Math.min(this.width, this.width * scale);
     this.canvas.height = Math.min(this.height, this.height * scale);
     this.container.scale.set(scale);
+  }
+
+  update(gameData: IClientGameData) {
+    this.playersRender!.update(gameData, this.renderData);
   }
 
   drawBoardInitial(gameState: IClientGameData) {
@@ -85,7 +96,11 @@ export class Board {
         },
         this.container
       );
+      this.renderData.renderTiles.push(renderTile);
     }
+
+    this.playersRender = new PlayersRender(gameState.players);
+    this.playersRender.drawInitial({}, this.container);
   }
 
   getTileRenderFromTile(tile: IClientTile) {

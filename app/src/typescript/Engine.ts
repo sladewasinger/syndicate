@@ -1,3 +1,4 @@
+import { UPDATE_PRIORITY } from 'pixi.js';
 import { io, Socket } from 'socket.io-client';
 import { Board } from './Board';
 import type { IClientGameData } from './models/shared/IClientGameData';
@@ -22,6 +23,17 @@ export class Engine {
       console.log(gameData);
       this.gameData = gameData;
     });
+
+    window.requestAnimationFrame(this.update.bind(this));
+  }
+
+  update() {
+    if (!this.gameData) {
+      window.requestAnimationFrame(this.update.bind(this));
+      return;
+    }
+    this.board.update(this.gameData);
+    window.requestAnimationFrame(this.update.bind(this));
   }
 
   start() {
@@ -44,6 +56,7 @@ export class Engine {
         console.error(error);
       } else {
         console.log(result);
+        this.gameData = result;
         this.board.drawBoardInitial(result);
       }
     });
