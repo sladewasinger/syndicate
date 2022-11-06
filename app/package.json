@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "pixi.js": "7.0.2",
+    "@pixi/assets": "^6.5.8",
+    "@pixi/interaction": "^6.5.8",
+    "pixi.js": "^6.5.8",
     "socket.io-client": "^4.5.3",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"

@@ -1,9 +1,9 @@
 import { TILE_HEIGHT } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
-import type { IClientTile } from '../shared/IClientTile';
+import type { IClientTile } from '../../models/shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
-export class StartTileRender implements ITileRender {
+export class GoToPrisonTileRender implements ITileRender {
   width: number = TILE_HEIGHT;
   height: number = TILE_HEIGHT;
   container: PIXI.Container;

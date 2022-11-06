@@ -1,18 +1,20 @@
 import * as PIXI from 'pixi.js';
-import { DistrictTileRender } from '../models/tiles/DistrictTileRender';
-import { PrisonTileRender } from '../models/tiles/PrisonTileRender';
-import { StartTileRender } from '../models/tiles/StartTileRender';
+import { DistrictTileRender } from './tiles/DistrictTileRender';
+import { PrisonTileRender } from './tiles/PrisonTileRender';
+import { StartTileRender } from './tiles/StartTileRender';
 import { boardPositions, BOARD_WIDTH, BOARD_HEIGHT } from '../models/BoardPositions';
-import { ParkTileRender } from '../models/tiles/ParkTileRender';
-import { GoToPrisonTileRender } from '../models/tiles/GoToPrisonTileRender';
+import { ParkTileRender } from './tiles/ParkTileRender';
+import { GoToPrisonTileRender } from './tiles/GoToPrisonTileRender';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import type { IClientTile } from '../models/shared/IClientTile';
 import { TileType } from '../models/shared/TileType';
-import { EventTileRender } from '../models/tiles/EventTileRender';
-import { TaxTileRender } from '../models/tiles/TaxTileRender';
-import { SubwayTileRender } from '../models/tiles/SubwayTileRender';
+import { EventTileRender } from './tiles/EventTileRender';
+import { TaxTileRender } from './tiles/TaxTileRender';
+import { SubwayTileRender } from './tiles/SubwayTileRender';
 import { PlayersRender } from './PlayersRender';
 import { RenderData } from './RenderData';
+import { InteractionManager } from '@pixi/interaction';
+import { extensions } from '@pixi/core';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -40,6 +42,9 @@ export class Board {
       antialias: true,
       resolution: 1, // window.devicePixelRatio || 1,
     });
+
+    extensions.add(InteractionManager);
+
     this.container = this.app.stage;
 
     window.addEventListener('resize', () => {

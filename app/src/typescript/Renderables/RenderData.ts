@@ -1,4 +1,4 @@
-import type { ITileRender } from '../models/tiles/ITileRender';
+import type { ITileRender } from './tiles/ITileRender';
 import type { PlayersRender } from './PlayersRender';
 
 export class RenderData {

@@ -1,7 +1,8 @@
 import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
-import type { IClientTile } from '../shared/IClientTile';
+import type { IClientTile } from '../../models/shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import { Assets } from '@pixi/assets';
 
 export class SubwayTileRender implements ITileRender {
   width: number = TILE_WIDTH;
@@ -13,7 +14,7 @@ export class SubwayTileRender implements ITileRender {
   }
 
   async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
-    const subwayTexture = await PIXI.Assets.load('subway2.png');
+    const subwayTexture = await Assets.load('subway.png');
 
     const tileBackground = new PIXI.Graphics();
     tileBackground.lineStyle(2, 0x000000, 1);

@@ -1,9 +1,9 @@
 import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
-import type { IClientTile } from '../shared/IClientTile';
+import type { IClientTile } from '../../models/shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
-export class TaxTileRender implements ITileRender {
+export class EventTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
   container: PIXI.Container;
