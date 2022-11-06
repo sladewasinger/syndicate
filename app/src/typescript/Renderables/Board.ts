@@ -13,6 +13,8 @@ import { TaxTileRender } from '../models/tiles/TaxTileRender';
 import { SubwayTileRender } from '../models/tiles/SubwayTileRender';
 import { PlayersRender } from './PlayersRender';
 import { RenderData } from './RenderData';
+import type { LoaderResource } from 'pixi.js';
+import { Utils } from '../Utils/Utils';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -22,7 +24,7 @@ export class Board {
   container: PIXI.Container;
   resizeTimer: number | undefined;
   playersRender: PlayersRender | undefined;
-  textures: { [key: string]: PIXI.Texture<PIXI.Resource> } = {};
+  textures: PIXI.utils.Dict<LoaderResource> = {};
   renderData: RenderData;
 
   constructor() {
@@ -49,7 +51,7 @@ export class Board {
     });
     this.resize();
 
-    this.textures['subway'] = PIXI.Texture.from('subway2.png');
+    //this.textures['subway'] = PIXI.Texture.from('subway2.png', { width: 100, height: 100 }, true);
 
     this.renderData = new RenderData();
     this.renderData.renderTiles = [];
@@ -64,10 +66,10 @@ export class Board {
   }
 
   update(gameData: IClientGameData) {
-    this.playersRender!.update(gameData, this.renderData);
+    this.playersRender?.update(gameData, this.renderData);
   }
 
-  drawBoardInitial(gameState: IClientGameData) {
+  async drawBoardInitial(gameState: IClientGameData) {
     console.log('drawBoardInitial');
     const board = new PIXI.Graphics();
     board.lineStyle(1, 0x000000, 1);

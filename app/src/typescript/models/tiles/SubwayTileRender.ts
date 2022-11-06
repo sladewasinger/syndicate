@@ -1,18 +1,22 @@
 import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
+// import * as PIXIAssets from '@pixi/assets';
 import type { IClientTile } from '../shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 
 export class SubwayTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
-  subwayTexture: PIXI.Texture<PIXI.Resource>;
+  container: PIXI.Container;
+
   constructor(public tile: IClientTile) {
-    // load subway image
-    this.subwayTexture = PIXI.Texture.from('subway.png');
+    this.container = new PIXI.Container();
   }
 
-  drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
+  async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
+    const subwayTexture = await PIXI.Assets.load('subway2.png');
+    // const subwayTexture = await PIXIAssets.Assets.load('subway2.png');
+
     const tileBackground = new PIXI.Graphics();
     tileBackground.lineStyle(2, 0x000000, 1);
     tileBackground.beginFill(0xffffff, 1);
@@ -28,7 +32,7 @@ export class SubwayTileRender implements ITileRender {
     price.y = this.height - price.height;
 
     // pixi sprite from texture
-    const subwayIcon = new PIXI.Sprite(args.textures['subway']);
+    const subwayIcon = new PIXI.Sprite(subwayTexture);
     const scale = Math.min(this.width / subwayIcon.width, this.height / subwayIcon.height) * 0.7;
     subwayIcon.scale = new PIXI.Point(scale, scale);
     subwayIcon.x = (this.width - subwayIcon.width) / 2;
@@ -46,7 +50,7 @@ export class SubwayTileRender implements ITileRender {
     tileText.x = this.width / 2;
     tileText.y = this.height * 0.2;
 
-    const tileContainer = new PIXI.Container();
+    const tileContainer = this.container;
     tileContainer.addChild(tileBackground, subwayIcon, price, tileText);
     tileContainer.x = args.x;
     tileContainer.y = args.y;
