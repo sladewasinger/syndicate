@@ -13,8 +13,6 @@ import { TaxTileRender } from '../models/tiles/TaxTileRender';
 import { SubwayTileRender } from '../models/tiles/SubwayTileRender';
 import { PlayersRender } from './PlayersRender';
 import { RenderData } from './RenderData';
-import type { LoaderResource } from 'pixi.js';
-import { Utils } from '../Utils/Utils';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -24,7 +22,7 @@ export class Board {
   container: PIXI.Container;
   resizeTimer: number | undefined;
   playersRender: PlayersRender | undefined;
-  textures: PIXI.utils.Dict<LoaderResource> = {};
+  textures: PIXI.utils.Dict<pixiJs.LoaderResource> = {};
   renderData: RenderData;
 
   constructor() {

@@ -6,7 +6,11 @@ import type { ITileRender, ITileRenderArgs } from './ITileRender';
 export class TaxTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
-  constructor(public tile: IClientTile) {}
+  container: PIXI.Container;
+
+  constructor(public tile: IClientTile) {
+    this.container = new PIXI.Container();
+  }
 
   drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const tileBackground = new PIXI.Graphics();
@@ -27,7 +31,7 @@ export class TaxTileRender implements ITileRender {
     tileText.x = this.width / 2;
     tileText.y = this.height / 2;
 
-    const tileContainer = new PIXI.Container();
+    const tileContainer = this.container;
     tileContainer.addChild(tileBackground, tileText);
     tileContainer.x = args.x;
     tileContainer.y = args.y;

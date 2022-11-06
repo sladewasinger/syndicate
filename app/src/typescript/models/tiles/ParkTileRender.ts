@@ -6,7 +6,10 @@ import type { ITileRender, ITileRenderArgs } from './ITileRender';
 export class ParkTileRender implements ITileRender {
   width: number = TILE_HEIGHT;
   height: number = TILE_HEIGHT;
-  constructor(public tile: IClientTile) {}
+  container: PIXI.Container;
+  constructor(public tile: IClientTile) {
+    this.container = new PIXI.Container();
+  }
 
   drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const tileBackground = new PIXI.Graphics();
@@ -26,7 +29,7 @@ export class ParkTileRender implements ITileRender {
     tileText.x = this.width / 2;
     tileText.y = this.height / 2;
 
-    const tileContainer = new PIXI.Container();
+    const tileContainer = this.container;
     tileContainer.addChild(tileBackground, tileText);
     tileContainer.pivot.x = tileContainer.width / 2;
     tileContainer.pivot.y = tileContainer.height / 2;
