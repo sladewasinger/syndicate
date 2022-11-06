@@ -1,7 +1,7 @@
 <script mounted lang="ts">
-// import { Engine } from '@/typescript/Engine';
+import type { Engine } from '@/typescript/Engine';
 import { EngineTester } from '@/typescript/EngineTester';
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'GameView',

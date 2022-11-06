@@ -26,10 +26,10 @@ export class EngineTester {
       } else {
         console.log(result);
         lobbyId = result;
-        engine2.socket.emit('joinLobby', lobbyId, (error: any, result: any) => joinCount++);
-        engine3.socket.emit('joinLobby', lobbyId, (error: any, result: any) => joinCount++);
-        engine4.socket.emit('joinLobby', lobbyId, (error: any, result: any) => joinCount++);
-        engine5.socket.emit('joinLobby', lobbyId, (error: any, result: any) => joinCount++);
+        engine2.socket.emit('joinLobby', lobbyId, () => joinCount++);
+        engine3.socket.emit('joinLobby', lobbyId, () => joinCount++);
+        engine4.socket.emit('joinLobby', lobbyId, () => joinCount++);
+        engine5.socket.emit('joinLobby', lobbyId, () => joinCount++);
         while (joinCount < 5) {
           await Utils.sleep(100);
         }

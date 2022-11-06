@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DistrictTileRender } from '../models/tiles/DistrictTileRender';
 import { PrisonTileRender } from '../models/tiles/PrisonTileRender';
 import { StartTileRender } from '../models/tiles/StartTileRender';
-import { boardPositions, TILE_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from '../models/BoardPositions';
+import { boardPositions, BOARD_WIDTH, BOARD_HEIGHT } from '../models/BoardPositions';
 import { ParkTileRender } from '../models/tiles/ParkTileRender';
 import { GoToPrisonTileRender } from '../models/tiles/GoToPrisonTileRender';
 import type { IClientGameData } from '../models/shared/IClientGameData';
@@ -22,7 +22,6 @@ export class Board {
   container: PIXI.Container;
   resizeTimer: number | undefined;
   playersRender: PlayersRender | undefined;
-  textures: PIXI.utils.Dict<pixiJs.LoaderResource> = {};
   renderData: RenderData;
 
   constructor() {
@@ -56,7 +55,7 @@ export class Board {
   }
 
   resize() {
-    var browserZoomLevel = Math.round(window.devicePixelRatio * 100);
+    const browserZoomLevel = Math.round(window.devicePixelRatio * 100);
     const scale = (Math.min(window.innerWidth / this.width, window.innerHeight / this.height) * browserZoomLevel) / 100;
     this.canvas.width = Math.min(this.width, this.width * scale);
     this.canvas.height = Math.min(this.height, this.height * scale);
@@ -93,7 +92,6 @@ export class Board {
           x: pos.x - renderTile.width / 2,
           y: pos.y - renderTile.height / 2,
           rotation: pos.rotation,
-          textures: this.textures,
         },
         this.container
       );

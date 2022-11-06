@@ -1,5 +1,3 @@
-import { SocketError } from './SocketError';
-
 export interface ServerToClientEvents {
   // noArg: () => void;
   // basicEmit: (a: number, b: string, c: Buffer) => void;

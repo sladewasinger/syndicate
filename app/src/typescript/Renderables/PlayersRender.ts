@@ -2,7 +2,6 @@ import type { IClientPlayer } from '../models/shared/IClientPlayer';
 import * as PIXI from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import type { RenderData } from './RenderData';
-import { boardPositions } from '../models/BoardPositions';
 
 export class PlayerRender {
   container: PIXI.Container;

@@ -11,5 +11,4 @@ export interface ITileRenderArgs {
   x: number;
   y: number;
   rotation: number;
-  textures: PIXI.utils.Dict<PIXI.LoaderResource>;
 }
