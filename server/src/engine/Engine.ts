@@ -162,8 +162,8 @@ export class Engine {
 
   rollDice(
     socketId: string,
-    dice1Override: number,
-    dice2Override: number,
+    dice1Override: number | undefined,
+    dice2Override: number | undefined,
     callback: (error: SocketError | null, data: IClientGameData | null) => void
   ) {
     callback = callback || (() => {});
@@ -185,6 +185,10 @@ export class Engine {
       return;
     }
 
+    if (!this.cheatsEnabled) {
+      dice1Override = undefined;
+      dice2Override = undefined;
+    }
     lobby.game.rollDice(dice1Override, dice2Override);
   }
 

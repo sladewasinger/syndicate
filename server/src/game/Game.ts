@@ -110,7 +110,7 @@ export class Game {
     player.color = color;
   }
 
-  rollDice(dice1Override: number, dice2Override: number) {
+  rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
     console.log('Game - rollDice');
     if (dice1Override !== undefined && dice2Override !== undefined) {
       this.stateMachine.gameData.diceOverride = [dice1Override, dice2Override];
