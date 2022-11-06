@@ -87,7 +87,7 @@ export class Board {
         continue;
       }
       const pos = boardPositions[i];
-      renderTile.drawInitial(
+      await renderTile.drawInitial(
         {
           x: pos.x - renderTile.width / 2,
           y: pos.y - renderTile.height / 2,
@@ -99,6 +99,7 @@ export class Board {
     }
 
     this.playersRender = new PlayersRender(gameState.players);
+    this.renderData.playersRender = this.playersRender;
     this.playersRender.drawInitial({}, this.container);
   }
 
