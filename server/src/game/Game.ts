@@ -11,6 +11,10 @@ import { IClientGameData } from 'src/models/shared/IClientGameData';
 import { Player } from 'src/models/shared/Player';
 import { GameOver } from './states/GameOver';
 
+export type GameDataCallbacks = {
+  onStateChange: (state: string) => void;
+};
+
 export class Game {
   stateMachine: StateMachine;
   colors: number[] = [
@@ -28,8 +32,8 @@ export class Game {
     0x008080, // teal
   ];
 
-  constructor(players: Player[]) {
-    const gameData = new GameData();
+  constructor(players: Player[], callbacks: GameDataCallbacks) {
+    const gameData = new GameData(callbacks);
     gameData.players = players;
 
     this.stateMachine = new StateMachine(new TurnStart(), gameData);
@@ -41,8 +45,14 @@ export class Game {
     this.stateMachine.addState(new GameOver());
   }
 
-  update() {
+  tick() {
+    const prevGameData = JSON.stringify(this.stateMachine.gameData);
+
     this.stateMachine.update();
+
+    if (prevGameData !== JSON.stringify(this.stateMachine.gameData)) {
+      this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
+    }
   }
 
   getClientGameData(playerId: string): IClientGameData {
@@ -101,10 +111,13 @@ export class Game {
   }
 
   rollDice() {
-    this.stateMachine.currentState.event(StateEvent.RollDice, this.stateMachine.gameData);
+    console.log('Game - rollDice');
+    const nextState = this.stateMachine.currentState.event(StateEvent.RollDice, this.stateMachine.gameData);
+    this.stateMachine.setState(nextState);
   }
 
   endTurn() {
-    this.stateMachine.currentState.event(StateEvent.EndTurn, this.stateMachine.gameData);
+    const nextState = this.stateMachine.currentState.event(StateEvent.EndTurn, this.stateMachine.gameData);
+    this.stateMachine.setState(nextState);
   }
 }

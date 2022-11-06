@@ -21,12 +21,12 @@ export class StateMachine {
   }
 
   public setState(stateName: string) {
-    const IGameState = this._states[stateName];
-    if (IGameState === undefined) {
+    const nextState = this._states[stateName];
+    if (nextState === undefined) {
       throw new Error(`IGameState ${stateName} not found`);
     }
     this._state.onExit(this.gameData);
-    this._state = IGameState;
+    this._state = nextState;
     this._state.onEnter(this.gameData);
   }
 

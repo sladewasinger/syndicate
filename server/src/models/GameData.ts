@@ -1,3 +1,4 @@
+import { GameDataCallbacks } from 'src/game/Game';
 import { Player } from './shared/Player';
 import { DistrictTile } from './tiles/DistrictTile';
 import { EventTile } from './tiles/EventTile';
@@ -16,9 +17,11 @@ export class GameData {
   tiles: ITile[] = [];
   winner: Player | null = null;
   shuffle: boolean = false;
+  callbacks: GameDataCallbacks;
   private _log: string[] = [];
 
-  constructor() {
+  constructor(callbacks: GameDataCallbacks) {
+    this.callbacks = callbacks;
     this.tiles = [
       new StartTile(),
       new DistrictTile('1st Street', 60, 0x562074, [2, 10, 30, 90, 160, 250], 50, 50),

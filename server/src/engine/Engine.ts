@@ -67,6 +67,11 @@ export class Engine {
         console.log('startGame');
         this.startGame(socket.id, callback);
       });
+
+      socket.on('rollDice', (callback) => {
+        console.log('rollDice');
+        this.rollDice(socket.id, callback);
+      });
     });
   }
 
@@ -105,7 +110,7 @@ export class Engine {
       callback({ code: 'user_not_found', message: 'User not found' }, null);
       return;
     }
-    const lobby = new Lobby();
+    const lobby = new Lobby(this.io!);
     this.lobbies.push(lobby);
     lobby.addUser(user);
     callback(null, lobby.id);
@@ -152,6 +157,29 @@ export class Engine {
     }
 
     callback(null, lobby.game.getClientGameData(socketId));
+  }
+
+  rollDice(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
+    callback = callback || (() => {});
+
+    const user = this.users.find((u) => u.socketId === socketId);
+    if (!user) {
+      callback({ code: 'user_not_found', message: 'User not found' }, null);
+      return;
+    }
+
+    const lobby = this.lobbies.find((l) => l.users.find((u) => u.socketId === socketId));
+    if (!lobby) {
+      callback({ code: 'lobby_not_found', message: 'Lobby not found' }, null);
+      return;
+    }
+
+    if (!lobby.game) {
+      callback({ code: 'game_not_found', message: 'Game not found' }, null);
+      return;
+    }
+
+    lobby.game.rollDice();
   }
 
   emitGameData(lobby: Lobby) {

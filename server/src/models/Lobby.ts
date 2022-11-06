@@ -13,9 +13,11 @@ export class Lobby {
   users: User[] = [];
   owner: User | null = null;
   game: Game | null = null;
+  io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> | undefined;
 
-  constructor() {
+  constructor(io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>) {
     this.id = randomUUID().substring(0, 4).toUpperCase();
+    this.io = io;
   }
 
   addUser(user: User) {
@@ -41,11 +43,33 @@ export class Lobby {
     if (this.game) {
       return;
     }
-    this.game = new Game(this.users.map((u) => new Player(u.name || u.socketId.substring(0, 4), u.socketId)));
+
+    this.game = new Game(
+      this.users.map((u) => new Player(u.name || u.socketId.substring(0, 4), u.socketId)),
+      {
+        onStateChange: (name) => {
+          console.log('onStateChange', name);
+          this.emitGameState();
+        },
+      }
+    );
     this.game.startGame();
 
     this.users.forEach((user) => {
       io.to(user.socketId).emit('startGame');
     });
+
+    setInterval(() => {
+      this.game?.tick();
+    }, 250);
+  }
+
+  emitGameState() {
+    if (!!this.game) {
+      this.users.forEach((user) => {
+        const gameData = this.game?.getClientGameData(user.socketId);
+        this.io?.to(user.socketId).emit('gameData', gameData);
+      });
+    }
   }
 }

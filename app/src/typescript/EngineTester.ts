@@ -34,8 +34,10 @@ export class EngineTester {
           await Utils.sleep(100);
         }
         engine1.start();
-        await Utils.sleep(2000);
+        await Utils.sleep(1000);
         engine4.socket.disconnect();
+        await Utils.sleep(1000);
+        engine1.rollDice();
       }
     });
   }
