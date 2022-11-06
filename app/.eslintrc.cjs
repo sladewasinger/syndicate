@@ -13,6 +13,12 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'crlf',
+      },
+    ],
     'comma-dangle': [
       'error',
       {
