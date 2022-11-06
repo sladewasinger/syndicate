@@ -30,8 +30,10 @@ export class PlayersRender {
     for (const playerRender of this.playerRenders) {
       const player = gameData.players.find((p) => p.id === playerRender.player.id);
       if (player) {
-        playerRender.container.x = renderData.renderTiles[player.position].container.x;
-        playerRender.container.y = renderData.renderTiles[player.position].container.y;
+        // ease player to new position
+        const tilePosition = renderData.renderTiles[player.position].container.position;
+        playerRender.container.x += (tilePosition.x - playerRender.container.x) * 0.05;
+        playerRender.container.y += (tilePosition.y - playerRender.container.y) * 0.05;
         this.distributePlayersOnSameTile(gameData, player, renderData);
       } else {
         this.removePlayer(playerRender.player);
