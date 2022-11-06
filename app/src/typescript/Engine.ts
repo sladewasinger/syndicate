@@ -46,8 +46,8 @@ export class Engine {
     });
   }
 
-  rollDice() {
-    this.socket.emit('rollDice', (error: any, result: any) => {
+  rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
+    this.socket.emit('rollDice', dice1Override, dice2Override, (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {

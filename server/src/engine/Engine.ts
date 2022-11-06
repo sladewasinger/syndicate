@@ -15,6 +15,7 @@ export class Engine {
   lobbies: Lobby[] = [];
   users: User[] = [];
   io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> | undefined;
+  cheatsEnabled: boolean = true;
 
   constructor() {
     // Use the port that Azure provides or default to 3000. Without this, the deployment will fail:
@@ -68,9 +69,9 @@ export class Engine {
         this.startGame(socket.id, callback);
       });
 
-      socket.on('rollDice', (callback) => {
+      socket.on('rollDice', (dice1Override, dice2Override, callback) => {
         console.log('rollDice');
-        this.rollDice(socket.id, callback);
+        this.rollDice(socket.id, dice1Override, dice2Override, callback);
       });
     });
   }
@@ -159,7 +160,12 @@ export class Engine {
     callback(null, lobby.game.getClientGameData(socketId));
   }
 
-  rollDice(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
+  rollDice(
+    socketId: string,
+    dice1Override: number,
+    dice2Override: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
     callback = callback || (() => {});
 
     const user = this.users.find((u) => u.socketId === socketId);
@@ -179,7 +185,7 @@ export class Engine {
       return;
     }
 
-    lobby.game.rollDice();
+    lobby.game.rollDice(dice1Override, dice2Override);
   }
 
   emitGameData(lobby: Lobby) {
