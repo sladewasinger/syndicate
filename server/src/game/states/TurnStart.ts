@@ -13,7 +13,5 @@ export class TurnStart implements IGameState {
     return StateName.PreDiceRoll;
   }
 
-  event(eventName: string, gameData: GameData): StateName {
-    return this.name;
-  }
+  event(eventName: string, gameData: GameData): void {}
 }

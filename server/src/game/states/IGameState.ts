@@ -7,5 +7,5 @@ export interface IGameState {
   onEnter(gameData: GameData): void;
   onExit(gameData: GameData): void;
   update(gameData: GameData): StateName;
-  event(eventName: StateEvent, gameData: GameData): StateName;
+  event(eventName: StateEvent, gameData: GameData): void;
 }

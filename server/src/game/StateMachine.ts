@@ -5,11 +5,13 @@ import { StateEvent } from './states/StateEvents';
 export class StateMachine {
   private _state: IGameState;
   private _states: { [key: string]: IGameState };
+  public currentStateName: string;
 
   constructor(initialState: IGameState, public gameData: GameData) {
     this._states = {};
     this.addState(initialState);
     this._state = initialState;
+    this.currentStateName = initialState.name;
   }
 
   get currentState() {
@@ -27,12 +29,12 @@ export class StateMachine {
     }
     this._state.onExit(this.gameData);
     this._state = nextState;
+    this.currentStateName = stateName;
     this._state.onEnter(this.gameData);
   }
 
   public event(event: StateEvent) {
-    const nextState = this._state.event(event, this.gameData);
-    this.setState(nextState);
+    this._state.event(event, this.gameData);
   }
 
   public update() {

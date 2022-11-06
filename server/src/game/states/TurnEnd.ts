@@ -6,21 +6,24 @@ import { Player } from 'src/models/shared/Player';
 
 export class TurnEnd implements IGameState {
   name: StateName = StateName.TurnEnd;
+  nextState: StateName = this.name;
 
   onEnter(): void {}
 
   onExit(): void {}
 
   update(gameData: GameData): StateName {
-    return this.name;
+    return this.nextState;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
+  event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.EndTurn:
-        return this.nextPlayer(gameData);
+        this.nextState = this.nextPlayer(gameData);
+        break;
       default:
-        return this.name;
+        this.nextState = this.name;
+        break;
     }
   }
 

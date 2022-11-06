@@ -4,7 +4,9 @@ import { Utils } from './Utils/Utils';
 export class EngineTester {
   constructor() {}
 
-  test_5_players_join() {
+  async test_4_players() {
+    await Utils.sleep(500);
+
     const engine1 = new Engine();
     const engine2 = new Engine();
     const engine3 = new Engine();
@@ -15,7 +17,7 @@ export class EngineTester {
     engine1.socket.emit('registerName', 'player1');
     engine2.socket.emit('registerName', 'player2');
     engine3.socket.emit('registerName', 'player3');
-    engine4.socket.emit('registerName', 'player4');
+    engine4.socket.emit('registerName', 'player4longname');
     engine5.socket.emit('registerName', 'player5');
 
     let joinCount = 1;

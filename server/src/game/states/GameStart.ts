@@ -14,7 +14,5 @@ export class GameStart implements IGameState {
     return this.name;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
-    return this.name;
-  }
+  event(eventName: StateEvent, gameData: GameData): void {}
 }

@@ -15,7 +15,7 @@ export default defineComponent({
     // this.engine = new Engine();
     // this.engine.start();
     const engineTester = new EngineTester();
-    engineTester.test_5_players_join();
+    engineTester.test_4_players();
   },
 });
 </script>

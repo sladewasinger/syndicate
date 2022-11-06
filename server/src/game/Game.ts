@@ -10,6 +10,7 @@ import { IBuyableTile } from 'src/models/tiles/ITile';
 import { IClientGameData } from 'src/models/shared/IClientGameData';
 import { Player } from 'src/models/shared/Player';
 import { GameOver } from './states/GameOver';
+import { RollDice } from './states/RollDice';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -40,17 +41,18 @@ export class Game {
     this.stateMachine.addState(new GameStart());
     this.stateMachine.addState(new TurnStart());
     this.stateMachine.addState(new PreDiceRoll());
+    this.stateMachine.addState(new RollDice());
     this.stateMachine.addState(new PostDiceRoll());
     this.stateMachine.addState(new LandedOnTile());
     this.stateMachine.addState(new GameOver());
   }
 
   tick() {
-    const prevGameData = JSON.stringify(this.stateMachine.gameData);
+    const prevGameData = JSON.stringify(this.stateMachine);
 
     this.stateMachine.update();
 
-    if (prevGameData !== JSON.stringify(this.stateMachine.gameData)) {
+    if (prevGameData !== JSON.stringify(this.stateMachine)) {
       this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
     }
   }
@@ -115,12 +117,10 @@ export class Game {
     if (dice1Override !== undefined && dice2Override !== undefined) {
       this.stateMachine.gameData.diceOverride = [dice1Override, dice2Override];
     }
-    const nextState = this.stateMachine.currentState.event(StateEvent.RollDice, this.stateMachine.gameData);
-    this.stateMachine.setState(nextState);
+    this.stateMachine.event(StateEvent.RollDice);
   }
 
   endTurn() {
-    const nextState = this.stateMachine.currentState.event(StateEvent.EndTurn, this.stateMachine.gameData);
-    this.stateMachine.setState(nextState);
+    this.stateMachine.event(StateEvent.EndTurn);
   }
 }

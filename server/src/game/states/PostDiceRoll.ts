@@ -5,6 +5,7 @@ import { StateEvent } from './StateEvents';
 
 export class PostDiceRoll implements IGameState {
   name: StateName = StateName.PostDiceRoll;
+  nextState: StateName = this.name;
 
   onEnter(gameData: GameData): void {}
 
@@ -21,7 +22,5 @@ export class PostDiceRoll implements IGameState {
     return this.name;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
-    return this.name;
-  }
+  event(eventName: StateEvent, gameData: GameData): void {}
 }

@@ -6,7 +6,7 @@ import { ITile } from './ITile';
 
 export class GoToPrisonTile implements ITile {
   id: string;
-  name = 'Go to Prison';
+  name = 'Enter Traffic';
   buyable = false;
   type: TileType = TileType.GoToPrison;
   owner: Player | undefined;

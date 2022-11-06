@@ -19,15 +19,17 @@ export class LandedOnTile implements IGameState {
   onExit(gameData: GameData): void {}
 
   update(gameData: GameData): StateName {
-    return this.name;
+    return this.nextState;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
+  event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.BuyProperty:
-        return this.buyProperty(gameData);
+        this.nextState = this.buyProperty(gameData);
+        break;
       default:
-        return this.name;
+        this.nextState = this.name;
+        break;
     }
   }
 

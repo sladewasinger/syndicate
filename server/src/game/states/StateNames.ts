@@ -6,4 +6,5 @@ export enum StateName {
   LandedOnTile = 'LandedOnTile',
   GameStart = 'GameStart',
   GameOver = 'GameOver',
+  RollDice = 'RollDice',
 }

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DistrictTileRender } from './tiles/DistrictTileRender';
 import { PrisonTileRender } from './tiles/PrisonTileRender';
 import { StartTileRender } from './tiles/StartTileRender';
-import { boardPositions, BOARD_WIDTH, BOARD_HEIGHT } from '../models/BoardPositions';
+import { boardPositions, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from '../models/BoardPositions';
 import { ParkTileRender } from './tiles/ParkTileRender';
 import { GoToPrisonTileRender } from './tiles/GoToPrisonTileRender';
 import type { IClientGameData } from '../models/shared/IClientGameData';
@@ -15,6 +15,7 @@ import { PlayersRender } from './PlayersRender';
 import { RenderData } from './RenderData';
 import { InteractionManager } from '@pixi/interaction';
 import { extensions } from '@pixi/core';
+import { Leaderboard } from './Leaderboard';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -25,6 +26,7 @@ export class Board {
   resizeTimer: number | undefined;
   playersRender: PlayersRender | undefined;
   renderData: RenderData;
+  leaderboard: Leaderboard | undefined;
 
   constructor() {
     const canvas = document.getElementById('gameCanvas');
@@ -45,6 +47,8 @@ export class Board {
 
     extensions.add(InteractionManager);
 
+    console.log(this.app);
+
     this.container = this.app.stage;
 
     window.addEventListener('resize', () => {
@@ -52,8 +56,6 @@ export class Board {
       this.resizeTimer = window.setTimeout(this.resize.bind(this), 250);
     });
     this.resize();
-
-    //this.textures['subway'] = PIXI.Texture.from('subway2.png', { width: 100, height: 100 }, true);
 
     this.renderData = new RenderData();
     this.renderData.renderTiles = [];
@@ -69,13 +71,14 @@ export class Board {
 
   update(gameData: IClientGameData) {
     this.playersRender?.update(gameData, this.renderData);
+    this.leaderboard?.update(gameData);
   }
 
-  async drawBoardInitial(gameState: IClientGameData) {
+  async drawBoardInitial(gameData: IClientGameData) {
     console.log('drawBoardInitial');
     const board = new PIXI.Graphics();
     board.lineStyle(1, 0x000000, 1);
-    board.beginFill(0x000000, 1);
+    board.beginFill(0xffffff, 1);
     board.drawRect(0, 0, this.width, this.height);
     board.endFill();
     this.container.addChild(board);
@@ -85,7 +88,7 @@ export class Board {
     text.y = 100;
     this.container.addChild(text);
 
-    const renderTiles = gameState.tiles.map(this.getTileRenderFromTile);
+    const renderTiles = gameData.tiles.map(this.getTileRenderFromTile);
     for (let i = 0; i < boardPositions.length; i++) {
       const renderTile = renderTiles[i];
       if (!renderTile) {
@@ -103,9 +106,15 @@ export class Board {
       this.renderData.renderTiles.push(renderTile);
     }
 
-    this.playersRender = new PlayersRender(gameState.players);
+    this.playersRender = new PlayersRender(gameData.players);
     this.renderData.playersRender = this.playersRender;
     this.playersRender.drawInitial({}, this.container);
+
+    this.leaderboard = new Leaderboard(this.container);
+    this.leaderboard.drawInitial({
+      gameData: gameData,
+      position: new PIXI.Point(TILE_HEIGHT + 30, TILE_HEIGHT + 30),
+    });
   }
 
   getTileRenderFromTile(tile: IClientTile) {
