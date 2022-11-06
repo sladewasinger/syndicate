@@ -120,6 +120,10 @@ export class Game {
     this.stateMachine.event(StateEvent.RollDice);
   }
 
+  buyProperty() {
+    this.stateMachine.event(StateEvent.BuyProperty);
+  }
+
   endTurn() {
     this.stateMachine.event(StateEvent.EndTurn);
   }
