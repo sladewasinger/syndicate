@@ -1,16 +1,13 @@
-import { UPDATE_PRIORITY } from 'pixi.js';
 import { io, Socket } from 'socket.io-client';
-import { Board } from './Board';
+import { Board } from './Renderables/Board';
 import type { IClientGameData } from './models/shared/IClientGameData';
 
 export class Engine {
   socket: Socket<any, any>;
-  board: Board;
+  board: Board | undefined;
   gameData: IClientGameData | undefined;
 
   constructor() {
-    this.board = new Board();
-
     if (window.location.port == '3001') {
       this.socket = io('http://localhost:3000');
     } else {
@@ -32,31 +29,18 @@ export class Engine {
       window.requestAnimationFrame(this.update.bind(this));
       return;
     }
-    this.board.update(this.gameData);
+    this.board?.update(this.gameData);
     window.requestAnimationFrame(this.update.bind(this));
   }
 
   start() {
-    this.socket.emit('registerName', 'player1name', (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(result);
-      }
-    });
-    this.socket.emit('createLobby', (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(result);
-      }
-    });
     this.socket.emit('startGame', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {
         console.log(result);
         this.gameData = result;
+        this.board = new Board();
         this.board.drawBoardInitial(result);
       }
     });

@@ -1,5 +1,6 @@
 <script mounted lang="ts">
-import { Engine } from '@/typescript/Engine';
+// import { Engine } from '@/typescript/Engine';
+import { EngineTester } from '@/typescript/EngineTester';
 import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
@@ -11,8 +12,10 @@ export default defineComponent({
   },
   setup() {},
   mounted() {
-    this.engine = new Engine();
-    this.engine.start();
+    // this.engine = new Engine();
+    // this.engine.start();
+    const engineTester = new EngineTester();
+    engineTester.test_5_players_join();
   },
 });
 </script>

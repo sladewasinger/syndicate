@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
-import { DistrictTileRender } from './models/tiles/DistrictTileRender';
-import { PrisonTileRender } from './models/tiles/PrisonTileRender';
-import { StartTileRender } from './models/tiles/StartTileRender';
-import { boardPositions, TILE_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from './BoardPositions';
-import { ParkTileRender } from './models/tiles/ParkTileRender';
-import { GoToPrisonTileRender } from './models/tiles/GoToPrisonTileRender';
-import type { IClientGameData } from './models/shared/IClientGameData';
-import type { IClientTile } from './models/shared/IClientTile';
-import { TileType } from './models/shared/TileType';
-import { EventTileRender } from './models/tiles/EventTileRender';
-import { TaxTileRender } from './models/tiles/TaxTileRender';
-import { SubwayTileRender } from './models/tiles/SubwayTileRender';
+import { DistrictTileRender } from '../models/tiles/DistrictTileRender';
+import { PrisonTileRender } from '../models/tiles/PrisonTileRender';
+import { StartTileRender } from '../models/tiles/StartTileRender';
+import { boardPositions, TILE_WIDTH, BOARD_WIDTH, BOARD_HEIGHT, TILE_HEIGHT } from '../models/BoardPositions';
+import { ParkTileRender } from '../models/tiles/ParkTileRender';
+import { GoToPrisonTileRender } from '../models/tiles/GoToPrisonTileRender';
+import type { IClientGameData } from '../models/shared/IClientGameData';
+import type { IClientTile } from '../models/shared/IClientTile';
+import { TileType } from '../models/shared/TileType';
+import { EventTileRender } from '../models/tiles/EventTileRender';
+import { TaxTileRender } from '../models/tiles/TaxTileRender';
+import { SubwayTileRender } from '../models/tiles/SubwayTileRender';
 import { PlayersRender } from './PlayersRender';
 import { RenderData } from './RenderData';
 
@@ -42,6 +42,7 @@ export class Board {
       resolution: 1, // window.devicePixelRatio || 1,
     });
     this.container = this.app.stage;
+
     window.addEventListener('resize', () => {
       window.clearTimeout(this.resizeTimer);
       this.resizeTimer = window.setTimeout(this.resize.bind(this), 250);

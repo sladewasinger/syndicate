@@ -1,4 +1,4 @@
-import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/BoardPositions';
+import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
@@ -6,7 +6,11 @@ import type { ITileRender, ITileRenderArgs } from './ITileRender';
 export class DistrictTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
-  constructor(public tile: IClientTile) {}
+  container: PIXI.Container<PIXI.DisplayObject>;
+
+  constructor(public tile: IClientTile) {
+    this.container = new PIXI.Container();
+  }
 
   drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const tileBackground = new PIXI.Graphics();
@@ -32,7 +36,7 @@ export class DistrictTileRender implements ITileRender {
     tileText.x = this.width / 2;
     tileText.y = colorBar.height;
 
-    const tileContainer = new PIXI.Container();
+    const tileContainer = this.container;
     tileContainer.addChild(tileBackground, colorBar, tileText);
     tileContainer.x = args.x;
     tileContainer.y = args.y;

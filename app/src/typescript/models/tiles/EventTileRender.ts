@@ -1,4 +1,4 @@
-import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/BoardPositions';
+import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../shared/IClientTile';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';

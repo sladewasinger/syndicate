@@ -9,6 +9,7 @@ import { StateEvent } from './states/StateEvents';
 import { IBuyableTile } from 'src/models/tiles/ITile';
 import { IClientGameData } from 'src/models/shared/IClientGameData';
 import { Player } from 'src/models/shared/Player';
+import { GameOver } from './states/GameOver';
 
 export class Game {
   stateMachine: StateMachine;
@@ -37,6 +38,7 @@ export class Game {
     this.stateMachine.addState(new PreDiceRoll());
     this.stateMachine.addState(new PostDiceRoll());
     this.stateMachine.addState(new LandedOnTile());
+    this.stateMachine.addState(new GameOver());
   }
 
   update() {
