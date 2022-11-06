@@ -1,11 +1,11 @@
 import { randomUUID } from 'crypto';
 import type { Server } from 'socket.io';
 import { Game } from '../game/Game';
-import type { ClientToServerEvents } from './io/ClientToServerEvents';
 import type { InterServerEvents } from './io/InterServerEvents';
-import type { ServerToClientEvents } from './io/ServerToClientEvents';
-import type { SocketData } from './io/SocketData';
+import { ClientToServerEvents } from './shared/ClientToServerEvents';
 import { Player } from './shared/Player';
+import { ServerToClientEvents } from './shared/ServerToClientEvents';
+import { SocketData } from './shared/SocketData';
 import type { User } from './User';
 
 export class Lobby {

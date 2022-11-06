@@ -39,6 +39,8 @@ export class StateMachine {
 
   public update() {
     const nextState = this._state.update(this.gameData);
-    this.setState(nextState);
+    if (nextState !== this._state.name) {
+      this.setState(nextState);
+    }
   }
 }

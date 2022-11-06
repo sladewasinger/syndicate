@@ -92,6 +92,7 @@ export class GameData {
   }
 
   log(msg: string): void {
+    console.log(msg);
     this._log.push(msg);
   }
 }

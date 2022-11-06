@@ -1,3 +1,6 @@
+import { IClientGameData } from './IClientGameData';
+import { IClientPlayer } from './IClientPlayer';
+
 export class Player {
   targetPosition: number;
   name: string;
@@ -6,6 +9,7 @@ export class Player {
   position: number;
   properties: string[] = [];
   color: number = 0;
+  turnOrder: number = 0;
 
   constructor(name: string, id: string) {
     this.name = name;
@@ -17,5 +21,19 @@ export class Player {
 
   get bankrupt(): boolean {
     return this.money <= 0;
+  }
+
+  get clientPlayer(): IClientPlayer {
+    const clientPlayer: IClientPlayer = {
+      targetPosition: this.targetPosition,
+      name: this.name,
+      id: this.id,
+      money: this.money,
+      position: this.position,
+      properties: this.properties,
+      color: this.color,
+      turnOrder: this.turnOrder,
+    };
+    return clientPlayer;
   }
 }

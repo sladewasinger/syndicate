@@ -65,4 +65,14 @@ export class Engine {
       }
     });
   }
+
+  endTurn() {
+    this.socket.emit('endTurn', (error: any, result: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+  }
 }

@@ -13,6 +13,7 @@ import { GameOver } from './states/GameOver';
 import { RollDice } from './states/RollDice';
 import { BuyProperty } from './states/BuyProperty';
 import { TurnEnd } from './states/TurnEnd';
+import { IClientPlayer } from 'src/models/shared/IClientPlayer';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -86,9 +87,9 @@ export class Game {
   getClientGameData(playerId: string): IClientGameData {
     return <IClientGameData>{
       myId: playerId,
-      players: this.stateMachine.gameData.players,
+      players: this.stateMachine.gameData.players.map((p) => p.clientPlayer),
       dice: this.stateMachine.gameData.dice,
-      currentPlayer: this.stateMachine.gameData.currentPlayer,
+      currentPlayer: this.stateMachine.gameData.currentPlayer?.clientPlayer,
       tiles: this.stateMachine.gameData.tiles.map((t) => t.getClientTile(this.stateMachine.gameData)),
       state: this.stateMachine.currentState.name,
     };
@@ -123,6 +124,7 @@ export class Game {
       const player = this.stateMachine.gameData.players[i];
       const color = this.colors[i % this.colors.length];
       this.resetPlayer(player, color);
+      player.turnOrder = i;
     }
   }
 

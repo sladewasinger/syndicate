@@ -9,7 +9,9 @@ export class PostDiceRoll implements IGameState {
 
   onEnter(gameData: GameData): void {}
 
-  onExit(gameData: GameData): void {}
+  onExit(gameData: GameData): void {
+    this.nextState = this.name;
+  }
 
   update(gameData: GameData): StateName {
     gameData.currentPlayer.position += 1; // Move one tile at a time

@@ -9,7 +9,9 @@ export class PreDiceRoll implements IGameState {
 
   onEnter(gameData: GameData): void {}
 
-  onExit(gameData: GameData): void {}
+  onExit(gameData: GameData): void {
+    this.nextState = this.name;
+  }
 
   update(gameData: GameData): StateName {
     return this.nextState;

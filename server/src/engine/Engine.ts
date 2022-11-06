@@ -3,12 +3,12 @@ import { Server } from 'socket.io';
 import { createServer } from 'http';
 import { Lobby } from '../models/Lobby';
 import { User } from '../models/User';
-import { ClientToServerEvents } from '../models/io/ClientToServerEvents';
 import { InterServerEvents } from '../models/io/InterServerEvents';
-import { ServerToClientEvents } from '../models/io/ServerToClientEvents';
-import { SocketData } from '../models/io/SocketData';
-import { SocketError } from '../models/io/SocketError';
 import { IClientGameData } from 'src/models/shared/IClientGameData';
+import { ClientToServerEvents } from 'src/models/shared/ClientToServerEvents';
+import { ServerToClientEvents } from 'src/models/shared/ServerToClientEvents';
+import { SocketData } from 'src/models/shared/SocketData';
+import { SocketError } from 'src/models/shared/SocketError';
 
 export class Engine {
   port: string | number;
@@ -77,6 +77,11 @@ export class Engine {
       socket.on('buyProperty', (callback) => {
         console.log('buyProperty');
         this.buyProperty(socket.id, callback);
+      });
+
+      socket.on('endTurn', (callback) => {
+        console.log('endTurn');
+        this.endTurn(socket.id, callback);
       });
     });
   }
@@ -209,6 +214,19 @@ export class Engine {
     lobby.game?.buyProperty();
   }
 
+  endTurn(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game?.endTurn();
+  }
+
+  // ** Helpers **
   getUserLobbyGame(
     socketId: string,
     callback: (error: SocketError | null, data: IClientGameData | null) => void

@@ -10,7 +10,9 @@ export class TurnEnd implements IGameState {
 
   onEnter(): void {}
 
-  onExit(): void {}
+  onExit(): void {
+    this.nextState = this.name;
+  }
 
   update(gameData: GameData): StateName {
     return this.nextState;
@@ -19,6 +21,7 @@ export class TurnEnd implements IGameState {
   event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.EndTurn:
+        console.log('TurnEnd: EndTurn');
         this.nextState = this.nextPlayer(gameData);
         break;
       default:
@@ -35,7 +38,6 @@ export class TurnEnd implements IGameState {
     }
 
     if (gameData.players.length == 1) {
-      nextPlayer = gameData.currentPlayer;
       return StateName.TurnStart;
     }
 

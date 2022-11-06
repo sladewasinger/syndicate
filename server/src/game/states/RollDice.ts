@@ -19,7 +19,9 @@ export class RollDice implements IGameState {
     }
   }
 
-  onExit(gameData: GameData): void {}
+  onExit(gameData: GameData): void {
+    this.nextState = this.name;
+  }
 
   update(gameData: GameData): StateName {
     return StateName.PostDiceRoll;

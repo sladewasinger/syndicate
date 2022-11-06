@@ -45,6 +45,10 @@ export class Leaderboard {
       this.drawInitial({ position: this.container.position, gameData });
     }
 
+    this.updateMoneyText(gameData, prevGameData);
+  }
+
+  private updateMoneyText(gameData: IClientGameData, prevGameData: IClientGameData) {
     for (const player of gameData.players) {
       const prevPlayer = prevGameData.players.find((p) => p.id === player.id);
       const leaderboardEntry = this.leaderboardEntries.find((l) => l.player.id === player.id);
@@ -53,17 +57,19 @@ export class Leaderboard {
         leaderboardEntry.money.text = player.money.toString();
 
         if (prevPlayer && prevPlayer.money !== player.money) {
+          console.log('Updating money text for player: ', player.name);
           const diff = player.money - prevPlayer.money;
           const sign = diff > 0 ? '+' : '-';
           const moneyLossGain = new PIXI.Text(`${sign} ${Math.abs(diff)}`, {
             fontSize: 40,
+            fontFamily: 'monospace',
             fill: diff > 0 ? 0x00ff00 : 0xff0000,
           });
           moneyLossGain.x = leaderboardEntry.money.x + leaderboardEntry.money.width + 10;
-          moneyLossGain.y = leaderboardEntry.money.y;
+          moneyLossGain.y = leaderboardEntry.container.y;
           this.container.addChild(moneyLossGain);
 
-          let alpha = 3;
+          let alpha = 5;
           const fadeInterval = setInterval(() => {
             alpha -= 0.1;
             moneyLossGain.alpha = alpha;
@@ -91,7 +97,8 @@ export class Leaderboard {
     this.container.x = args.position.x;
     this.container.y = args.position.y;
 
-    const players = args.gameData.players.sort((a, b) => a.name.localeCompare(b.name));
+    const players = args.gameData.players.sort((a, b) => a.turnOrder - b.turnOrder);
+
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
       const color = player.color;
