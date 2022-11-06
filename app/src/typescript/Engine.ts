@@ -34,14 +34,14 @@ export class Engine {
   }
 
   start() {
-    this.socket.emit('startGame', (error: any, result: any) => {
+    this.socket.emit('startGame', async (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {
         console.log(result);
         this.gameData = result;
         this.board = new Board();
-        this.board.drawBoardInitial(result);
+        await this.board.drawBoardInitial(result);
       }
     });
   }
