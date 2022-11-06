@@ -40,7 +40,7 @@ export class Engine {
       } else {
         console.log(result);
         this.gameData = result;
-        this.board = new Board();
+        this.board = new Board(result);
         await this.board.drawBoardInitial(result);
       }
     });
@@ -48,6 +48,16 @@ export class Engine {
 
   rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
     this.socket.emit('rollDice', dice1Override, dice2Override, (error: any, result: any) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    });
+  }
+
+  buyProperty() {
+    this.socket.emit('buyProperty', (error: any, result: any) => {
       if (error) {
         console.error(error);
       } else {

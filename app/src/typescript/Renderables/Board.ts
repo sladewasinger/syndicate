@@ -26,9 +26,12 @@ export class Board {
   resizeTimer: number | undefined;
   playersRender: PlayersRender | undefined;
   renderData: RenderData;
+  prevGameData: IClientGameData;
   leaderboard: Leaderboard | undefined;
 
-  constructor() {
+  constructor(gameData: IClientGameData) {
+    this.prevGameData = gameData;
+
     const canvas = document.getElementById('gameCanvas');
     if (!canvas) {
       throw new Error('No canvas found');
@@ -70,8 +73,13 @@ export class Board {
   }
 
   update(gameData: IClientGameData) {
+    for (const tile of this.renderData.renderTiles) {
+      tile.update(gameData, this.renderData);
+    }
     this.playersRender?.update(gameData, this.renderData);
-    this.leaderboard?.update(gameData);
+    this.leaderboard?.update(gameData, this.prevGameData);
+
+    this.prevGameData = gameData;
   }
 
   async drawBoardInitial(gameData: IClientGameData) {

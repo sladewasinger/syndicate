@@ -40,6 +40,8 @@ export class EngineTester {
         engine4.socket.disconnect();
         await Utils.sleep(1000);
         engine1.rollDice(0, 3);
+        await Utils.sleep(2000);
+        engine1.buyProperty();
       }
     });
   }

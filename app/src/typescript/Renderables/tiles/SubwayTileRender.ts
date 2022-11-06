@@ -13,6 +13,8 @@ export class SubwayTileRender implements ITileRender {
     this.container = new PIXI.Container();
   }
 
+  update(gameData: IClientGameData, renderData: RenderData) {}
+
   async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const subwayTexture = await Assets.load('subway.png');
 

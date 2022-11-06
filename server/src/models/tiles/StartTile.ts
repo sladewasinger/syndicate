@@ -30,7 +30,7 @@ export class StartTile implements ITile {
       color: 0x000000,
       buyable: this.buyable,
       price: 0,
-      owner: this.owner?.id,
+      ownerId: this.owner?.id,
       entranceFees: undefined,
       buildingPrice: undefined,
       skyscraperPrice: undefined,

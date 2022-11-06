@@ -12,6 +12,8 @@ export class TaxTileRender implements ITileRender {
     this.container = new PIXI.Container();
   }
 
+  update(gameData: IClientGameData, renderData: RenderData) {}
+
   drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     const tileBackground = new PIXI.Graphics();
     tileBackground.lineStyle(2, 0x000000, 1);

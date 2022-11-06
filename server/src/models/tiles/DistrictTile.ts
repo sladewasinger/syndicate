@@ -47,7 +47,7 @@ export class DistrictTile implements IBuyableTile {
       buyable: this.buyable,
       type: this.type,
       price: this.price,
-      owner: this.owner?.id,
+      ownerId: this.owner?.id,
       entranceFees: this.entranceFees,
       buildingPrice: this.buildingPrice,
       skyscraperPrice: this.skyscraperPrice,

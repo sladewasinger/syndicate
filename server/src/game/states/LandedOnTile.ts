@@ -3,7 +3,6 @@ import { StateName } from './StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
 import { DistrictTile } from '../../models/tiles/DistrictTile';
-import { IBuyableTile } from 'src/models/tiles/ITile';
 
 export class LandedOnTile implements IGameState {
   name: StateName = StateName.LandedOnTile;
@@ -26,27 +25,11 @@ export class LandedOnTile implements IGameState {
   event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.BuyProperty:
-        this.nextState = this.buyProperty(gameData);
+        this.nextState = StateName.BuyProperty;
         break;
       default:
         this.nextState = this.name;
         break;
     }
-  }
-
-  buyProperty(gameData: GameData): StateName {
-    const tile = gameData.currentTile;
-    const buyableTile = tile as IBuyableTile;
-
-    if (buyableTile && gameData.currentPlayer.money >= buyableTile.price) {
-      gameData.currentPlayer.money -= buyableTile.price;
-      gameData.currentPlayer.properties.push(tile.id);
-      tile.owner = gameData.currentPlayer;
-      gameData.log(`${gameData.currentPlayer.name} bought ${tile.name} for ${buyableTile.price}`);
-      return StateName.TurnEnd;
-    }
-
-    gameData.log('You cannot buy this property');
-    return this.name;
   }
 }

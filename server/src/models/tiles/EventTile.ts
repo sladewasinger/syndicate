@@ -25,7 +25,7 @@ export class EventTile implements ITile {
       color: 0x000000,
       buyable: this.buyable,
       type: this.type,
-      owner: this.owner?.id,
+      ownerId: this.owner?.id,
       price: undefined,
       skyscraper: undefined,
       rent: undefined,

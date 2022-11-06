@@ -73,6 +73,11 @@ export class Engine {
         console.log('rollDice');
         this.rollDice(socket.id, dice1Override, dice2Override, callback);
       });
+
+      socket.on('buyProperty', (callback) => {
+        console.log('buyProperty');
+        this.buyProperty(socket.id, callback);
+      });
     });
   }
 
@@ -190,6 +195,42 @@ export class Engine {
       dice2Override = undefined;
     }
     lobby.game.rollDice(dice1Override, dice2Override);
+  }
+
+  buyProperty(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game?.buyProperty();
+  }
+
+  getUserLobbyGame(
+    socketId: string,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ): { user: User; lobby: Lobby } | null {
+    const user = this.users.find((u) => u.socketId === socketId);
+    if (!user) {
+      callback({ code: 'user_not_found', message: 'User not found' }, null);
+      return null;
+    }
+
+    const lobby = this.lobbies.find((l) => l.users.find((u) => u.socketId === socketId));
+    if (!lobby) {
+      callback({ code: 'lobby_not_found', message: 'Lobby not found' }, null);
+      return null;
+    }
+
+    if (!lobby.game) {
+      callback({ code: 'game_not_found', message: 'Game not found' }, null);
+      return null;
+    }
+
+    return { user, lobby };
   }
 
   emitGameData(lobby: Lobby) {

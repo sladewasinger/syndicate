@@ -11,6 +11,8 @@ import { IClientGameData } from 'src/models/shared/IClientGameData';
 import { Player } from 'src/models/shared/Player';
 import { GameOver } from './states/GameOver';
 import { RollDice } from './states/RollDice';
+import { BuyProperty } from './states/BuyProperty';
+import { TurnEnd } from './states/TurnEnd';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -18,19 +20,41 @@ export type GameDataCallbacks = {
 
 export class Game {
   stateMachine: StateMachine;
+  // colors: number[] = [
+  //   0x0000ff, // blue
+  //   0xff0000, // red
+  //   0x00ff00, // green
+  //   0xffff00, // yellow
+  //   0xff00ff, // magenta
+  //   0x00ffff, // cyan
+  //   0xffa500, // orange
+  //   0x800080, // purple
+  //   0x800000, // maroon
+  //   0x000080, // navy
+  //   0x808000, // olive
+  //   0x008080, // teal
+  // ];
   colors: number[] = [
-    0x0000ff, // blue
-    0xff0000, // red
-    0x00ff00, // green
-    0xffff00, // yellow
-    0xff00ff, // magenta
-    0x00ffff, // cyan
-    0xffa500, // orange
-    0x800080, // purple
+    0xe6194b, // red
+    0x3cb44b, // green
+    0xffe119, // yellow
+    0x4363d8, // blue
+    0xf58231, // orange
+    0x911eb4, // purple
+    0x42d4f4, // cyan
+    0xf032e6, // magenta
+    0xbfef45, // lime
+    0xfabeb4, // pink
+    0x469990, // teal
+    0xdcbeff, // lavender
+    0x9a6324, // brown
     0x800000, // maroon
-    0x000080, // navy
+    0xaaffc3, // mint
     0x808000, // olive
-    0x008080, // teal
+    0xffd8b1, // beige
+    0x000075, // navy
+    0xa9a9a9, // grey
+    0xfffac8, // cream
   ];
 
   constructor(players: Player[], callbacks: GameDataCallbacks) {
@@ -44,6 +68,8 @@ export class Game {
     this.stateMachine.addState(new RollDice());
     this.stateMachine.addState(new PostDiceRoll());
     this.stateMachine.addState(new LandedOnTile());
+    this.stateMachine.addState(new BuyProperty());
+    this.stateMachine.addState(new TurnEnd());
     this.stateMachine.addState(new GameOver());
   }
 

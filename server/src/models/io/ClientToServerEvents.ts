@@ -11,4 +11,5 @@ export interface ClientToServerEvents {
     dice2Override: number | undefined,
     callback: (error: SocketError | null, data: IClientGameData | null) => void
   ) => void;
+  buyProperty: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
 }

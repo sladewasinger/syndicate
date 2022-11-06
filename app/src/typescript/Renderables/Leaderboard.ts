@@ -9,13 +9,18 @@ export interface ILeaderboardRenderArgs {
 
 export class ILeaderboardPlayerRender {
   container: PIXI.Container;
-  name: PIXI.Text | undefined;
-  money: PIXI.Text | undefined;
 
-  constructor(public player: IClientPlayer, public position: PIXI.Point) {
+  constructor(
+    public player: IClientPlayer,
+    public position: PIXI.Point,
+    public name: PIXI.Text,
+    public money: PIXI.Text
+  ) {
     this.container = new PIXI.Container();
     this.container.x = position.x;
     this.container.y = position.y;
+
+    this.container.addChild(name, money);
   }
 }
 
@@ -28,7 +33,7 @@ export class Leaderboard {
     this.parentContainer.addChild(this.container);
   }
 
-  update(gameData: IClientGameData) {
+  update(gameData: IClientGameData, prevGameData: IClientGameData) {
     const extraPlayers = this.leaderboardEntries.filter((l) => !gameData.players.find((p) => p.id === l.player.id));
     for (const extraPlayer of extraPlayers) {
       console.log('Removing extra player from leaderboard: ', extraPlayer.player.name);
@@ -38,6 +43,37 @@ export class Leaderboard {
     if (missingPlayers.length > 0) {
       this.container.removeChildren();
       this.drawInitial({ position: this.container.position, gameData });
+    }
+
+    for (const player of gameData.players) {
+      const prevPlayer = prevGameData.players.find((p) => p.id === player.id);
+      const leaderboardEntry = this.leaderboardEntries.find((l) => l.player.id === player.id);
+      if (leaderboardEntry) {
+        leaderboardEntry.name.text = player.name;
+        leaderboardEntry.money.text = player.money.toString();
+
+        if (prevPlayer && prevPlayer.money !== player.money) {
+          const diff = player.money - prevPlayer.money;
+          const sign = diff > 0 ? '+' : '-';
+          const moneyLossGain = new PIXI.Text(`${sign} ${Math.abs(diff)}`, {
+            fontSize: 40,
+            fill: diff > 0 ? 0x00ff00 : 0xff0000,
+          });
+          moneyLossGain.x = leaderboardEntry.money.x + leaderboardEntry.money.width + 10;
+          moneyLossGain.y = leaderboardEntry.money.y;
+          this.container.addChild(moneyLossGain);
+
+          let alpha = 3;
+          const fadeInterval = setInterval(() => {
+            alpha -= 0.1;
+            moneyLossGain.alpha = alpha;
+            if (moneyLossGain.alpha <= 0) {
+              this.container.removeChild(moneyLossGain);
+              clearInterval(fadeInterval);
+            }
+          }, 50);
+        }
+      }
     }
   }
 
@@ -57,7 +93,6 @@ export class Leaderboard {
 
     const players = args.gameData.players.sort((a, b) => a.name.localeCompare(b.name));
     for (let i = 0; i < players.length; i++) {
-      const render = new ILeaderboardPlayerRender(players[i], new PIXI.Point(0, i * 20));
       const player = players[i];
       const color = player.color;
       const strokeColor = 0x000000;
@@ -71,8 +106,6 @@ export class Leaderboard {
         letterSpacing: 4,
         align: 'right',
       });
-      render.name = name;
-      render.container.addChild(name);
 
       const money = new PIXI.Text(`$${player.money}`.toString(), {
         fontFamily: 'Arial',
@@ -83,8 +116,8 @@ export class Leaderboard {
         letterSpacing: 4,
         align: 'left',
       });
-      render.money = money;
-      render.container.addChild(money);
+
+      const render = new ILeaderboardPlayerRender(players[i], new PIXI.Point(0, i * 20), name, money);
 
       this.container.addChild(render.container);
       this.leaderboardEntries.push(render);

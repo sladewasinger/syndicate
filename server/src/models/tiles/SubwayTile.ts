@@ -42,7 +42,7 @@ export class SubwayTile implements IBuyableTile {
       buyable: this.buyable,
       type: this.type,
       price: this.price,
-      owner: this.owner?.id,
+      ownerId: this.owner?.id,
       entranceFees: undefined,
       buildingPrice: undefined,
       skyscraperPrice: undefined,
