@@ -99,7 +99,11 @@ export class Engine {
     const lobby = this.lobbies.find((l) => l.users.find((u) => u.socketId === socketId));
     if (user && lobby) {
       lobby.removeUser(user);
-      lobby.emitGameData();
+      if (lobby.users.length === 0) {
+        this.lobbies = this.lobbies.filter((l) => l !== lobby);
+      } else {
+        lobby.emitGameData();
+      }
     }
     this.users = this.users.filter((u) => u.socketId !== socketId);
   }

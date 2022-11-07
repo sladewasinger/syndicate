@@ -61,8 +61,8 @@ export class PlayersRender {
       const player = playersOnSameTile[i];
       const playerRender = this.playerRenders.find((pr) => pr.player.id === player.id);
       if (playerRender) {
-        playerRender.container.x = tilePosition.x + radius * Math.cos(i * angle);
-        playerRender.container.y = tilePosition.y + radius * Math.sin(i * angle);
+        playerRender.container.x += (tilePosition.x + radius * Math.cos(i * angle) - playerRender.container.x) * 0.05;
+        playerRender.container.y += (tilePosition.y + radius * Math.sin(i * angle) - playerRender.container.y) * 0.05;
       }
     }
   }
