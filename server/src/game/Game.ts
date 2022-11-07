@@ -8,7 +8,7 @@ import { GameData } from '../models/GameData';
 import { StateEvent } from './states/StateEvents';
 import { IBuyableTile } from 'src/models/tiles/ITile';
 import { IClientGameData } from 'src/models/shared/IClientGameData';
-import { Player } from 'src/models/shared/Player';
+import { Player } from 'src/models/Player';
 import { GameOver } from './states/GameOver';
 import { RollDice } from './states/RollDice';
 import { BuyProperty } from './states/BuyProperty';

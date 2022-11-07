@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
-import { Player } from '../shared/Player';
+import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import { IBuyableTile } from './ITile';
 

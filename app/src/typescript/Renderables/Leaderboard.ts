@@ -63,7 +63,7 @@ export class Leaderboard {
           const moneyLossGain = new PIXI.Text(`${sign} ${Math.abs(diff)}`, {
             fontSize: 40,
             fontFamily: 'monospace',
-            fill: diff > 0 ? 0x00ff00 : 0xff0000,
+            fill: diff > 0 ? 0x00dd00 : 0xdd0000,
           });
           moneyLossGain.x = leaderboardEntry.money.x + leaderboardEntry.money.width + 10;
           moneyLossGain.y = leaderboardEntry.container.y;

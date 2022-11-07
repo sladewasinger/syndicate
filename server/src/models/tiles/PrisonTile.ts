@@ -1,6 +1,6 @@
 import type { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
-import { Player } from '../shared/Player';
+import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import type { ITile } from './ITile';
 

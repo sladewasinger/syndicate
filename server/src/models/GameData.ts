@@ -1,5 +1,5 @@
 import { GameDataCallbacks } from 'src/game/Game';
-import { Player } from './shared/Player';
+import { Player } from './Player';
 import { DistrictTile } from './tiles/DistrictTile';
 import { EventTile } from './tiles/EventTile';
 import { GoToPrisonTile } from './tiles/GoToPrisonTile';

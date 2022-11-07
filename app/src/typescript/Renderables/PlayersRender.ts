@@ -32,7 +32,9 @@ export class PlayersRender {
         // ease player to new position
         const tilePosition = renderData.renderTiles[player.position].container.position;
 
-        const playersOnSameTile = gameData.players.filter((p) => p.position === player.position);
+        const playersOnSameTile = gameData.players
+          .sort((a, b) => a.turnOrder - b.turnOrder)
+          .filter((p) => p.position === player.position);
 
         if (playersOnSameTile.length <= 1) {
           playerRender.container.x += (tilePosition.x - playerRender.container.x) * 0.05;
@@ -59,8 +61,8 @@ export class PlayersRender {
       const player = playersOnSameTile[i];
       const playerRender = this.playerRenders.find((pr) => pr.player.id === player.id);
       if (playerRender) {
-        playerRender.container.x = tilePosition.x + radius * Math.cos(i * angle - Math.PI / 2);
-        playerRender.container.y = tilePosition.y + radius * Math.sin(i * angle - Math.PI / 2);
+        playerRender.container.x = tilePosition.x + radius * Math.cos(i * angle);
+        playerRender.container.y = tilePosition.y + radius * Math.sin(i * angle);
       }
     }
   }

@@ -1,6 +1,5 @@
-import { IClientPlayer } from './IClientPlayer';
+import type { IClientPlayer } from './IClientPlayer';
 import type { IClientTile } from './IClientTile';
-import type { Player } from './Player';
 
 export interface IClientGameData {
   myId: string;

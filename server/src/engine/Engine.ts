@@ -9,6 +9,8 @@ import { ClientToServerEvents } from 'src/models/shared/ClientToServerEvents';
 import { ServerToClientEvents } from 'src/models/shared/ServerToClientEvents';
 import { SocketData } from 'src/models/shared/SocketData';
 import { SocketError } from 'src/models/shared/SocketError';
+import { IClientLobbyData } from 'src/models/shared/IClientLobbyData';
+import { IClientUser } from 'src/models/shared/IClientUser';
 
 export class Engine {
   port: string | number;
@@ -97,12 +99,16 @@ export class Engine {
     const lobby = this.lobbies.find((l) => l.users.find((u) => u.socketId === socketId));
     if (user && lobby) {
       lobby.removeUser(user);
-      this.emitGameData(lobby);
+      lobby.emitGameData();
     }
     this.users = this.users.filter((u) => u.socketId !== socketId);
   }
 
-  registerName(socketId: string, name: string, callback: (error: SocketError | null, data: string | null) => void) {
+  registerName(
+    socketId: string,
+    name: string,
+    callback: (error: SocketError | null, data: IClientUser | undefined) => void
+  ) {
     callback = callback || (() => {});
 
     const user = this.users.find((u) => u.socketId === socketId);
@@ -112,10 +118,11 @@ export class Engine {
       user.name = name;
     }
 
-    callback(null, name);
+    this.emitLobbyData();
+    callback(null, user?.clientUser);
   }
 
-  createLobby(socketId: string, callback: (error: SocketError | null, data: string | null) => void) {
+  createLobby(socketId: string, callback: (error: SocketError | null, data: IClientLobbyData | null) => void) {
     const user = this.users.find((u) => u.socketId === socketId);
     if (!user) {
       callback({ code: 'user_not_found', message: 'User not found' }, null);
@@ -124,14 +131,20 @@ export class Engine {
     const lobby = new Lobby(this.io!);
     this.lobbies.push(lobby);
     lobby.addUser(user);
-    callback(null, lobby.id);
+
+    this.emitLobbyData();
+    callback(null, lobby.clientLobbyData);
   }
 
-  joinLobby(socketId: string, key: string, callback: (error: SocketError | null, data: string | null) => void) {
+  joinLobby(
+    socketId: string,
+    key: string,
+    callback: (error: SocketError | null, data: IClientLobbyData | null) => void
+  ) {
     callback = callback || (() => {});
     const user = this.users.find((u) => u.socketId === socketId);
     if (!user) {
-      callback({ code: 'user_not_found', message: 'User not found' }, '');
+      callback({ code: 'user_not_found', message: 'User not found' }, null);
       return;
     }
 
@@ -142,7 +155,9 @@ export class Engine {
     }
 
     lobby.addUser(user);
-    callback(null, key);
+
+    this.emitLobbyData();
+    callback(null, lobby.clientLobbyData);
   }
 
   startGame(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
@@ -167,6 +182,9 @@ export class Engine {
       return;
     }
 
+    for (const user of lobby.users) {
+      this.io?.to(user.socketId).emit('gameStarted', lobby.game.getClientGameData(user.socketId));
+    }
     callback(null, lobby.game.getClientGameData(socketId));
   }
 
@@ -251,12 +269,13 @@ export class Engine {
     return { user, lobby };
   }
 
-  emitGameData(lobby: Lobby) {
-    if (!!lobby.game) {
-      lobby.users.forEach((user) => {
-        const gameData = lobby.game?.getClientGameData(user.socketId);
-        this.io?.to(user.socketId).emit('gameData', gameData);
-      });
+  emitLobbyData() {
+    for (const user of this.users) {
+      this.io?.to(user.socketId).emit('lobbyData', this.getClientLobbyData());
     }
+  }
+
+  getClientLobbyData(): IClientLobbyData[] {
+    return this.lobbies.map((l) => l.clientLobbyData);
   }
 }

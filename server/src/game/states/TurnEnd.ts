@@ -2,7 +2,7 @@ import type { GameData } from '../../models/GameData';
 import { StateName } from './StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
-import { Player } from 'src/models/shared/Player';
+import { Player } from 'src/models/Player';
 
 export class TurnEnd implements IGameState {
   name: StateName = StateName.TurnEnd;

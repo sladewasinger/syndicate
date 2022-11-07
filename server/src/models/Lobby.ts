@@ -3,7 +3,8 @@ import type { Server } from 'socket.io';
 import { Game } from '../game/Game';
 import type { InterServerEvents } from './io/InterServerEvents';
 import { ClientToServerEvents } from './shared/ClientToServerEvents';
-import { Player } from './shared/Player';
+import { IClientLobbyData } from './shared/IClientLobbyData';
+import { Player } from './Player';
 import { ServerToClientEvents } from './shared/ServerToClientEvents';
 import { SocketData } from './shared/SocketData';
 import type { User } from './User';
@@ -49,7 +50,7 @@ export class Lobby {
       {
         onStateChange: (name) => {
           console.log('onStateChange', name);
-          this.emitGameState();
+          this.emitGameData();
         },
       }
     );
@@ -64,12 +65,21 @@ export class Lobby {
     }, 250);
   }
 
-  emitGameState() {
+  get clientLobbyData() {
+    const clientLobbyData: IClientLobbyData = {
+      id: this.id,
+      users: this.users.map((u) => u.clientUser),
+      owner: this.owner?.clientUser,
+    };
+    return clientLobbyData;
+  }
+
+  emitGameData() {
     if (!!this.game) {
-      this.users.forEach((user) => {
-        const gameData = this.game?.getClientGameData(user.socketId);
+      for (const user of this.users) {
+        const gameData = this.game.getClientGameData(user.socketId);
         this.io?.to(user.socketId).emit('gameData', gameData);
-      });
+      }
     }
   }
 }

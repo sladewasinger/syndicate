@@ -1,5 +1,5 @@
-import { IClientGameData } from './IClientGameData';
-import { IClientPlayer } from './IClientPlayer';
+import { IClientGameData } from './shared/IClientGameData';
+import { IClientPlayer } from './shared/IClientPlayer';
 
 export class Player {
   targetPosition: number;

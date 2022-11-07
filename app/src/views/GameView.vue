@@ -1,34 +1,113 @@
-<script mounted lang="ts">
-import type { Engine } from '@/typescript/Engine';
+<script lang="ts">
+import { Engine } from '@/typescript/Engine';
 import { EngineTester } from '@/typescript/EngineTester';
+import type { IClientPlayer } from '@/typescript/models/shared/IClientPlayer';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'GameView',
   data() {
     return {
-      engine: ref<Engine | null>(null),
+      RUN_TESTS: false,
+      engine: ref<Engine | undefined>(undefined),
+      engineVueProperties: ref<any | undefined>(undefined),
+      loaded: false,
+      lobbyId: ref<string | undefined>(undefined),
+      playerName: ref<string | undefined>(undefined),
+      myPlayer: ref<IClientPlayer | null>(null),
     };
   },
   setup() {},
   mounted() {
-    // this.engine = new Engine();
-    // this.engine.start();
-    const engineTester = new EngineTester();
-    engineTester.test_4_players();
+    const vueForceUpdateCallback = () => {
+      console.log('vueForceUpdateCallback');
+      this.engineVueProperties = this.engine?.engineVueProperties;
+      this.$forceUpdate();
+    };
+
+    if (this.RUN_TESTS) {
+      const engineTester = new EngineTester();
+      engineTester.test_4_players();
+    } else {
+      this.engine = new Engine(vueForceUpdateCallback);
+      this.engineVueProperties = this.engine.engineVueProperties;
+    }
+  },
+  computed: {
+    connected() {
+      return this.engineVueProperties?.connected;
+    },
+    gameRunning() {
+      return this.engineVueProperties?.gameRunning;
+    },
+    myLobby() {
+      const myLobby = this.engineVueProperties?.lobbyData?.find(
+        (lobby: any) => lobby.id === this.engineVueProperties?.lobbyId
+      );
+      return myLobby;
+    },
+  },
+  methods: {
+    startGame() {
+      this.engine?.startGame();
+    },
+    registerName() {
+      if (this.playerName) {
+        this.engine?.registerName(this.playerName);
+      }
+    },
+    createLobby() {
+      this.engine?.createLobby();
+    },
+    joinLobby() {
+      if (this.lobbyId) {
+        this.engine?.joinLobby(this.lobbyId);
+      }
+    },
   },
 });
 </script>
 
 <template>
-  <div class="container">
-    <canvas id="gameCanvas" width="900" height="900"></canvas>
+  <div class="container" v-if="!connected">LOADING...</div>
+  <div v-if="connected">
+    <div :class="{ hidden: gameRunning }">
+      <div class="container" v-if="!myLobby">
+        <form @submit.prevent="registerName" v-if="!engineVueProperties?.myUser">
+          <input type="text" v-model="playerName" maxlength="15" />
+          <input type="submit" value="Register Name" />
+        </form>
+        <form @submit.prevent="joinLobby" v-if="engineVueProperties?.myUser && !myLobby" style="text-align: center">
+          <input type="text" v-model="lobbyId" maxlength="15" />
+          <input type="submit" value="Join Lobby" />
+          <div><strong>OR</strong></div>
+          <input type="button" value="Create Lobby" @click="createLobby" />
+        </form>
+      </div>
+      <div v-if="myLobby">
+        <button @click="startGame">Start Game</button>
+        <div>
+          <strong>Lobby ID:</strong> {{ myLobby?.id }}
+          <div>
+            <strong>Players:</strong>
+            <ol>
+              <li v-for="player in myLobby?.users" :key="player.id">
+                {{ player.name }}
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div :class="{ hidden: !gameRunning }">
+      <canvas id="gameCanvas" width="900" height="900"></canvas>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
 .container {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -44,5 +123,9 @@ export default defineComponent({
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: -o-crisp-edges;
+}
+
+.hidden {
+  display: none;
 }
 </style>

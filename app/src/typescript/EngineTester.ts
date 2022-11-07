@@ -35,7 +35,7 @@ export class EngineTester {
         while (joinCount < 5) {
           await Utils.sleep(100);
         }
-        engine1.start();
+        engine1.startGame();
         await Utils.sleep(1000);
         engine4.socket.disconnect();
         await Utils.sleep(1000);
