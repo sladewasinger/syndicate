@@ -11,6 +11,7 @@ export class RollDice implements IGameState {
     const dice1 = Math.floor(Math.random() * 6) + 1;
     const dice2 = Math.floor(Math.random() * 6) + 1;
     gameData.dice = gameData.diceOverride || [dice1, dice2];
+    console.log(`Dice rolled: ${gameData.dice[0]} ${gameData.dice[1]}`);
     gameData.currentPlayer.targetPosition =
       gameData.currentPlayer.position + gameData.dice.reduce((cur, next) => cur + next, 0);
 

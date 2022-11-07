@@ -3,6 +3,7 @@ import { StateName } from './StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
 import { DistrictTile } from '../../models/tiles/DistrictTile';
+import { IBuyableTile } from 'src/models/tiles/ITile';
 
 export class LandedOnTile implements IGameState {
   name: StateName = StateName.LandedOnTile;
@@ -14,6 +15,11 @@ export class LandedOnTile implements IGameState {
       throw new Error(`Tile at player position '${gameData.currentPlayer.position}' not found`);
     }
     tile.onLanded(gameData);
+
+    const buyableTile = tile as IBuyableTile;
+    if (buyableTile && buyableTile.owner != undefined) {
+      this.nextState = StateName.TurnEnd;
+    }
   }
 
   onExit(gameData: GameData): void {

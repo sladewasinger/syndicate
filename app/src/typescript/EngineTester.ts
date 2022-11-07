@@ -46,6 +46,20 @@ export class EngineTester {
         engine1.endTurn();
         await Utils.sleep(500);
         engine2.rollDice(0, 3);
+        await Utils.sleep(2000);
+        engine2.endTurn();
+        await Utils.sleep(500);
+        engine3.rollDice(0, 3);
+        await Utils.sleep(2000);
+        engine3.endTurn();
+        await Utils.sleep(500);
+        engine5.rollDice(0, 6);
+        await Utils.sleep(250 * 6 + 1000);
+        engine5.buyProperty();
+        await Utils.sleep(500);
+        engine5.endTurn();
+        await Utils.sleep(500);
+        engine1.rollDice(0, 3);
       }
     });
   }

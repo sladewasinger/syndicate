@@ -77,7 +77,7 @@ export class Leaderboard {
               this.container.removeChild(moneyLossGain);
               clearInterval(fadeInterval);
             }
-          }, 50);
+          }, 100);
         }
       }
     }
