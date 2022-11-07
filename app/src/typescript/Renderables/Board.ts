@@ -47,7 +47,6 @@ export class Board {
       backgroundColor: 0x222222,
       antialias: true,
       resolution: 1, // window.devicePixelRatio || 1,\
-      forceCanvas: true,
     });
 
     extensions.add(InteractionManager);

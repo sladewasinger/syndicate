@@ -31,6 +31,7 @@ export class StartTile implements ITile {
       buyable: this.buyable,
       price: 0,
       ownerId: this.owner?.id,
+      mortgageValue: undefined,
       entranceFees: undefined,
       buildingPrice: undefined,
       skyscraperPrice: undefined,

@@ -72,6 +72,8 @@ export class Leaderboard {
           const fadeInterval = setInterval(() => {
             alpha -= 0.1;
             moneyLossGain.alpha = alpha;
+            moneyLossGain.scale.x *= 1.005;
+            moneyLossGain.scale.y *= 1.005;
             if (moneyLossGain.alpha <= 0) {
               this.container.removeChild(moneyLossGain);
               clearInterval(fadeInterval);

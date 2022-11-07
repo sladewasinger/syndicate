@@ -16,4 +16,5 @@ export interface ITile {
 export interface IBuyableTile extends ITile {
   mortgaged: boolean;
   price: number;
+  mortgageValue: number;
 }

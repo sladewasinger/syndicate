@@ -13,9 +13,11 @@ export class SubwayTile implements IBuyableTile {
   buyable: boolean = true;
   mortgaged: boolean = false;
   type: TileType = TileType.Subway;
+  mortgageValue: number;
 
   constructor(public name: string, public price: number) {
     this.id = randomUUID();
+    this.mortgageValue = Math.floor(this.price * 0.5);
   }
 
   entranceFee(gameData: GameData) {
@@ -42,6 +44,7 @@ export class SubwayTile implements IBuyableTile {
       buyable: this.buyable,
       type: this.type,
       price: this.price,
+      mortgageValue: this.mortgageValue,
       ownerId: this.owner?.id,
       entranceFees: undefined,
       buildingPrice: undefined,

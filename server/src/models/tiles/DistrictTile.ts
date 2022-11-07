@@ -12,6 +12,7 @@ export class DistrictTile implements IBuyableTile {
   skyscraper: boolean = false;
   buyable: boolean = true;
   mortgaged: boolean = false;
+  mortgageValue: number;
   type: TileType = TileType.District;
 
   constructor(
@@ -26,6 +27,7 @@ export class DistrictTile implements IBuyableTile {
       throw new Error('entranceFees array must have 6 elements');
     }
     this.id = randomUUID();
+    this.mortgageValue = Math.floor(this.price * 0.5);
   }
 
   entranceFee(gameData: GameData) {
@@ -47,6 +49,7 @@ export class DistrictTile implements IBuyableTile {
       buyable: this.buyable,
       type: this.type,
       price: this.price,
+      mortgageValue: this.mortgageValue,
       ownerId: this.owner?.id,
       entranceFees: this.entranceFees,
       buildingPrice: this.buildingPrice,

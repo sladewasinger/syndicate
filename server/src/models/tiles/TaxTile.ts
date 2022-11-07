@@ -27,6 +27,7 @@ export class TaxTile implements ITile {
       type: this.type,
       ownerId: this.owner?.id,
       price: undefined,
+      mortgageValue: undefined,
       skyscraper: undefined,
       rent: undefined,
       entranceFees: undefined,

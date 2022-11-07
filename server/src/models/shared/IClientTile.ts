@@ -7,6 +7,7 @@ export interface IClientTile {
   buyable: boolean;
   type: TileType;
   price: number | undefined;
+  mortgageValue: number | undefined;
   ownerId: string | undefined;
   entranceFees: number[] | undefined;
   buildingPrice: number | undefined;
