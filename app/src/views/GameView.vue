@@ -8,7 +8,7 @@ export default defineComponent({
   name: 'GameView',
   data() {
     return {
-      RUN_TESTS: false,
+      RUN_TESTS: true,
       engine: undefined as Engine | undefined,
       engineVueProperties: ref<any | undefined>(undefined),
       loaded: false,

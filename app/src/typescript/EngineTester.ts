@@ -12,7 +12,7 @@ export class EngineTester {
     await Utils.sleep(500);
 
     const emptyCallback = () => {};
-    const engine1 = new Engine(this.vueForceUpdateCallback, false);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
     const engine2 = new Engine(emptyCallback, false);
     const engine3 = new Engine(emptyCallback, false);
     const engine4 = new Engine(emptyCallback, false);

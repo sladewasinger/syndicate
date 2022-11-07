@@ -9,7 +9,7 @@ export class SubwayTileRender implements ITileRender {
   width: number = TILE_WIDTH;
   height: number = TILE_HEIGHT;
   container: PIXI.Container;
-
+  static subwayTexture: any;
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
   }
@@ -17,7 +17,9 @@ export class SubwayTileRender implements ITileRender {
   update(gameData: IClientGameData, renderData: RenderData) {}
 
   async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
-    const subwayTexture = await Assets.load('subway.png');
+    if (!SubwayTileRender.subwayTexture) {
+      SubwayTileRender.subwayTexture = await Assets.load('subway.png');
+    }
 
     const tileBackground = new PIXI.Graphics();
     tileBackground.lineStyle(2, 0x000000, 1);
@@ -34,7 +36,7 @@ export class SubwayTileRender implements ITileRender {
     price.y = this.height - price.height;
 
     // pixi sprite from texture
-    const subwayIcon = new PIXI.Sprite(subwayTexture);
+    const subwayIcon = new PIXI.Sprite(SubwayTileRender.subwayTexture);
     const scale = Math.min(this.width / subwayIcon.width, this.height / subwayIcon.height) * 0.7;
     subwayIcon.scale = new PIXI.Point(scale, scale);
     subwayIcon.x = (this.width - subwayIcon.width) / 2;
