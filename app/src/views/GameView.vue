@@ -8,8 +8,8 @@ export default defineComponent({
   name: 'GameView',
   data() {
     return {
-      RUN_TESTS: true,
-      engine: ref<Engine | undefined>(undefined),
+      RUN_TESTS: false,
+      engine: undefined as Engine | undefined,
       engineVueProperties: ref<any | undefined>(undefined),
       loaded: false,
       lobbyId: ref<string | undefined>(undefined),

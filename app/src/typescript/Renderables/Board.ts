@@ -16,6 +16,7 @@ import { RenderData } from './RenderData';
 import { InteractionManager } from '@pixi/interaction';
 import { extensions } from '@pixi/core';
 import { Leaderboard } from './Leaderboard';
+import { Utils } from '../Utils/Utils';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -45,7 +46,8 @@ export class Board {
       height: this.height,
       backgroundColor: 0x222222,
       antialias: true,
-      resolution: 1, // window.devicePixelRatio || 1,
+      resolution: 1, // window.devicePixelRatio || 1,\
+      forceCanvas: true,
     });
 
     extensions.add(InteractionManager);
@@ -90,11 +92,6 @@ export class Board {
     board.drawRect(0, 0, this.width, this.height);
     board.endFill();
     this.container.addChild(board);
-
-    const text = new PIXI.Text('Hello World', { fill: 0xffffff, fontSize: 24 });
-    text.x = 100;
-    text.y = 100;
-    this.container.addChild(text);
 
     const renderTiles = gameData.tiles.map(this.getTileRenderFromTile);
     for (let i = 0; i < boardPositions.length; i++) {

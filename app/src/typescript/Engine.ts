@@ -13,13 +13,8 @@ export class Engine {
   lobbyId: string = '';
   connected: boolean = false;
   gameRunning: boolean = false;
-  createBoard: boolean = true;
-  vueForceUpdateCallback: () => void;
 
-  constructor(vueForceUpdateCallback = () => {}, createBoard = true) {
-    this.vueForceUpdateCallback = vueForceUpdateCallback;
-    this.createBoard = createBoard;
-
+  constructor(public vueForceUpdateCallback = () => {}, public createBoardOnGameStarted = true) {
     if (window.location.port == '3001') {
       this.socket = io('http://localhost:3000');
     } else {
@@ -51,7 +46,7 @@ export class Engine {
     this.socket.on('gameStarted', async (gameData: IClientGameData) => {
       console.log('gameStarted');
       this.gameRunning = true;
-      if (this.createBoard && !this.board) {
+      if (this.createBoardOnGameStarted && !this.board) {
         this.board = new Board(gameData);
         await this.board.drawBoardInitial(gameData);
       }
@@ -124,8 +119,8 @@ export class Engine {
         console.log(result);
         this.gameData = result;
         this.gameRunning = true;
-        this.board = new Board(result);
-        await this.board.drawBoardInitial(result);
+        // this.board = new Board(result);
+        // await this.board.drawBoardInitial(result);
         this.vueForceUpdateCallback();
       }
     });

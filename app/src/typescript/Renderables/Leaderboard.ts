@@ -30,7 +30,6 @@ export class Leaderboard {
 
   constructor(public parentContainer: PIXI.Container) {
     this.container = new PIXI.Container();
-    this.parentContainer.addChild(this.container);
   }
 
   update(gameData: IClientGameData, prevGameData: IClientGameData) {
@@ -66,7 +65,7 @@ export class Leaderboard {
             fill: diff > 0 ? 0x00dd00 : 0xdd0000,
           });
           moneyLossGain.x = leaderboardEntry.money.x + leaderboardEntry.money.width + 10;
-          moneyLossGain.y = leaderboardEntry.container.y;
+          moneyLossGain.y = leaderboardEntry.container.y + 5;
           this.container.addChild(moneyLossGain);
 
           let alpha = 5;
@@ -94,6 +93,8 @@ export class Leaderboard {
   }
 
   drawInitial(args: ILeaderboardRenderArgs) {
+    this.parentContainer.addChild(this.container);
+    this.parentContainer.sortChildren();
     this.container.x = args.position.x;
     this.container.y = args.position.y;
 
