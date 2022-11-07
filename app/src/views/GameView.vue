@@ -8,7 +8,7 @@ export default defineComponent({
   name: 'GameView',
   data() {
     return {
-      RUN_TESTS: false,
+      RUN_TESTS: true,
       engine: ref<Engine | undefined>(undefined),
       engineVueProperties: ref<any | undefined>(undefined),
       loaded: false,
@@ -20,13 +20,13 @@ export default defineComponent({
   setup() {},
   mounted() {
     const vueForceUpdateCallback = () => {
-      console.log('vueForceUpdateCallback');
+      console.log('vueForceUpdateCallback', this.engine?.engineVueProperties);
       this.engineVueProperties = this.engine?.engineVueProperties;
       this.$forceUpdate();
     };
 
     if (this.RUN_TESTS) {
-      const engineTester = new EngineTester();
+      const engineTester = new EngineTester(vueForceUpdateCallback);
       engineTester.test_4_players();
     } else {
       this.engine = new Engine(vueForceUpdateCallback);
@@ -69,9 +69,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container" v-if="!connected">LOADING...</div>
-  <div v-if="connected">
-    <div :class="{ hidden: gameRunning }">
+  <div class="container" v-if="!connected && !RUN_TESTS">LOADING...</div>
+  <div :hidden="!connected && !RUN_TESTS">
+    <div :class="{ hidden: gameRunning || RUN_TESTS }">
       <div class="container" v-if="!myLobby">
         <form @submit.prevent="registerName" v-if="!engineVueProperties?.myUser">
           <input type="text" v-model="playerName" maxlength="15" />
@@ -99,7 +99,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <div :class="{ hidden: !gameRunning }">
+    <div :class="{ hidden: !gameRunning && !RUN_TESTS }">
       <canvas id="gameCanvas" width="900" height="900"></canvas>
     </div>
   </div>

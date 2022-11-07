@@ -65,8 +65,8 @@ export class Board {
   }
 
   resize() {
-    const browserZoomLevel = Math.round(window.devicePixelRatio * 100);
-    const scale = (Math.min(window.innerWidth / this.width, window.innerHeight / this.height) * browserZoomLevel) / 100;
+    const browserZoomLevel = window.devicePixelRatio;
+    const scale = Math.min(window.innerWidth / this.width, window.innerHeight / this.height) * browserZoomLevel;
     this.canvas.width = Math.min(this.width, this.width * scale);
     this.canvas.height = Math.min(this.height, this.height * scale);
     this.container.scale.set(scale);

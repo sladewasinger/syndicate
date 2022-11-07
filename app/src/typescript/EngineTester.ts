@@ -2,16 +2,21 @@ import { Engine } from './Engine';
 import { Utils } from './Utils/Utils';
 
 export class EngineTester {
-  constructor() {}
+  vueForceUpdateCallback: () => void;
+
+  constructor(vueForceUpdateCallback = () => {}) {
+    this.vueForceUpdateCallback = vueForceUpdateCallback;
+  }
 
   async test_4_players() {
     await Utils.sleep(500);
 
-    const engine1 = new Engine();
-    const engine2 = new Engine();
-    const engine3 = new Engine();
-    const engine4 = new Engine();
-    const engine5 = new Engine();
+    const emptyCallback = () => {};
+    const engine1 = new Engine(this.vueForceUpdateCallback, false);
+    const engine2 = new Engine(emptyCallback, false);
+    const engine3 = new Engine(emptyCallback, false);
+    const engine4 = new Engine(emptyCallback, false);
+    const engine5 = new Engine(emptyCallback, false);
     let lobbyId = '';
 
     engine1.socket.emit('registerName', 'player1');
@@ -27,7 +32,7 @@ export class EngineTester {
         console.error(error);
       } else {
         console.log(result);
-        lobbyId = result;
+        lobbyId = result.id;
         engine2.socket.emit('joinLobby', lobbyId, () => joinCount++);
         engine3.socket.emit('joinLobby', lobbyId, () => joinCount++);
         engine4.socket.emit('joinLobby', lobbyId, () => joinCount++);
