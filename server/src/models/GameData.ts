@@ -9,6 +9,7 @@ import { PrisonTile } from './tiles/PrisonTile';
 import { StartTile } from './tiles/StartTile';
 import { SubwayTile } from './tiles/SubwayTile';
 import { TaxTile } from './tiles/TaxTile';
+import { UtilityTile } from './tiles/UtilityTile';
 
 export class GameData {
   players: Player[] = [];
@@ -35,7 +36,7 @@ export class GameData {
       new DistrictTile('9th Street', 180, 0xff0000, [14, 70, 200, 550, 750, 950], 100, 100),
       new PrisonTile(),
       new DistrictTile('11th Street', 180, 0xff0000, [14, 70, 200, 550, 750, 950], 100, 100),
-      new DistrictTile('12th Street', 200, 0xff0000, [16, 80, 220, 600, 800, 1000], 100, 100),
+      new UtilityTile('Electric Company', 150),
       new DistrictTile('13th Street', 220, 0xff0000, [18, 90, 250, 700, 875, 1050], 150, 150),
       new DistrictTile('14th Street', 220, 0xff0000, [18, 90, 250, 700, 875, 1050], 150, 150),
       new SubwayTile('Chicago "L"', 200),

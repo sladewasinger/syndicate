@@ -116,7 +116,8 @@ export class DistrictTileRender implements ITileRender {
     const text = `Entrance Fee: $${this.tile.rent}\n\n 1 Building: $${this.tile.entranceFees![1]}
 2 Buildings: $${this.tile.entranceFees![2]}\n3 Buildings: $${this.tile.entranceFees![3]}
 4 Buildings: $${this.tile.entranceFees![4]}\n Skyscraper: $${this.tile.entranceFees![5]}
-\n\nMortgage\nValue:       $${this.tile.mortgageValue}`;
+\n\nMortgage\nValue:       $${this.tile.mortgageValue}
+\nBuyback\nValue:       $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
     const infoText = new PIXI.Text(text, {
       fontFamily: 'monospace',
       fill: 0x000000,
