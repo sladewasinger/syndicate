@@ -71,47 +71,36 @@ export class DistrictTileRender implements ITileRender {
     colorBar.endFill();
     this.colorBar = colorBar;
 
-    const building1 = new PIXI.Graphics();
-    building1.beginFill(0x000000, 1);
-    building1.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
-    building1.endFill();
+    const building1 = HouseFactory.createHouse();
     building1.x = 10;
     building1.y = colorBar.height * 0.5 - building1.height * 0.5 - 200;
     building1.visible = false;
     this.building1 = building1;
 
-    const building2 = new PIXI.Graphics();
-    building2.beginFill(0x000000, 1);
-    building2.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
-    building2.endFill();
-    building2.x = building1.x + building1.width * 2;
+    const building2 = new PIXI.Graphics(building1.geometry);
+    building2.x = building1.x + 14 * 2;
     building2.y = colorBar.height * 0.5 - building1.height * 0.5;
     building2.visible = false;
     this.building2 = building2;
 
-    const building3 = new PIXI.Graphics();
-    building3.beginFill(0x000000, 1);
-    building3.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
-    building3.endFill();
-    building3.x = building1.x + building1.width * 4;
+    const building3 = new PIXI.Graphics(building1.geometry);
+    building3.x = building1.x + 14 * 4;
     building3.y = colorBar.height * 0.5 - building1.height * 0.5;
     building3.visible = false;
     this.building3 = building3;
 
-    const building4 = new PIXI.Graphics();
-    building4.beginFill(0x000000, 1);
-    building4.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
-    building4.endFill();
-    building4.x = building1.x + building1.width * 6;
+    const building4 = new PIXI.Graphics(building1.geometry);
+    building4.x = building1.x + 14 * 6;
     building4.y = colorBar.height * 0.5 - building1.height * 0.5;
     building4.visible = false;
     this.building4 = building4;
 
     const skyscraper = new PIXI.Graphics();
-    skyscraper.beginFill(0x000000, 1);
+    skyscraper.lineStyle(3, 0x000000, 1);
+    skyscraper.beginFill(0xee0000, 1);
     skyscraper.drawRect(0, 0, this.width * 0.15, this.width * 0.3);
     skyscraper.endFill();
-    skyscraper.x = building1.x + building1.width * 7.5;
+    skyscraper.x = building1.x + 14 * 8;
     skyscraper.y = colorBar.height * 0.5 - skyscraper.height * 0.8;
     skyscraper.visible = false;
     this.skyscraper = skyscraper;
@@ -213,5 +202,20 @@ Buyback:     $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
 
     infoCardContainer.addChild(cardBackground, colorBar, title, infoText);
     parentContainer.addChild(infoCardContainer);
+  }
+}
+
+class HouseFactory {
+  static createHouse() {
+    const housePoints = [0, 4, 8, -4, 16, 4, 16, 20, 0, 20];
+    housePoints.forEach((x) => (x = x + 4));
+
+    const building1 = new PIXI.Graphics();
+    building1.beginFill(0x00ff00, 1);
+    building1.lineStyle(3, 0x000000, 1);
+    building1.drawPolygon(housePoints);
+    building1.endFill();
+
+    return building1;
   }
 }
