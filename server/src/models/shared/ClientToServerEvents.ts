@@ -15,4 +15,8 @@ export interface ClientToServerEvents {
   ) => void;
   buyProperty: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
   endTurn: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
+  buyBuilding: (
+    propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
 }

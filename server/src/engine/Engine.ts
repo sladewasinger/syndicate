@@ -85,6 +85,11 @@ export class Engine {
         console.log('endTurn');
         this.endTurn(socket.id, callback);
       });
+
+      socket.on('buyBuilding', (propertyIndex, callback) => {
+        console.log('buyBuilding');
+        this.buyBuilding(socket.id, propertyIndex, callback);
+      });
     });
   }
 
@@ -258,6 +263,29 @@ export class Engine {
     lobby.game?.endTurn();
 
     callback(null, lobby!.game!.getClientGameData(socketId));
+  }
+
+  buyBuilding(
+    socketId: string,
+    tilePosition: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    if (tilePosition < 0 || tilePosition >= lobby!.game!.stateMachine.gameData.tiles.length) {
+      callback({ code: 'invalid_tile_position', message: 'Invalid tile position' }, null);
+      return;
+    }
+
+    lobby.game!.buyBuilding(tilePosition);
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
   }
 
   // ** Helpers **

@@ -8,4 +8,5 @@ export interface IClientGameData {
   dice: number[];
   tiles: IClientTile[];
   state: string;
+  lastSelectedTilePosition: number | undefined;
 }

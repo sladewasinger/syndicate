@@ -36,10 +36,14 @@ export class EngineTester {
     await Utils.sleep(2000);
     await engine2.endTurn();
     await Utils.sleep(500);
-    await engine1.rollDice(0, 1);
-    await Utils.sleep(1000);
+    await engine1.rollDice(0, 2);
+    while (engine1.gameData?.currentPlayer.position != 3) {
+      await Utils.sleep(100);
+    }
+    // await Utils.sleep(2000);
     await engine1.buyProperty();
-    await Utils.sleep(500);
+    await Utils.sleep(1000);
+    await engine1.buyBuilding(3);
   }
 
   async test_4_players() {

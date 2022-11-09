@@ -6,7 +6,7 @@ import { TurnStart } from './states/TurnStart';
 import { LandedOnTile } from './states/LandedOnTile';
 import { GameData } from '../models/GameData';
 import { StateEvent } from './states/StateEvents';
-import { IBuyableTile } from 'src/models/tiles/ITile';
+import { IBuildableTile, IBuyableTile } from 'src/models/tiles/ITile';
 import { IClientGameData } from 'src/models/shared/IClientGameData';
 import { Player } from 'src/models/Player';
 import { GameOver } from './states/GameOver';
@@ -85,14 +85,16 @@ export class Game {
   }
 
   getClientGameData(playerId: string): IClientGameData {
-    return <IClientGameData>{
+    const clientGameData: IClientGameData = {
       myId: playerId,
       players: this.stateMachine.gameData.players.map((p) => p.clientPlayer),
       dice: this.stateMachine.gameData.dice,
       currentPlayer: this.stateMachine.gameData.currentPlayer?.clientPlayer,
       tiles: this.stateMachine.gameData.tiles.map((t) => t.getClientTile(this.stateMachine.gameData)),
       state: this.stateMachine.currentState.name,
+      lastSelectedTilePosition: this.stateMachine.gameData.lastSelectedTilePosition,
     };
+    return clientGameData;
   }
 
   getPlayers() {
@@ -153,6 +155,11 @@ export class Game {
 
   buyProperty() {
     this.stateMachine.event(StateEvent.BuyProperty);
+  }
+
+  buyBuilding(tilePosition: number) {
+    this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
+    this.stateMachine.event(StateEvent.BuyBuilding);
   }
 
   endTurn() {

@@ -3,10 +3,10 @@ import type { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
-import type { IBuyableTile } from './ITile';
+import type { IBuildableTile, IBuyableTile } from './ITile';
 import { StateName } from '../../game/states/StateNames';
 
-export class DistrictTile implements IBuyableTile {
+export class DistrictTile implements IBuyableTile, IBuildableTile {
   id: string;
   owner: Player | undefined;
   buildingCount: number = 0;
@@ -15,13 +15,14 @@ export class DistrictTile implements IBuyableTile {
   mortgaged: boolean = false;
   mortgageValue: number;
   type: TileType = TileType.District;
+  buildings: number = 0;
 
   constructor(
     public name: string,
     public price: number,
     public color: number,
     public entranceFees: number[],
-    public buildingPrice: number,
+    public buildingCost: number,
     public skyscraperPrice: number
   ) {
     if (entranceFees.length !== 6) {
@@ -56,7 +57,7 @@ export class DistrictTile implements IBuyableTile {
       mortgageValue: this.mortgageValue,
       ownerId: this.owner?.id,
       entranceFees: this.entranceFees,
-      buildingPrice: this.buildingPrice,
+      buildingPrice: this.buildingCost,
       skyscraperPrice: this.skyscraperPrice,
       skyscraper: this.skyscraper,
       rent: this.entranceFee(gameData),

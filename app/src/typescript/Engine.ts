@@ -147,6 +147,10 @@ export class Engine {
     });
   }
 
+  async buyBuilding(tilePosition: number) {
+    await Utils.emitWithPromise(this.socket, 'buyBuilding', tilePosition);
+  }
+
   async endTurn() {
     await Utils.emitWithPromise(this.socket, 'endTurn');
   }

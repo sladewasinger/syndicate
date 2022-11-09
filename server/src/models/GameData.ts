@@ -13,6 +13,8 @@ import { TaxTile } from './tiles/TaxTile';
 import { UtilityTile } from './tiles/UtilityTile';
 
 export class GameData {
+  private _log: string[] = [];
+
   players: Player[] = [];
   dice: number[] = [];
   diceOverride: number[] | null = null;
@@ -20,7 +22,7 @@ export class GameData {
   winner: Player | null = null;
   shuffleTiles: boolean = false;
   callbacks: GameDataCallbacks;
-  private _log: string[] = [];
+  lastSelectedTilePosition: number | undefined;
 
   constructor(callbacks: GameDataCallbacks) {
     this.callbacks = callbacks;

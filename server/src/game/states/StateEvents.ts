@@ -3,4 +3,5 @@ export enum StateEvent {
   EndTurn = 'EndTurn',
   BuyProperty = 'BuyProperty',
   AuctionProperty = 'AuctionProperty',
+  BuyBuilding = 'BuyBuilding',
 }
