@@ -5,6 +5,7 @@ import type { IClientLobbyData } from './models/shared/IClientLobbyData';
 import type { IClientUser } from './models/shared/IClientUser';
 import { Utils } from './Utils/Utils';
 import { BoardCallbacks } from './models/BoardCallbacks';
+import type { TradeOffer } from './models/shared/TradeOffer';
 
 export class Engine {
   socket: Socket<any, any>;
@@ -150,6 +151,14 @@ export class Engine {
 
   async buyBuilding(tilePosition: number) {
     await Utils.emitWithPromise(this.socket, 'buyBuilding', tilePosition);
+  }
+
+  async createTradeOffer(tradeOffer: TradeOffer) {
+    await Utils.emitWithPromise(this.socket, 'createTradeOffer', tradeOffer);
+  }
+
+  async acceptTradeOffer(tradeOfferId: string) {
+    await Utils.emitWithPromise(this.socket, 'acceptTradeOffer', tradeOfferId);
   }
 
   async endTurn() {

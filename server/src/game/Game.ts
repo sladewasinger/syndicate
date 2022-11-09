@@ -15,6 +15,7 @@ import { BuyProperty } from './states/BuyProperty';
 import { TurnEnd } from './states/TurnEnd';
 import { IClientPlayer } from 'src/models/shared/IClientPlayer';
 import { BuyBuilding } from './states/BuyBuilding';
+import { TradeOffer } from 'src/models/shared/TradeOffer';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -166,5 +167,101 @@ export class Game {
 
   endTurn() {
     this.stateMachine.event(StateEvent.EndTurn);
+  }
+
+  createTradeOffer(offer: TradeOffer) {
+    this.stateMachine.gameData.tradeOffers.push(offer);
+  }
+
+  acceptTradeOffer(id: string) {
+    const offer = this.stateMachine.gameData.tradeOffers.find((o) => o.id === id);
+    if (!offer) {
+      console.error('Game - acceptTradeOffer - offer not found', id);
+      return;
+    }
+
+    const author = this.stateMachine.gameData.players.find((p) => p.id === offer.authorPlayerId);
+    if (!author) {
+      this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
+      console.error('Game - acceptTradeOffer - author player not found', offer.authorPlayerId);
+      return;
+    }
+
+    const target = this.stateMachine.gameData.players.find((p) => p.id === offer.targetPlayerId);
+    if (!target) {
+      this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
+      console.error('Game - acceptTradeOffer - target player not found', offer.targetPlayerId);
+      return;
+    }
+
+    const authorProperties = offer.authorOfferProperties.map((p) =>
+      this.stateMachine.gameData.tiles.find((t) => t.id === p.id)
+    );
+    if (authorProperties.some((p) => p === undefined)) {
+      this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
+      console.error('Game - acceptTradeOffer - author property or properties not found', offer.authorOfferProperties);
+      return;
+    }
+
+    if (authorProperties.map((p) => p as IBuyableTile).some((p) => !p?.buyable || p?.owner?.id !== author.id)) {
+      this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
+      console.error(
+        'Game - acceptTradeOffer - author property or properties not owned by author',
+        offer.authorOfferProperties
+      );
+    }
+
+    const targetProperties = offer.targetOfferProperties.map((p) =>
+      this.stateMachine.gameData.tiles.find((t) => t.id === p.id)
+    );
+    if (targetProperties.some((p) => p === undefined)) {
+      this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
+      console.error('Game - acceptTradeOffer - target property or properties not found', offer.targetOfferProperties);
+      return;
+    }
+
+    if (targetProperties.map((p) => p as IBuyableTile).some((p) => !p?.buyable || p?.owner?.id !== author.id)) {
+      this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
+      console.error(
+        'Game - acceptTradeOffer - target property or properties not owned by author',
+        offer.targetOfferProperties
+      );
+    }
+
+    if (author.money < offer.authorOfferMoney) {
+      this.stateMachine.gameData.log(
+        `${author.name} does not have enough money ($${offer.authorOfferMoney}) for this trade`
+      );
+      return;
+    }
+
+    if (target.money < offer.targetOfferMoney) {
+      this.stateMachine.gameData.log(
+        `${target.name} does not have enough money ($${offer.targetOfferMoney}) for this trade`
+      );
+      return;
+    }
+
+    for (const property of authorProperties) {
+      const buyableProperty = property as IBuyableTile;
+      if (buyableProperty?.buyable) {
+        buyableProperty.owner = target;
+      }
+    }
+
+    for (const property of targetProperties) {
+      const buyableProperty = property as IBuyableTile;
+      if (buyableProperty?.buyable) {
+        buyableProperty.owner = author;
+      }
+    }
+
+    author.money -= offer.authorOfferMoney;
+    author.money += offer.targetOfferMoney;
+
+    target.money -= offer.targetOfferMoney;
+    target.money += offer.authorOfferMoney;
+
+    this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
   }
 }

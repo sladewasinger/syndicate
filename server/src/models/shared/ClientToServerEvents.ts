@@ -2,6 +2,7 @@ import type { IClientGameData } from './IClientGameData';
 import { IClientLobbyData } from './IClientLobbyData';
 import { IClientUser } from './IClientUser';
 import type { SocketError } from './SocketError';
+import { TradeOffer } from './TradeOffer';
 
 export interface ClientToServerEvents {
   registerName: (name: string, callback: (error: SocketError | null, data: IClientUser | undefined) => void) => void;
@@ -17,6 +18,14 @@ export interface ClientToServerEvents {
   endTurn: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
   buyBuilding: (
     propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  createTradeOffer: (
+    offer: TradeOffer,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  acceptTradeOffer: (
+    offerId: string,
     callback: (error: SocketError | null, data: IClientGameData | null) => void
   ) => void;
 }

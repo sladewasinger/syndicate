@@ -11,6 +11,7 @@ import { SocketData } from 'src/models/shared/SocketData';
 import { SocketError } from 'src/models/shared/SocketError';
 import { IClientLobbyData } from 'src/models/shared/IClientLobbyData';
 import { IClientUser } from 'src/models/shared/IClientUser';
+import { TradeOffer } from 'src/models/shared/TradeOffer';
 
 export class Engine {
   port: string | number;
@@ -89,6 +90,16 @@ export class Engine {
       socket.on('buyBuilding', (propertyIndex, callback) => {
         console.log('buyBuilding');
         this.buyBuilding(socket.id, propertyIndex, callback);
+      });
+
+      socket.on('createTradeOffer', (offer, callback) => {
+        console.log('createTradeOffer');
+        this.createTradeOffer(socket.id, offer, callback);
+      });
+
+      socket.on('acceptTradeOffer', (offerId, callback) => {
+        console.log('acceptTradeOffer');
+        this.acceptTradeOffer(socket.id, offerId, callback);
       });
     });
   }
@@ -284,6 +295,42 @@ export class Engine {
     }
 
     lobby.game!.buyBuilding(tilePosition);
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
+  }
+
+  createTradeOffer(
+    socketId: string,
+    offer: TradeOffer,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game!.createTradeOffer(offer);
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
+  }
+
+  acceptTradeOffer(
+    socketId: string,
+    offerId: string,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game!.acceptTradeOffer(offerId);
 
     callback(null, lobby.game!.getClientGameData(user.socketId));
   }
