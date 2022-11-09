@@ -1,6 +1,6 @@
 import type { GameData } from '../../models/GameData';
 import { StateEvent } from './StateEvents';
-import type { StateName } from './StateNames';
+import type { StateName } from '../../models/shared/StateNames';
 
 export interface IGameState {
   name: StateName;

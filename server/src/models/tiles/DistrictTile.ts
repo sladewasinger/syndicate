@@ -4,7 +4,7 @@ import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import type { IBuildableTile, IBuyableTile } from './ITile';
-import { StateName } from '../../game/states/StateNames';
+import { StateName } from '../shared/StateNames';
 
 export class DistrictTile implements IBuyableTile, IBuildableTile {
   id: string;

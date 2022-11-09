@@ -4,4 +4,5 @@ import type { PlayersRender } from './PlayersRender';
 export class RenderData {
   renderTiles: ITileRender[] = [];
   playersRender: PlayersRender | undefined = undefined;
+  diceState: 'idle' | 'rolling' | 'rolled' = 'idle';
 }

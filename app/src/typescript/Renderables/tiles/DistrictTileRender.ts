@@ -11,6 +11,7 @@ export class DistrictTileRender implements ITileRender {
   container: PIXI.Container<PIXI.DisplayObject>;
   tileBackground: PIXI.Graphics | undefined = undefined;
   infoCardContainer: PIXI.Container | undefined;
+  colorBar: PIXI.Graphics | undefined = undefined;
   building1: PIXI.Graphics | undefined;
   building2: PIXI.Graphics | undefined;
   building3: PIXI.Graphics | undefined;
@@ -38,6 +39,8 @@ export class DistrictTileRender implements ITileRender {
 
     if (gameTile.buildingCount === 1 && this.building1 !== undefined) {
       this.building1.visible = true;
+      const targetPosY = this.colorBar!.height * 0.5 - this.building1.height * 0.5;
+      this.building1.y += (targetPosY - this.building1.y) * 0.01;
     }
     if (gameTile.buildingCount === 2 && this.building2 !== undefined) {
       this.building2.visible = true;
@@ -66,13 +69,14 @@ export class DistrictTileRender implements ITileRender {
     colorBar.beginFill(this.tile.color, 1);
     colorBar.drawRect(0, 0, this.width, this.height * 0.2);
     colorBar.endFill();
+    this.colorBar = colorBar;
 
     const building1 = new PIXI.Graphics();
     building1.beginFill(0x000000, 1);
     building1.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
     building1.endFill();
     building1.x = 10;
-    building1.y = colorBar.height * 0.5 - building1.height * 0.5;
+    building1.y = colorBar.height * 0.5 - building1.height * 0.5 - 200;
     building1.visible = false;
     this.building1 = building1;
 
@@ -172,7 +176,7 @@ export class DistrictTileRender implements ITileRender {
     const cardBackground = new PIXI.Graphics();
     cardBackground.lineStyle(2, 0x000000, 1);
     cardBackground.beginFill(0xffffff, 1);
-    cardBackground.drawRect(0, 0, this.width * 2, this.height * 2);
+    cardBackground.drawRoundedRect(0, 0, this.width * 2, this.height * 2, 15);
     cardBackground.endFill();
 
     const colorBar = new PIXI.Graphics();

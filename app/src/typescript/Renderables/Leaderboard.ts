@@ -96,7 +96,6 @@ export class Leaderboard {
 
   drawInitial(args: ILeaderboardRenderArgs) {
     this.parentContainer.addChild(this.container);
-    this.parentContainer.sortChildren();
     this.container.x = args.position.x;
     this.container.y = args.position.y;
 

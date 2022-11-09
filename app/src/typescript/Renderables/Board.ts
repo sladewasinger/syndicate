@@ -18,6 +18,8 @@ import { InteractionManager } from '@pixi/interaction';
 import { extensions } from '@pixi/core';
 import { Leaderboard } from './Leaderboard';
 import { InternetTileRender } from './tiles/InternetTileRender';
+import { DiceRender } from './DiceRender';
+import type { BoardCallbacks } from '../models/BoardCallbacks';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -30,8 +32,9 @@ export class Board {
   renderData: RenderData;
   prevGameData: IClientGameData;
   leaderboard: Leaderboard | undefined;
+  diceRender: DiceRender | undefined;
 
-  constructor(gameData: IClientGameData) {
+  constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
 
     const canvas = document.getElementById('gameCanvas');
@@ -80,6 +83,7 @@ export class Board {
     }
     this.playersRender?.update(gameData, this.renderData);
     this.leaderboard?.update(gameData, this.prevGameData);
+    this.diceRender?.update(gameData, this.prevGameData, this.renderData);
 
     this.prevGameData = gameData;
   }
@@ -92,6 +96,9 @@ export class Board {
     board.drawRect(0, 0, this.width, this.height);
     board.endFill();
     this.container.addChild(board);
+
+    this.diceRender = new DiceRender(this.container, this.callbacks.rollDice);
+    await this.diceRender.drawInitial(gameData, new PIXI.Point(BOARD_WIDTH / 2, BOARD_HEIGHT / 2));
 
     const renderTiles = gameData.tiles.map(this.getTileRenderFromTile);
     for (let i = 0; i < boardPositions.length; i++) {

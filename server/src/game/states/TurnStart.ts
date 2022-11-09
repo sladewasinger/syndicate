@@ -1,5 +1,5 @@
 import type { GameData } from '../../models/GameData';
-import { StateName } from './StateNames';
+import { StateName } from '../../models/shared/StateNames';
 import type { IGameState } from './IGameState';
 
 export class TurnStart implements IGameState {
