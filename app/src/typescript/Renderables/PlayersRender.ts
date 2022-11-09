@@ -2,6 +2,7 @@ import type { IClientPlayer } from '../models/shared/IClientPlayer';
 import * as PIXI from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import type { RenderData } from './RenderData';
+import { Leaderboard } from './Leaderboard';
 
 export class PlayerRender {
   container: PIXI.Container;
@@ -16,6 +17,7 @@ export class PlayerRender {
 export class PlayersRender {
   playerRenders: PlayerRender[] = [];
   container: PIXI.Container;
+  currentPlayerIndicator: PIXI.Sprite | undefined;
 
   constructor(public players: IClientPlayer[]) {
     this.container = new PIXI.Container();
@@ -46,6 +48,16 @@ export class PlayersRender {
         this.removePlayer(playerRender.player);
       }
     }
+
+    const currentPlayerRender = this.playerRenders.find((pr) => pr.player.id === gameData.currentPlayer?.id);
+    if (currentPlayerRender && this.currentPlayerIndicator) {
+      this.currentPlayerIndicator.x = currentPlayerRender.container.x;
+      this.currentPlayerIndicator.y =
+        currentPlayerRender.container.y -
+        this.currentPlayerIndicator.height -
+        40 -
+        Math.sin(renderData.frame * 0.05) * 40;
+    }
   }
 
   private distributePlayersOnSameTile(
@@ -70,6 +82,14 @@ export class PlayersRender {
   }
 
   drawInitial(args: IPlayersRenderArgs, container: PIXI.Container) {
+    this.currentPlayerIndicator = new PIXI.Sprite(Leaderboard.indicatorTexture);
+    this.currentPlayerIndicator.x = 50;
+    this.currentPlayerIndicator.y = 50;
+    this.currentPlayerIndicator.scale.set(0.5);
+    this.currentPlayerIndicator.alpha = 0.75;
+    this.currentPlayerIndicator.anchor.set(0.5, 0.5);
+    this.container.addChild(this.currentPlayerIndicator);
+
     for (const playerRender of this.playerRenders) {
       const token = new PIXI.Graphics();
       token.lineStyle(5, 0x000000, 1);

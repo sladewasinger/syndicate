@@ -4,7 +4,7 @@ import type { IClientTile } from './IClientTile';
 export interface IClientGameData {
   myId: string;
   players: IClientPlayer[];
-  currentPlayer: IClientPlayer;
+  currentPlayer: IClientPlayer | undefined;
   dice: number[];
   tiles: IClientTile[];
   state: string;

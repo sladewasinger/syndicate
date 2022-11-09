@@ -4,6 +4,7 @@ import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import { TileRenderUtils } from './TileRenderUtils';
 
 export class DistrictTileRender implements ITileRender {
   width: number = TILE_WIDTH;
@@ -17,6 +18,7 @@ export class DistrictTileRender implements ITileRender {
   building3: PIXI.Graphics | undefined;
   building4: PIXI.Graphics | undefined;
   skyscraper: PIXI.Graphics | undefined;
+  faded: boolean = false;
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
@@ -202,6 +204,13 @@ Buyback:     $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
 
     infoCardContainer.addChild(cardBackground, colorBar, title, infoText);
     parentContainer.addChild(infoCardContainer);
+  }
+
+  fade(): void {
+    TileRenderUtils.fade(this.container);
+  }
+  unfade(): void {
+    TileRenderUtils.unfade(this.container);
   }
 }
 

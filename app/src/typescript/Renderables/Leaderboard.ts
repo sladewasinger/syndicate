@@ -1,6 +1,8 @@
 import type { IClientPlayer } from '../models/shared/IClientPlayer';
 import * as PIXI from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
+import type { RenderData } from './RenderData';
+import { Assets } from '@pixi/assets';
 
 export interface ILeaderboardRenderArgs {
   position: PIXI.Point;
@@ -27,12 +29,28 @@ export class ILeaderboardPlayerRender {
 export class Leaderboard {
   container: PIXI.Container;
   leaderboardEntries: ILeaderboardPlayerRender[] = [];
+  currentPlayerIndicator1: PIXI.Sprite | undefined;
+
+  static indicatorTexture: any;
 
   constructor(public parentContainer: PIXI.Container) {
     this.container = new PIXI.Container();
   }
 
-  update(gameData: IClientGameData, prevGameData: IClientGameData) {
+  async update(gameData: IClientGameData, prevGameData: IClientGameData, renderData: RenderData) {
+    const currentPlayerRender = this.leaderboardEntries.find((l) => l.player.id === gameData.currentPlayer?.id);
+
+    if (!this.currentPlayerIndicator1 || !currentPlayerRender) {
+      return;
+    }
+
+    this.currentPlayerIndicator1.y = currentPlayerRender?.container.y;
+    this.currentPlayerIndicator1.x =
+      currentPlayerRender.money.x +
+      currentPlayerRender.money.width +
+      this.currentPlayerIndicator1.width +
+      25 +
+      Math.cos(renderData.frame * 0.05) * 25;
     const extraPlayers = this.leaderboardEntries.filter((l) => !gameData.players.find((p) => p.id === l.player.id));
     for (const extraPlayer of extraPlayers) {
       console.log('Removing extra player from leaderboard: ', extraPlayer.player.name);
@@ -41,7 +59,7 @@ export class Leaderboard {
     const missingPlayers = gameData.players.filter((p) => !this.leaderboardEntries.find((l) => l.player.id === p.id));
     if (missingPlayers.length > 0) {
       this.container.removeChildren();
-      this.drawInitial({ position: this.container.position, gameData });
+      await this.drawInitial({ position: this.container.position, gameData });
     }
 
     this.updateMoneyText(gameData, prevGameData);
@@ -94,13 +112,25 @@ export class Leaderboard {
     }
   }
 
-  drawInitial(args: ILeaderboardRenderArgs) {
+  async drawInitial(args: ILeaderboardRenderArgs) {
+    if (!Leaderboard.indicatorTexture) {
+      Leaderboard.indicatorTexture = await Assets.load('indicator.png');
+    }
+
     this.parentContainer.addChild(this.container);
     this.container.x = args.position.x;
     this.container.y = args.position.y;
 
-    const players = args.gameData.players.sort((a, b) => a.turnOrder - b.turnOrder);
+    this.currentPlayerIndicator1 = new PIXI.Sprite(Leaderboard.indicatorTexture);
+    this.currentPlayerIndicator1.rotation = Math.PI / 2;
+    this.currentPlayerIndicator1.width = 50;
+    this.currentPlayerIndicator1.height = 50;
+    this.currentPlayerIndicator1.x = 0;
+    this.currentPlayerIndicator1.y = 0;
+    this.currentPlayerIndicator1.alpha = 0.75;
+    this.container.addChild(this.currentPlayerIndicator1);
 
+    const players = args.gameData.players.sort((a, b) => a.turnOrder - b.turnOrder);
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
       const color = player.color;
@@ -146,5 +176,8 @@ export class Leaderboard {
       render.name!.x = (longestNameRender.name!.width || 0) - render.name!.width;
       render.money!.x = render.name!.x + render.name!.width + 50;
     }
+
+    this.currentPlayerIndicator1!.x =
+      longestNameRender.money.x + longestNameRender.money.width + this.currentPlayerIndicator1!.width;
   }
 }

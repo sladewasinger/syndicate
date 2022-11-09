@@ -8,6 +8,8 @@ export interface ITileRender {
   container: PIXI.Container;
   drawInitial(args: ITileRenderArgs, container: PIXI.Container): void;
   update(gameData: IClientGameData, renderData: RenderData): void;
+  fade(): void;
+  unfade(): void;
 }
 
 export interface ITileRenderArgs {

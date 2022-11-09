@@ -20,6 +20,7 @@ import { Leaderboard } from './Leaderboard';
 import { InternetTileRender } from './tiles/InternetTileRender';
 import { DiceRender } from './DiceRender';
 import type { BoardCallbacks } from '../models/BoardCallbacks';
+import { Textures } from './Textures';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -67,6 +68,9 @@ export class Board {
 
     this.renderData = new RenderData();
     this.renderData.renderTiles = [];
+    setInterval(() => {
+      this.renderData.frame++;
+    }, 1000 / 60);
   }
 
   resize() {
@@ -82,7 +86,7 @@ export class Board {
       tile.update(gameData, this.renderData);
     }
     this.playersRender?.update(gameData, this.renderData);
-    this.leaderboard?.update(gameData, this.prevGameData);
+    this.leaderboard?.update(gameData, this.prevGameData, this.renderData);
     this.diceRender?.update(gameData, this.prevGameData, this.renderData);
 
     this.prevGameData = gameData;
@@ -90,6 +94,9 @@ export class Board {
 
   async drawBoardInitial(gameData: IClientGameData) {
     console.log('drawBoardInitial');
+
+    await Textures.loadTextures();
+
     const board = new PIXI.Graphics();
     board.lineStyle(1, 0x000000, 1);
     board.beginFill(0xffffff, 1);
@@ -118,15 +125,15 @@ export class Board {
       this.renderData.renderTiles.push(renderTile);
     }
 
-    this.playersRender = new PlayersRender(gameData.players);
-    this.renderData.playersRender = this.playersRender;
-    this.playersRender.drawInitial({}, this.container);
-
     this.leaderboard = new Leaderboard(this.container);
-    this.leaderboard.drawInitial({
+    await this.leaderboard.drawInitial({
       gameData: gameData,
       position: new PIXI.Point(TILE_HEIGHT + 30, TILE_HEIGHT + 30),
     });
+
+    this.playersRender = new PlayersRender(gameData.players);
+    this.renderData.playersRender = this.playersRender;
+    await this.playersRender.drawInitial({}, this.container);
   }
 
   getTileRenderFromTile(tile: IClientTile) {

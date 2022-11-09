@@ -146,11 +146,11 @@ export class Game {
 
   rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
     console.log('Game - rollDice');
-    if (dice1Override !== undefined && dice2Override !== undefined) {
+    if (dice1Override === undefined || dice1Override == null || dice2Override == undefined || dice2Override == null) {
+      this.stateMachine.gameData.diceOverride = null;
+    } else {
       console.log('Game - rollDice - override dice', dice1Override, dice2Override);
       this.stateMachine.gameData.diceOverride = [dice1Override, dice2Override];
-    } else {
-      this.stateMachine.gameData.diceOverride = null;
     }
     this.stateMachine.event(StateEvent.RollDice);
   }

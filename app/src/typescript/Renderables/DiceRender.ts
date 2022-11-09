@@ -3,8 +3,8 @@ import { Assets } from '@pixi/assets';
 import { AnimatedSprite } from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import { StateName } from '../models/shared/StateNames';
-import { getTransitionRawChildren } from 'vue';
 import type { RenderData } from './RenderData';
+import { Textures } from './Textures';
 
 export class DiceRender {
   container: PIXI.Container;
@@ -13,6 +13,8 @@ export class DiceRender {
   rollAnimationInterval: number | undefined;
   dice1: AnimatedSprite | undefined;
   dice2: AnimatedSprite | undefined;
+  diceContainer: PIXI.Container | undefined;
+  arrow: PIXI.Sprite | undefined;
 
   constructor(public parentContainer: PIXI.Container, public rollDice: () => void) {
     this.container = new PIXI.Container();
@@ -25,6 +27,10 @@ export class DiceRender {
     } else {
       this.dice1?.gotoAndStop((gameData.dice[0] || 1) - 1);
       this.dice2?.gotoAndStop((gameData.dice[1] || 1) - 1);
+    }
+
+    if (this.diceContainer && this.arrow) {
+      this.arrow.x = this.diceContainer.x + this.diceContainer.width / 2 + 25 + Math.cos(renderData.frame * 0.07) * 25;
     }
   }
 
@@ -59,24 +65,31 @@ export class DiceRender {
     diceContainer.interactive = true;
     diceContainer.buttonMode = true;
 
-    diceContainer.on('mouseover', () => {
-      this.hoverAnimationInterval = setInterval(() => {
-        dice1.rotation += Math.PI * 0.1;
-        dice2.rotation += Math.PI * 0.1;
-      }, 50);
-    });
-    diceContainer.on('mouseout', () => {
-      if (this.hoverAnimationInterval) {
-        clearInterval(this.hoverAnimationInterval);
-        dice1.rotation = 0;
-        dice2.rotation = 0;
-      }
-    });
+    // diceContainer.on('mouseover', () => {
+    //   this.hoverAnimationInterval = setInterval(() => {
+    //     dice1.rotation += Math.PI * 0.1;
+    //     dice2.rotation += Math.PI * 0.1;
+    //   }, 50);
+    // });
+    // diceContainer.on('mouseout', () => {
+    //   if (this.hoverAnimationInterval) {
+    //     clearInterval(this.hoverAnimationInterval);
+    //     dice1.rotation = 0;
+    //     dice2.rotation = 0;
+    //   }
+    // });
 
     diceContainer.on('click', () => {
       this.rollDice();
     });
 
-    this.container.addChild(diceContainer);
+    this.diceContainer = diceContainer;
+
+    this.arrow = new PIXI.Sprite(Textures.arrowTexture);
+    this.arrow.anchor.set(0.5, 0.5);
+    this.arrow.x = diceContainer.x + diceContainer.width / 2;
+    this.arrow.y = diceContainer.y - diceContainer.height / 2;
+
+    this.container.addChild(diceContainer, this.arrow);
   }
 }
