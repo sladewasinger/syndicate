@@ -53,7 +53,7 @@ export class UtilityTile implements IBuyableTile {
   }
 
   getClientTile(gameData: GameData): IClientTile {
-    return {
+    const tile: IClientTile = {
       id: this.id,
       name: this.name,
       type: this.type,
@@ -67,6 +67,8 @@ export class UtilityTile implements IBuyableTile {
       skyscraper: undefined,
       skyscraperPrice: undefined,
       rent: this.entranceFee(gameData),
+      buildingCount: undefined,
     };
+    return tile;
   }
 }

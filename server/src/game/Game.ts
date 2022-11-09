@@ -14,6 +14,7 @@ import { RollDice } from './states/RollDice';
 import { BuyProperty } from './states/BuyProperty';
 import { TurnEnd } from './states/TurnEnd';
 import { IClientPlayer } from 'src/models/shared/IClientPlayer';
+import { BuyBuilding } from './states/BuyBuilding';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -70,6 +71,7 @@ export class Game {
     this.stateMachine.addState(new PostDiceRoll());
     this.stateMachine.addState(new LandedOnTile());
     this.stateMachine.addState(new BuyProperty());
+    this.stateMachine.addState(new BuyBuilding());
     this.stateMachine.addState(new TurnEnd());
     this.stateMachine.addState(new GameOver());
   }

@@ -34,7 +34,13 @@ export class StateMachine {
   }
 
   public event(event: StateEvent) {
+    // const prevGameData = JSON.stringify(this.gameData);
+
     this._state.event(event, this.gameData);
+
+    // if (prevGameData !== JSON.stringify(this.gameData)) {
+    //   this.gameData.callbacks.onStateChange(this.currentStateName + ' - event: ' + event);
+    // }
   }
 
   public update() {

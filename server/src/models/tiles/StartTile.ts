@@ -39,6 +39,7 @@ export class StartTile implements ITile {
       skyscraperPrice: undefined,
       skyscraper: undefined,
       rent: undefined,
+      buildingCount: undefined,
     };
   }
 }

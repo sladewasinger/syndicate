@@ -21,7 +21,7 @@ export interface IBuyableTile extends ITile {
 }
 
 export interface IBuildableTile extends IBuyableTile {
-  buildings: number;
+  buildingCount: number;
   buildingCost: number;
   skyscraperPrice: number;
 }

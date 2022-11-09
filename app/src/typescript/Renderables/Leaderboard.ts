@@ -53,13 +53,13 @@ export class Leaderboard {
       const leaderboardEntry = this.leaderboardEntries.find((l) => l.player.id === player.id);
       if (leaderboardEntry) {
         leaderboardEntry.name.text = player.name;
-        leaderboardEntry.money.text = player.money.toString();
+        leaderboardEntry.money.text = `$${player.money}`;
 
         if (prevPlayer && prevPlayer.money !== player.money) {
           console.log('Updating money text for player: ', player.name);
           const diff = player.money - prevPlayer.money;
           const sign = diff > 0 ? '+' : '-';
-          const moneyLossGain = new PIXI.Text(`${sign} ${Math.abs(diff)}`, {
+          const moneyLossGain = new PIXI.Text(`${sign}${Math.abs(diff)}`, {
             fontSize: 40,
             fontFamily: 'monospace',
             fill: diff > 0 ? 0x00dd00 : 0xdd0000,
@@ -72,7 +72,7 @@ export class Leaderboard {
           const fadeInterval = setInterval(() => {
             alpha -= 0.1;
             moneyLossGain.alpha = alpha;
-            moneyLossGain.scale.x *= 1.005;
+            moneyLossGain.x *= 1.01;
             moneyLossGain.scale.y *= 1.005;
             if (moneyLossGain.alpha <= 0) {
               this.container.removeChild(moneyLossGain);

@@ -35,34 +35,36 @@ export class TurnEnd implements IGameState {
   }
 
   buyBuilding(gameData: GameData): StateName {
-    const tilePosition = gameData.lastSelectedTilePosition;
-    if (!tilePosition) {
-      gameData.log('No tile selected');
-      return this.name;
-    }
-    const tile = gameData.tiles[tilePosition] as IBuildableTile;
-    if (tile.buildings === undefined || tile.buildingCost === undefined) {
-      gameData.log('Cannot build on this tile');
-      return this.name;
-    }
-    if (!tile.owner || tile.owner?.id !== gameData.currentPlayer?.id) {
-      gameData.log('You do not own this property');
-      return this.name;
-    }
-    if (tile.buildings >= 5) {
-      gameData.log('You cannot build any more buildings on this property');
-      return this.name;
-    }
+    // const tilePosition = gameData.lastSelectedTilePosition;
+    // if (!tilePosition) {
+    //   gameData.log('No tile selected');
+    //   return this.name;
+    // }
+    // const tile = gameData.tiles[tilePosition] as IBuildableTile;
+    // if (tile.buildingCount === undefined || tile.buildingCost === undefined) {
+    //   gameData.log('Cannot build on this tile');
+    //   return this.name;
+    // }
+    // if (!tile.owner || tile.owner?.id !== gameData.currentPlayer?.id) {
+    //   gameData.log('You do not own this property');
+    //   return this.name;
+    // }
+    // if (tile.buildingCount >= 5) {
+    //   gameData.log('You cannot build any more buildings on this property');
+    //   return this.name;
+    // }
+    // if (gameData.currentPlayer.money < tile.buildingCost) {
+    //   gameData.log('You do not have enough money to build a building');
+    //   return this.name;
+    // }
 
-    if (tile.owner.id === gameData.currentPlayer?.id) {
-      tile.buildings++;
-      gameData.currentPlayer.money -= tile.buildingCost;
-    }
+    return StateName.BuyBuilding;
 
-    const buildingOrSkyscraper = tile.buildings === 5 ? 'skyscraper' : 'building';
-    gameData.log(`Player ${gameData.currentPlayer?.name} built a ${buildingOrSkyscraper} on ${tile.name}`);
+    // tile.buildingCount++;
+    // gameData.currentPlayer.money -= tile.buildingCost;
 
-    return this.name;
+    // const buildingOrSkyscraper = tile.buildingCount === 5 ? 'skyscraper' : 'building';
+    // gameData.log(`Player ${gameData.currentPlayer?.name} bought a ${buildingOrSkyscraper} on ${tile.name}`);
   }
 
   nextPlayer(gameData: GameData): StateName {

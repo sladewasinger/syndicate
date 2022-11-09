@@ -29,6 +29,8 @@ export class EngineTester {
     engine1.rollDice(0, 1);
     await Utils.sleep(1000);
     engine1.buyProperty();
+    await Utils.sleep(2000);
+    await engine1.buyBuilding(3); // Negative test
     await Utils.sleep(500);
     await engine1.endTurn();
     await Utils.sleep(500);
@@ -44,6 +46,8 @@ export class EngineTester {
     await engine1.buyProperty();
     await Utils.sleep(1000);
     await engine1.buyBuilding(3);
+    await Utils.sleep(1000);
+    //await engine1.endTurn();
   }
 
   async test_4_players() {

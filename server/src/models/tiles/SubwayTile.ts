@@ -54,6 +54,7 @@ export class SubwayTile implements IBuyableTile {
       skyscraperPrice: undefined,
       skyscraper: this.skyscraper,
       rent: this.entranceFee(gameData),
+      buildingCount: undefined,
     };
     return clientTile;
   }

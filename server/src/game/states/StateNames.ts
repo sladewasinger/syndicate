@@ -8,4 +8,5 @@ export enum StateName {
   GameOver = 'GameOver',
   RollDice = 'RollDice',
   BuyProperty = 'BuyProperty',
+  BuyBuilding = 'BuyBuilding',
 }

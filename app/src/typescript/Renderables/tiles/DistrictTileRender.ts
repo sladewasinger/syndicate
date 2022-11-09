@@ -11,6 +11,11 @@ export class DistrictTileRender implements ITileRender {
   container: PIXI.Container<PIXI.DisplayObject>;
   tileBackground: PIXI.Graphics | undefined = undefined;
   infoCardContainer: PIXI.Container | undefined;
+  building1: PIXI.Graphics | undefined;
+  building2: PIXI.Graphics | undefined;
+  building3: PIXI.Graphics | undefined;
+  building4: PIXI.Graphics | undefined;
+  skyscraper: PIXI.Graphics | undefined;
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
@@ -30,6 +35,22 @@ export class DistrictTileRender implements ITileRender {
       this.tileBackground?.drawRect(0, 0, this.width, this.height);
       this.tileBackground?.endFill();
     }
+
+    if (gameTile.buildingCount === 1 && this.building1 !== undefined) {
+      this.building1.visible = true;
+    }
+    if (gameTile.buildingCount === 2 && this.building2 !== undefined) {
+      this.building2.visible = true;
+    }
+    if (gameTile.buildingCount === 3 && this.building3 !== undefined) {
+      this.building3.visible = true;
+    }
+    if (gameTile.buildingCount === 4 && this.building4 !== undefined) {
+      this.building4.visible = true;
+    }
+    if (gameTile.buildingCount === 5 && this.skyscraper !== undefined) {
+      this.skyscraper.visible = true;
+    }
   }
 
   drawInitial(args: ITileRenderArgs, parentContainer: PIXI.Container) {
@@ -45,6 +66,51 @@ export class DistrictTileRender implements ITileRender {
     colorBar.beginFill(this.tile.color, 1);
     colorBar.drawRect(0, 0, this.width, this.height * 0.2);
     colorBar.endFill();
+
+    const building1 = new PIXI.Graphics();
+    building1.beginFill(0x000000, 1);
+    building1.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
+    building1.endFill();
+    building1.x = 10;
+    building1.y = colorBar.height * 0.5 - building1.height * 0.5;
+    building1.visible = false;
+    this.building1 = building1;
+
+    const building2 = new PIXI.Graphics();
+    building2.beginFill(0x000000, 1);
+    building2.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
+    building2.endFill();
+    building2.x = building1.x + building1.width * 2;
+    building2.y = colorBar.height * 0.5 - building1.height * 0.5;
+    building2.visible = false;
+    this.building2 = building2;
+
+    const building3 = new PIXI.Graphics();
+    building3.beginFill(0x000000, 1);
+    building3.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
+    building3.endFill();
+    building3.x = building1.x + building1.width * 4;
+    building3.y = colorBar.height * 0.5 - building1.height * 0.5;
+    building3.visible = false;
+    this.building3 = building3;
+
+    const building4 = new PIXI.Graphics();
+    building4.beginFill(0x000000, 1);
+    building4.drawRect(0, 0, this.width * 0.1, this.width * 0.1);
+    building4.endFill();
+    building4.x = building1.x + building1.width * 6;
+    building4.y = colorBar.height * 0.5 - building1.height * 0.5;
+    building4.visible = false;
+    this.building4 = building4;
+
+    const skyscraper = new PIXI.Graphics();
+    skyscraper.beginFill(0x000000, 1);
+    skyscraper.drawRect(0, 0, this.width * 0.15, this.width * 0.3);
+    skyscraper.endFill();
+    skyscraper.x = building1.x + building1.width * 7.5;
+    skyscraper.y = colorBar.height * 0.5 - skyscraper.height * 0.8;
+    skyscraper.visible = false;
+    this.skyscraper = skyscraper;
 
     const priceText = new PIXI.Text(`$${this.tile.price}`, {
       fill: 0x000000,
@@ -69,7 +135,17 @@ export class DistrictTileRender implements ITileRender {
     this.drawInfoCard(parentContainer);
 
     const tileContainer = this.container;
-    tileContainer.addChild(tileBackground, colorBar, priceText, tileText);
+    tileContainer.addChild(
+      tileBackground,
+      colorBar,
+      building1,
+      building2,
+      building3,
+      building4,
+      skyscraper,
+      priceText,
+      tileText
+    );
     tileContainer.x = args.x;
     tileContainer.y = args.y;
     tileContainer.pivot.x = this.width / 2;

@@ -15,7 +15,6 @@ export class DistrictTile implements IBuyableTile, IBuildableTile {
   mortgaged: boolean = false;
   mortgageValue: number;
   type: TileType = TileType.District;
-  buildings: number = 0;
 
   constructor(
     public name: string,
@@ -61,6 +60,7 @@ export class DistrictTile implements IBuyableTile, IBuildableTile {
       skyscraperPrice: this.skyscraperPrice,
       skyscraper: this.skyscraper,
       rent: this.entranceFee(gameData),
+      buildingCount: this.buildingCount,
     };
     return clientTile;
   }

@@ -14,4 +14,5 @@ export interface IClientTile {
   skyscraperPrice: number | undefined;
   skyscraper: boolean | undefined;
   rent: number | undefined;
+  buildingCount: number | undefined;
 }

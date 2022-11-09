@@ -37,6 +37,7 @@ export class TaxTile implements ITile {
       entranceFees: undefined,
       buildingPrice: undefined,
       skyscraperPrice: undefined,
+      buildingCount: undefined,
     };
     return clientTile;
   }
