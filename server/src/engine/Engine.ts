@@ -328,6 +328,16 @@ export class Engine {
     if (!result) {
       return;
     }
+
+    const trade = result.lobby.game!.stateMachine.gameData.tradeOffers.find((t) => t.id === offerId);
+    if (!trade) {
+      callback({ code: 'trade_not_found', message: 'Trade not found' }, null);
+      return;
+    }
+    if (trade.targetPlayerId !== socketId) {
+      callback({ code: 'invalid_trade_recipient', message: 'Invalid trade recipient' }, null);
+      return;
+    }
     const { user, lobby } = result;
 
     lobby.game!.acceptTradeOffer(offerId);

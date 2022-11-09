@@ -6,7 +6,9 @@ export type ErrorCode =
   | 'game_not_found'
   | 'generic_error'
   | 'missing_key'
-  | 'invalid_tile_position';
+  | 'invalid_tile_position'
+  | 'trade_not_found'
+  | 'invalid_trade_recipient';
 
 export class SocketError {
   constructor(public code: ErrorCode, public message: string) {}

@@ -1,24 +1,24 @@
+import '@types/jest';
 import { Game } from '../src/game/Game';
 import { StateEvent } from '../src/game/states/StateEvents';
-import { StateName } from '../src/game/states/StateNames';
 import { TurnStart } from '../src/game/states/TurnStart';
 import { Player } from '../src/models/Player';
 
 describe('Game', () => {
   it('should create a new game', () => {
-    const game = new Game([]);
+    const game = new Game([], {onStateChange = () => {}});
     expect(game).toBeDefined();
   });
 
   it('should start in the TurnStart state', () => {
-    const game = new Game([]);
+    const game = new Game([], {}));
     expect(game.stateMachine.currentState.name).toBe('TurnStart');
   });
 });
 
 describe('TurnStart', () => {
   it('should immediately transition to PreDiceRoll', () => {
-    const game = new Game([]);
+    const game = new Game([], {}));
     game.update();
     expect(game.stateMachine.currentState.name).toBe(StateName.PreDiceRoll);
   });
