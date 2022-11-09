@@ -16,6 +16,7 @@ export class DistrictTileRender implements ITileRender {
     this.container = new PIXI.Container();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   update(gameData: IClientGameData, renderData: RenderData) {
     const gameTile = gameData.tiles.find((t) => t.id === this.tile.id);
     if (gameTile === undefined) {
@@ -116,8 +117,9 @@ export class DistrictTileRender implements ITileRender {
     const text = `Entrance Fee: $${this.tile.rent}\n\n 1 Building: $${this.tile.entranceFees![1]}
 2 Buildings: $${this.tile.entranceFees![2]}\n3 Buildings: $${this.tile.entranceFees![3]}
 4 Buildings: $${this.tile.entranceFees![4]}\n Skyscraper: $${this.tile.entranceFees![5]}
-\n\nMortgage\nValue:       $${this.tile.mortgageValue}
-\nBuyback\nValue:       $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
+\nBuildings:   $${this.tile.buildingPrice}
+\nMortgage:    $${this.tile.mortgageValue}
+Buyback:     $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
     const infoText = new PIXI.Text(text, {
       fontFamily: 'monospace',
       fill: 0x000000,

@@ -48,7 +48,7 @@ export class TurnEnd implements IGameState {
       count++;
     } while (nextPlayer.bankrupt && count < gameData.players.length);
 
-    if (count == gameData.players.length - 1) {
+    if (count == gameData.players.length) {
       gameData.winner = gameData.currentPlayer;
       return StateName.GameOver;
     }

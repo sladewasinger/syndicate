@@ -4,6 +4,7 @@ import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import { IBuyableTile } from './ITile';
+import { StateName } from '../../game/states/StateNames';
 
 export class UtilityTile implements IBuyableTile {
   id: string;
@@ -15,10 +16,10 @@ export class UtilityTile implements IBuyableTile {
   mortgageValue: number;
   mortgaged: boolean = false;
 
-  constructor(name: string, price: number) {
+  constructor(name: string, price: number, type: TileType.Internet | TileType.Electric) {
     this.id = randomUUID();
     this.name = name;
-    this.type = TileType.Utility;
+    this.type = type;
     this.price = price;
     this.mortgageValue = Math.floor(price * 0.5);
   }
@@ -39,7 +40,9 @@ export class UtilityTile implements IBuyableTile {
     }
   }
 
-  onLanded(gameData: GameData): void {}
+  onLanded(gameData: GameData, currentState: StateName): StateName {
+    return currentState;
+  }
 
   getOwner(): Player | undefined {
     return this.owner;

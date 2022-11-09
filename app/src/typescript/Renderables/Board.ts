@@ -11,12 +11,13 @@ import { TileType } from '../models/shared/TileType';
 import { EventTileRender } from './tiles/EventTileRender';
 import { TaxTileRender } from './tiles/TaxTileRender';
 import { SubwayTileRender } from './tiles/SubwayTileRender';
+import { ElectricTileRender } from './tiles/ElectricTileRender';
 import { PlayersRender } from './PlayersRender';
 import { RenderData } from './RenderData';
 import { InteractionManager } from '@pixi/interaction';
 import { extensions } from '@pixi/core';
 import { Leaderboard } from './Leaderboard';
-import { Utils } from '../Utils/Utils';
+import { InternetTileRender } from './tiles/InternetTileRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -139,6 +140,10 @@ export class Board {
         return new TaxTileRender(tile);
       case TileType.Subway:
         return new SubwayTileRender(tile);
+      case TileType.Electric:
+        return new ElectricTileRender(tile);
+      case TileType.Internet:
+        return new InternetTileRender(tile);
       default:
         return undefined;
     }

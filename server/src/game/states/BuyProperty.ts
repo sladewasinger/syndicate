@@ -12,7 +12,7 @@ export class BuyProperty implements IGameState {
     const tile = gameData.currentTile;
     const buyableTile = tile as IBuyableTile;
 
-    if (buyableTile && gameData.currentPlayer.money >= buyableTile.price) {
+    if (buyableTile.buyable && gameData.currentPlayer.money >= buyableTile.price) {
       gameData.currentPlayer.money -= buyableTile.price;
       gameData.currentPlayer.properties.push(tile.id);
       tile.owner = gameData.currentPlayer;

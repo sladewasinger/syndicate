@@ -1,4 +1,5 @@
 import { Engine } from './Engine';
+import type { IClientLobbyData } from './models/shared/IClientLobbyData';
 import { Utils } from './Utils/Utils';
 
 export class EngineTester {
@@ -6,6 +7,39 @@ export class EngineTester {
 
   constructor(vueForceUpdateCallback = () => {}) {
     this.vueForceUpdateCallback = vueForceUpdateCallback;
+  }
+
+  async test_buy_houses() {
+    await Utils.sleep(500);
+
+    const emptyCallback = () => {};
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+    const engine2 = new Engine(emptyCallback, false);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+    await Utils.emitWithPromise(engine2.socket, 'registerName', 'Bravo Charlie');
+
+    const lobby = await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    console.log(lobby.id);
+
+    engine2.joinLobby(lobby.id);
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(0, 1);
+    await Utils.sleep(1000);
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(500);
+    engine2.rollDice(1, 3);
+    await Utils.sleep(2000);
+    await engine2.endTurn();
+    await Utils.sleep(500);
+    await engine1.rollDice(0, 1);
+    await Utils.sleep(1000);
+    await engine1.buyProperty();
+    await Utils.sleep(500);
   }
 
   async test_4_players() {

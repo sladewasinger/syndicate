@@ -14,12 +14,11 @@ export class LandedOnTile implements IGameState {
     if (tile === undefined) {
       throw new Error(`Tile at player position '${gameData.currentPlayer.position}' not found`);
     }
-    tile.onLanded(gameData);
-
-    const buyableTile = tile as IBuyableTile;
-    if (buyableTile && buyableTile.owner != undefined) {
-      this.nextState = StateName.TurnEnd;
-    }
+    this.nextState = tile.onLanded(gameData, this.name);
+    // const buyableTile = tile as IBuyableTile;
+    // if (buyableTile && buyableTile.owner != undefined) {
+    //   this.nextState = StateName.TurnEnd;
+    // } else if ()
   }
 
   onExit(gameData: GameData): void {

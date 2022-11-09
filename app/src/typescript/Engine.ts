@@ -3,6 +3,7 @@ import { Board } from './Renderables/Board';
 import type { IClientGameData } from './models/shared/IClientGameData';
 import type { IClientLobbyData } from './models/shared/IClientLobbyData';
 import type { IClientUser } from './models/shared/IClientUser';
+import { Utils } from './Utils/Utils';
 
 export class Engine {
   socket: Socket<any, any>;
@@ -141,18 +142,12 @@ export class Engine {
       if (error) {
         console.error(error);
       } else {
-        console.log(result);
+        console.log('Buy Property Result: ', result);
       }
     });
   }
 
-  endTurn() {
-    this.socket.emit('endTurn', (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(result);
-      }
-    });
+  async endTurn() {
+    await Utils.emitWithPromise(this.socket, 'endTurn');
   }
 }

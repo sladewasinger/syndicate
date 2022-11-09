@@ -2,6 +2,7 @@ import type { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
+import { StateName } from '../../game/states/StateNames';
 
 export interface ITile {
   name: string;
@@ -9,7 +10,7 @@ export interface ITile {
   buyable: boolean;
   type: TileType;
   owner: Player | undefined;
-  onLanded(gameData: GameData): void;
+  onLanded(gameData: GameData, currentState: StateName): StateName;
   getClientTile(gameData: GameData): IClientTile;
 }
 

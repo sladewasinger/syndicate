@@ -4,6 +4,7 @@ import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import type { IBuyableTile } from './ITile';
+import { StateName } from '../../game/states/StateNames';
 
 export class DistrictTile implements IBuyableTile {
   id: string;
@@ -34,11 +35,14 @@ export class DistrictTile implements IBuyableTile {
     return this.entranceFees[this.buildingCount + (this.skyscraper ? 1 : 0)];
   }
 
-  onLanded(gameData: GameData): void {
+  onLanded(gameData: GameData, currentState: StateName): StateName {
     if (this.owner != null && this.owner !== gameData.currentPlayer) {
       gameData.currentPlayer.money -= this.entranceFee(gameData);
       this.owner.money += this.entranceFee(gameData);
+      return StateName.TurnEnd;
     }
+
+    return currentState;
   }
 
   getClientTile(gameData: GameData): IClientTile {

@@ -62,7 +62,7 @@ export class Engine {
       });
 
       socket.on('joinLobby', (key, callback) => {
-        console.log(`joinLobby: ${key}`);
+        console.log(`joinLobby: ${key}`, key);
         this.joinLobby(socket.id, key, callback);
       });
 
@@ -152,6 +152,11 @@ export class Engine {
       return;
     }
 
+    if (!key || key.length === 0 || typeof key !== 'string') {
+      callback({ code: 'missing_key', message: 'Missing key' }, null);
+      return;
+    }
+
     const lobby = this.lobbies.find((l) => l.id.toUpperCase() === key.toUpperCase());
     if (!lobby) {
       callback({ code: 'lobby_not_found', message: 'Lobby not found' }, null);
@@ -221,7 +226,10 @@ export class Engine {
       dice1Override = undefined;
       dice2Override = undefined;
     }
+
     lobby.game.rollDice(dice1Override, dice2Override);
+
+    callback(null, lobby.game.getClientGameData(socketId));
   }
 
   buyProperty(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
@@ -234,6 +242,8 @@ export class Engine {
     const { user, lobby } = result;
 
     lobby.game?.buyProperty();
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
   }
 
   endTurn(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
@@ -243,9 +253,11 @@ export class Engine {
     if (!result) {
       return;
     }
-    const { user, lobby } = result;
+    const { lobby } = result;
 
     lobby.game?.endTurn();
+
+    callback(null, lobby!.game!.getClientGameData(socketId));
   }
 
   // ** Helpers **

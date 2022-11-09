@@ -8,4 +8,6 @@ export enum TileType {
   Tax = 'Tax',
   Subway = 'Subway',
   Utility = 'Utility',
+  Internet = 'Internet',
+  Electric = 'Electricity',
 }

@@ -4,6 +4,7 @@ import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import { ITile } from './ITile';
+import { StateName } from '../../game/states/StateNames';
 
 export class EventTile implements ITile {
   name: string = 'Event';
@@ -16,7 +17,9 @@ export class EventTile implements ITile {
     this.id = randomUUID();
   }
 
-  onLanded(gameData: GameData): void {}
+  onLanded(gameData: GameData, currentState: StateName): StateName {
+    return StateName.TurnEnd;
+  }
 
   getClientTile(gameData: GameData): IClientTile {
     const clientTile: IClientTile = {

@@ -4,6 +4,7 @@ import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import type { ITile } from './ITile';
+import { StateName } from '../../game/states/StateNames';
 
 export class StartTile implements ITile {
   id: string;
@@ -17,8 +18,9 @@ export class StartTile implements ITile {
     this.id = randomUUID();
   }
 
-  onLanded(gameData: GameData): void {
+  onLanded(gameData: GameData, currentState: StateName): StateName {
     gameData.currentPlayer.money += 200;
+    return currentState;
   }
 
   getClientTile(gameData: GameData): IClientTile {
@@ -37,7 +39,6 @@ export class StartTile implements ITile {
       skyscraperPrice: undefined,
       skyscraper: undefined,
       rent: undefined,
-      buba: null,
     };
   }
 }

@@ -3,6 +3,7 @@ import { IClientTile } from '../shared/IClientTile';
 import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import type { ITile } from './ITile';
+import { StateName } from '../../game/states/StateNames';
 
 export class PrisonTile implements ITile {
   id: string;
@@ -16,7 +17,9 @@ export class PrisonTile implements ITile {
     this.id = 'prison';
   }
 
-  onLanded(gameData: GameData): void {}
+  onLanded(gameData: GameData, currentState: StateName): StateName {
+    return StateName.TurnEnd;
+  }
 
   getClientTile(gameData: GameData): IClientTile {
     return <IClientTile>(<unknown>{

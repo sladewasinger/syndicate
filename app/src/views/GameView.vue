@@ -27,7 +27,7 @@ export default defineComponent({
 
     if (this.RUN_TESTS) {
       const engineTester = new EngineTester(vueForceUpdateCallback);
-      engineTester.test_4_players();
+      engineTester.test_buy_houses();
     } else {
       this.engine = new Engine(vueForceUpdateCallback);
       this.engineVueProperties = this.engine.engineVueProperties;

@@ -1,4 +1,4 @@
-import { IClientUser } from './IClientUser';
+import type { IClientUser } from './IClientUser';
 
 export interface IClientLobbyData {
   id: string;
