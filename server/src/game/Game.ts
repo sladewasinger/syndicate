@@ -220,10 +220,10 @@ export class Game {
       return;
     }
 
-    if (targetProperties.map((p) => p as IBuyableTile).some((p) => !p?.buyable || p?.owner?.id !== author.id)) {
+    if (targetProperties.map((p) => p as IBuyableTile).some((p) => !p?.buyable || p?.owner?.id !== target.id)) {
       this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== id);
       console.error(
-        'Game - acceptTradeOffer - target property or properties not owned by author',
+        'Game - acceptTradeOffer - target property or properties not owned by target',
         offer.targetOfferProperties
       );
     }
