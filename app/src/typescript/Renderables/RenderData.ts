@@ -3,6 +3,7 @@ import type { PlayersRender } from './PlayersRender';
 
 export class RenderData {
   frame: number = 0;
+  myPlayerId: string = '';
   renderTiles: ITileRender[] = [];
   playersRender: PlayersRender | undefined = undefined;
   diceState: 'idle' | 'rolling' | 'rolled' = 'idle';

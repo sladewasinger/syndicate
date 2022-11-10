@@ -21,6 +21,11 @@ export class DiceRender {
   }
 
   update(gameData: IClientGameData, prevGameData: IClientGameData, renderData: RenderData) {
+    this.disableDice();
+    if (gameData.state === StateName.PreDiceRoll && gameData.currentPlayer?.id === gameData.myId) {
+      this.enableDice();
+    }
+
     if (gameData.state === StateName.RollDice) {
       this.dice1?.gotoAndStop(Math.random() * 6);
       this.dice2?.gotoAndStop(Math.random() * 6);
@@ -32,6 +37,28 @@ export class DiceRender {
     if (this.diceContainer && this.arrow) {
       this.arrow.x = this.diceContainer.x + this.diceContainer.width / 2 + 25 + Math.cos(renderData.frame * 0.07) * 25;
     }
+  }
+
+  disableDice() {
+    if (!this.diceContainer || !this.arrow) {
+      return;
+    }
+    this.arrow.visible = false;
+
+    this.diceContainer.buttonMode = false;
+    this.diceContainer.interactive = false;
+    this.diceContainer.filters = [new PIXI.filters.AlphaFilter(0.5)];
+  }
+
+  enableDice() {
+    if (!this.diceContainer || !this.arrow) {
+      return;
+    }
+    this.arrow.visible = true;
+
+    this.diceContainer.buttonMode = true;
+    this.diceContainer.interactive = true;
+    this.diceContainer.filters = [];
   }
 
   async drawInitial(gameData: IClientGameData, position: PIXI.Point) {
