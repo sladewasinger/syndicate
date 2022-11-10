@@ -11,6 +11,59 @@ export class EngineTester {
     this.vueForceUpdateCallback = vueForceUpdateCallback;
   }
 
+  async test_pass_go() {
+    await Utils.sleep(500);
+
+    const emptyCallback = () => {};
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    const lobby = await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(4, 6);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(1000);
+
+    engine1.rollDice(4, 6);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(1000);
+
+    engine1.rollDice(4, 6);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(1000);
+
+    engine1.rollDice(5, 3);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(1000);
+
+    engine1.rollDice(1, 5);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(1000);
+  }
+
   async test_trade() {
     await Utils.sleep(500);
 

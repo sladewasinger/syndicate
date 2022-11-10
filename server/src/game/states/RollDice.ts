@@ -15,8 +15,8 @@ export class RollDice implements IGameState {
     gameData.currentPlayer.targetPosition =
       gameData.currentPlayer.position + gameData.dice.reduce((cur, next) => cur + next, 0);
 
-    if (gameData.currentPlayer.targetPosition > gameData.tiles.length) {
-      gameData.currentPlayer.targetPosition = gameData.currentPlayer.position % gameData.tiles.length;
+    if (gameData.currentPlayer.targetPosition >= gameData.tiles.length) {
+      gameData.currentPlayer.targetPosition = gameData.currentPlayer.targetPosition % gameData.tiles.length;
     }
   }
 
