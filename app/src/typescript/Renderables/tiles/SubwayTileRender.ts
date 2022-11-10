@@ -6,6 +6,7 @@ import type { ITileRender, ITileRenderArgs } from './ITileRender';
 import { Assets } from '@pixi/assets';
 import type { IClientGameData } from '@/typescript/models/shared/IClientGameData';
 import type { RenderData } from '../RenderData';
+import { TileRenderUtils } from './TileRenderUtils';
 
 export class SubwayTileRender implements ITileRender {
   width: number = TILE_WIDTH;
@@ -65,5 +66,13 @@ export class SubwayTileRender implements ITileRender {
     tileContainer.pivot.y = this.height / 2;
     tileContainer.rotation = args.rotation;
     container.addChild(tileContainer);
+  }
+
+  fade(): void {
+    TileRenderUtils.fade(this.container);
+  }
+
+  unfade(): void {
+    TileRenderUtils.unfade(this.container);
   }
 }

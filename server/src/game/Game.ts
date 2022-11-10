@@ -212,6 +212,7 @@ export class Game {
           'Game - acceptTradeOffer - author property or properties not owned by author',
           offer.authorOfferProperties
         );
+        return;
       }
 
       const targetProperties = offer.targetOfferProperties.map((p) =>
@@ -229,6 +230,7 @@ export class Game {
           'Game - acceptTradeOffer - target property or properties not owned by target',
           offer.targetOfferProperties
         );
+        return;
       }
 
       if (author.money < offer.authorOfferMoney) {

@@ -32,10 +32,11 @@ export class TaxTile implements ITile {
       ownerId: this.owner?.id,
       price: this.price,
       mortgageValue: undefined,
+      mortgaged: false,
       skyscraper: undefined,
       rent: undefined,
       entranceFees: undefined,
-      buildingPrice: undefined,
+      buildingCost: undefined,
       skyscraperPrice: undefined,
       buildingCount: undefined,
     };

@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { Assets } from '@pixi/assets';
-import { AnimatedSprite } from 'pixi.js';
+import { AnimatedSprite, type PixelExtractOptions } from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import { StateName } from '../models/shared/StateNames';
 import type { RenderData } from './RenderData';

@@ -4,8 +4,8 @@ import type { IClientGameData } from './models/shared/IClientGameData';
 import type { IClientLobbyData } from './models/shared/IClientLobbyData';
 import type { IClientUser } from './models/shared/IClientUser';
 import { Utils } from './Utils/Utils';
-import { BoardCallbacks } from './models/BoardCallbacks';
 import type { TradeOffer } from './models/shared/TradeOffer';
+import type { BoardCallbacks } from './models/BoardCallbacks';
 
 export class Engine {
   socket: Socket<any, any>;
@@ -50,7 +50,19 @@ export class Engine {
       console.log('gameStarted');
       this.gameRunning = true;
       if (this.createBoardOnGameStarted && !this.board) {
-        this.board = new Board(gameData, new BoardCallbacks(() => this.rollDice()));
+        this.board = new Board(gameData, <BoardCallbacks>{
+          rollDice: () => this.rollDice(),
+          endTurn: () => this.endTurn(),
+          buyProperty: () => this.buyProperty(),
+          auctionProperty: () => {},
+          mortgageProperty: (tileId: number) => {},
+          unmortgageProperty: (tileId: number) => {},
+          buyBuilding: (tileId: number) => this.buyBuilding(tileId),
+          sellBuilding: (tileId: number) => {},
+          openTrades: () => {},
+          createTrade: () => {},
+          declareBankruptcy: () => {},
+        });
         await this.board.drawBoardInitial(gameData);
       }
     });

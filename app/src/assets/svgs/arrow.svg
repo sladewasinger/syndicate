@@ -71,12 +71,15 @@
        sodipodi:nodetypes="czzc" />
     <g
        id="g1385"
-       transform="translate(-6.5236303,5.0181771)">
+       transform="rotate(2.9761697,17.703256,73.409193)"
+       inkscape:export-filename="..\..\..\public\arrow.png"
+       inkscape:export-xdpi="71.499855"
+       inkscape:export-ydpi="71.499855">
       <g
          id="g1389">
         <path
            style="fill:none;stroke:#000000;stroke-width:5.29167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-           d="m 100.36348,180.77984 -15.305441,16.55998 16.309071,12.29453"
+           d="m 99.610753,183.28893 c -4.940866,6.93548 -8.039146,9.94265 -14.552714,14.05089 7.510758,3.75244 12.811916,7.87315 16.309071,12.29453"
            id="path719-0"
            inkscape:export-filename="..\..\..\public\arrow.png"
            inkscape:export-xdpi="75.009377"
@@ -84,7 +87,7 @@
            sodipodi:nodetypes="ccc" />
         <path
            style="fill:none;stroke:#000000;stroke-width:5.29167;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
-           d="m 86.939852,197.65346 c 51.709108,-6.63372 74.705088,-8.05103 59.089028,0.43909"
+           d="m 86.939852,197.65346 c 22.806008,-1.8933 39.728588,-0.38705 63.103568,6.4609"
            id="path1324-0"
            sodipodi:nodetypes="cc" />
       </g>

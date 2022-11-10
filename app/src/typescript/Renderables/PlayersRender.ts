@@ -81,7 +81,7 @@ export class PlayersRender {
     }
   }
 
-  drawInitial(args: IPlayersRenderArgs, container: PIXI.Container) {
+  async drawInitial(args: IPlayersRenderArgs, container: PIXI.Container) {
     this.currentPlayerIndicator = new PIXI.Sprite(Leaderboard.indicatorTexture);
     this.currentPlayerIndicator.x = 50;
     this.currentPlayerIndicator.y = 50;

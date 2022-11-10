@@ -6,4 +6,5 @@ export class RenderData {
   renderTiles: ITileRender[] = [];
   playersRender: PlayersRender | undefined = undefined;
   diceState: 'idle' | 'rolling' | 'rolled' = 'idle';
+  renderMode: 'game' | 'mortgage' | 'unmortgage' | 'buyBuilding' | 'sellBuilding' = 'game';
 }

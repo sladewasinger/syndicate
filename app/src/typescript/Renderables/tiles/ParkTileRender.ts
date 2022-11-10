@@ -1,7 +1,10 @@
 import { TILE_HEIGHT } from '@/typescript/models/BoardPositions';
+import type { IClientGameData } from '@/typescript/models/shared/IClientGameData';
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
+import type { RenderData } from '../RenderData';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import { TileRenderUtils } from './TileRenderUtils';
 
 export class ParkTileRender implements ITileRender {
   width: number = TILE_HEIGHT;
@@ -39,5 +42,13 @@ export class ParkTileRender implements ITileRender {
     tileContainer.y = args.y;
     tileContainer.rotation = args.rotation;
     container.addChild(tileContainer);
+  }
+
+  fade(): void {
+    TileRenderUtils.fade(this.container);
+  }
+
+  unfade(): void {
+    TileRenderUtils.unfade(this.container);
   }
 }

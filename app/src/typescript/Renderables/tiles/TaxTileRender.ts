@@ -5,6 +5,7 @@ import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import { TileRenderUtils } from './TileRenderUtils';
 
 export class TaxTileRender implements ITileRender {
   width: number = TILE_WIDTH;
@@ -63,5 +64,13 @@ export class TaxTileRender implements ITileRender {
     tileContainer.pivot.y = this.height / 2;
     tileContainer.rotation = args.rotation;
     container.addChild(tileContainer);
+  }
+
+  fade(): void {
+    TileRenderUtils.fade(this.container);
+  }
+
+  unfade(): void {
+    TileRenderUtils.unfade(this.container);
   }
 }

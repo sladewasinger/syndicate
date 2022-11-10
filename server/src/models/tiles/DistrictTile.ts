@@ -46,22 +46,7 @@ export class DistrictTile implements IBuyableTile, IBuildableTile {
   }
 
   getClientTile(gameData: GameData): IClientTile {
-    const clientTile: IClientTile = {
-      id: this.id,
-      name: this.name,
-      color: this.color,
-      buyable: this.buyable,
-      type: this.type,
-      price: this.price,
-      mortgageValue: this.mortgageValue,
-      ownerId: this.owner?.id,
-      entranceFees: this.entranceFees,
-      buildingPrice: this.buildingCost,
-      skyscraperPrice: this.skyscraperPrice,
-      skyscraper: this.skyscraper,
-      rent: this.entranceFee(gameData),
-      buildingCount: this.buildingCount,
-    };
+    const clientTile: IClientTile = Object.assign({ ownerId: this.owner?.id, rent: this.entranceFee(gameData) }, this);
     return clientTile;
   }
 }

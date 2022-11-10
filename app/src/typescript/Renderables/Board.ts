@@ -21,6 +21,7 @@ import { InternetTileRender } from './tiles/InternetTileRender';
 import { DiceRender } from './DiceRender';
 import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { Textures } from './Textures';
+import { ButtonsRender } from './ButtonsRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -34,6 +35,7 @@ export class Board {
   prevGameData: IClientGameData;
   leaderboard: Leaderboard | undefined;
   diceRender: DiceRender | undefined;
+  buttonsRender: ButtonsRender | undefined;
 
   constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
@@ -88,6 +90,7 @@ export class Board {
     this.playersRender?.update(gameData, this.renderData);
     this.leaderboard?.update(gameData, this.prevGameData, this.renderData);
     this.diceRender?.update(gameData, this.prevGameData, this.renderData);
+    this.buttonsRender?.update(gameData, this.prevGameData, this.renderData);
 
     this.prevGameData = gameData;
   }
@@ -106,6 +109,9 @@ export class Board {
 
     this.diceRender = new DiceRender(this.container, this.callbacks.rollDice);
     await this.diceRender.drawInitial(gameData, new PIXI.Point(BOARD_WIDTH / 2, BOARD_HEIGHT / 2));
+
+    this.buttonsRender = new ButtonsRender(this.container, this.callbacks);
+    await this.buttonsRender.drawInitial(gameData, new PIXI.Point(BOARD_WIDTH / 2, BOARD_HEIGHT / 2));
 
     const renderTiles = gameData.tiles.map(this.getTileRenderFromTile);
     for (let i = 0; i < boardPositions.length; i++) {
