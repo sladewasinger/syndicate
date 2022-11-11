@@ -28,7 +28,7 @@ export class EngineTester {
     engine1.buyProperty();
   }
 
-  async buy_1_property_test() {
+  async three_player_test() {
     await Utils.sleep(500);
     const emptyCallback = () => {};
     const engine1 = new Engine(this.vueForceUpdateCallback, true);
@@ -51,6 +51,17 @@ export class EngineTester {
       await Utils.sleep(500);
     }
     engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    engine2.rollDice(1, 5);
+    while (engine2.gameData?.currentPlayer?.position != 6) {
+      await Utils.sleep(500);
+    }
+    engine2.buyProperty();
+    await Utils.sleep(500);
+    engine2.endTurn();
+    await Utils.sleep(500);
   }
 
   async test_pass_go() {

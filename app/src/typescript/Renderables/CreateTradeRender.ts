@@ -15,6 +15,8 @@ export class CreateTradeRender {
   requestMoneySlider: Slider | undefined;
   playerCheckboxes: Checkbox[] = [];
   giveMoneySlider: Slider | undefined;
+  youGiveTilesText: PIXI.Text | undefined;
+  youGetTilesText: PIXI.Text | undefined;
 
   constructor(public parentContainer: PIXI.Container, public callbacks: BoardCallbacks) {
     this.container = new PIXI.Container();
@@ -28,32 +30,6 @@ export class CreateTradeRender {
 
     this.renderData.renderMode = 'createTrade';
     this.container.visible = true;
-
-    for (const tile of this.renderData.renderTiles) {
-      const gameTile = this.gameData.tiles.find((t) => t.id === tile.tile.id);
-      if (!gameTile) {
-        continue;
-      }
-      if (
-        gameTile.ownerId == undefined ||
-        (gameTile.ownerId !== this.gameData.currentPlayer?.id &&
-          gameTile.ownerId !== this.renderData.tradeTargetPlayerId)
-      ) {
-        tile.fade();
-      } else {
-        tile.container.interactive = true;
-        tile.container.buttonMode = true;
-        tile.container.on('pointerdown', () => {
-          console.log('tile clicked');
-          if (this.selectedTileIds.includes(tile.tile.id)) {
-            this.selectedTileIds = this.selectedTileIds.filter((id) => id !== tile.tile.id);
-            RenderHelpers.unhighlight(tile);
-          } else {
-            this.selectedTileIds.push(tile.tile.id);
-          }
-        });
-      }
-    }
   }
 
   close() {
@@ -76,6 +52,36 @@ export class CreateTradeRender {
   async update(gameData: IClientGameData, renderData: RenderData) {
     this.gameData = gameData;
     this.renderData = renderData;
+    if (this.renderData.renderMode !== 'createTrade') {
+      return;
+    }
+
+    for (const tile of this.renderData.renderTiles) {
+      const gameTile = this.gameData.tiles.find((t) => t.id === tile.tile.id);
+      if (!gameTile) {
+        continue;
+      }
+      if (
+        gameTile.ownerId == undefined ||
+        (gameTile.ownerId !== this.gameData.myId && gameTile.ownerId !== this.renderData.tradeTargetPlayerId)
+      ) {
+        tile.fade();
+      } else {
+        tile.container.interactive = true;
+        tile.container.buttonMode = true;
+        tile.unfade();
+        tile.container.removeListener('pointerdown');
+        tile.container.on('pointerdown', () => {
+          console.log('tile clicked');
+          if (this.selectedTileIds.includes(tile.tile.id)) {
+            this.selectedTileIds = this.selectedTileIds.filter((id) => id !== tile.tile.id);
+            RenderHelpers.unhighlight(tile);
+          } else {
+            this.selectedTileIds.push(tile.tile.id);
+          }
+        });
+      }
+    }
 
     for (const checkbox of this.playerCheckboxes) {
       const player = this.gameData.players.find((p) => p.id === checkbox.id);
@@ -88,6 +94,8 @@ export class CreateTradeRender {
     const selectedCheckbox = this.playerCheckboxes.find((c) => c.checked);
     const selectedPlayer = this.gameData.players.find((p) => p.id === selectedCheckbox?.id);
     if (selectedCheckbox && selectedPlayer && this.requestMoneySlider) {
+      this.renderData.tradeTargetPlayerId = selectedPlayer.id;
+
       this.giveMoneySlider?.enable();
       this.giveMoneySlider?.setMax(this.gameData.currentPlayer?.money || 0);
 
@@ -104,6 +112,18 @@ export class CreateTradeRender {
         continue;
       }
       RenderHelpers.highlight(tile);
+    }
+
+    if (this.youGiveTilesText && this.youGetTilesText) {
+      const giveTiles = this.gameData.tiles
+        .filter((t) => this.selectedTileIds.includes(t.id))
+        .filter((t) => t.ownerId === this.gameData?.myId);
+      this.youGiveTilesText.text = giveTiles.map((t) => `>${t.name}`).join('\n');
+
+      const getTiles = this.gameData.tiles
+        .filter((t) => this.selectedTileIds.includes(t.id))
+        .filter((t) => t.ownerId === this.renderData?.tradeTargetPlayerId);
+      this.youGetTilesText.text = getTiles.map((t) => `>${t.name}`).join('\n');
     }
   }
 
@@ -167,6 +187,48 @@ export class CreateTradeRender {
     giveMoneySlider.container.y = requestMoneySlider.container.y + requestMoneySlider.container.height + 50;
     this.container.addChild(giveMoneySlider.container);
     this.giveMoneySlider = giveMoneySlider;
+
+    const youGiveTilesLabel = new PIXI.Text('You Give:', {
+      fontFamily: 'Arial',
+      fontSize: 36,
+      fill: 0x000000,
+      align: 'center',
+    });
+    youGiveTilesLabel.x = TILE_HEIGHT + 10;
+    youGiveTilesLabel.y = giveMoneySlider.container.y + giveMoneySlider.container.height + 50;
+    this.container.addChild(youGiveTilesLabel);
+
+    const youGetTilesLabel = new PIXI.Text('You Get:', {
+      fontFamily: 'Arial',
+      fontSize: 36,
+      fill: 0x000000,
+      align: 'center',
+    });
+    youGetTilesLabel.x = BOARD_WIDTH - TILE_HEIGHT - 500 - youGetTilesLabel.width;
+    youGetTilesLabel.y = giveMoneySlider.container.y + giveMoneySlider.container.height + 50;
+    this.container.addChild(youGetTilesLabel);
+
+    const youGiveTilesText = new PIXI.Text('', {
+      fontFamily: 'monospace',
+      fontSize: 30,
+      fill: 0x000000,
+      align: 'left',
+    });
+    youGiveTilesText.x = youGiveTilesLabel.x;
+    youGiveTilesText.y = youGiveTilesLabel.y + youGiveTilesLabel.height + 10;
+    this.container.addChild(youGiveTilesText);
+    this.youGiveTilesText = youGiveTilesText;
+
+    const youGetTilesText = new PIXI.Text('', {
+      fontFamily: 'monospace',
+      fontSize: 30,
+      fill: 0x000000,
+      align: 'left',
+    });
+    youGetTilesText.x = youGetTilesLabel.x;
+    youGetTilesText.y = youGetTilesLabel.y + youGetTilesLabel.height + 10;
+    this.container.addChild(youGetTilesText);
+    this.youGetTilesText = youGetTilesText;
 
     const tradeButton = new ButtonRender(
       this.container,
