@@ -1,3 +1,5 @@
+import type { TradeOffer } from './shared/TradeOffer';
+
 export interface BoardCallbacks {
   rollDice: () => void;
   endTurn: () => void;
@@ -8,6 +10,7 @@ export interface BoardCallbacks {
   buyBuilding: (tileId: number) => void;
   sellBuilding: (tileId: number) => void;
   openTrades: () => void;
-  createTrade: () => void;
+  openCreateTrade: () => void;
+  createTrade: (tradeOffer: TradeOffer) => void;
   declareBankruptcy: () => void;
 }

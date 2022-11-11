@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 
 export class ButtonRender {
   container: PIXI.Container;
+  buttonText: PIXI.Text;
 
   constructor(
     public parentContainer: PIXI.Container,
@@ -33,6 +34,7 @@ export class ButtonRender {
     });
     buttonText.x = button.width / 2 - buttonText.width / 2;
     buttonText.y = button.height / 2 - buttonText.height / 2;
+    this.buttonText = buttonText;
 
     this.container.addChild(button, buttonText);
     this.container.buttonMode = true;

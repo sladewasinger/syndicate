@@ -1,12 +1,14 @@
 import type { IClientPlayer } from './IClientPlayer';
 import type { IClientTile } from './IClientTile';
+import type { TradeOffer } from './TradeOffer';
 
 export interface IClientGameData {
   myId: string;
   players: IClientPlayer[];
-  currentPlayer: IClientPlayer | undefined;
+  currentPlayer: IClientPlayer;
   dice: number[];
   tiles: IClientTile[];
   state: string;
-  lastSelectedTilePosition: number;
+  lastSelectedTilePosition: number | undefined;
+  tradeOffers: TradeOffer[];
 }

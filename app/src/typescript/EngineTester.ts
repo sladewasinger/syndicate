@@ -61,6 +61,13 @@ export class EngineTester {
     engine2.buyProperty();
     await Utils.sleep(500);
     engine2.endTurn();
+    await Utils.sleep(1000);
+
+    engine3.rollDice(1, 5);
+    while (engine3.gameData?.currentPlayer?.position != 6) {
+      await Utils.sleep(500);
+    }
+    await engine3.endTurn();
     await Utils.sleep(500);
   }
 
@@ -156,18 +163,25 @@ export class EngineTester {
     }
     await engine1.buyProperty();
     await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(500);
+
+    await engine2.rollDice(1, 2);
+    await Utils.sleep(2000);
+    await engine2.buyProperty();
+    await Utils.sleep(500);
 
     const tradeOffer = new TradeOffer(
-      engine1.gameData.players[0].id,
       engine1.gameData.players[1].id,
-      [],
-      120,
+      engine1.gameData.players[0].id,
       [new TradeOfferProperty('8th Street', 0x3cb44b, engine1.gameData.tiles[8].id)],
-      0
+      0,
+      [],
+      120
     );
-    await engine1.createTradeOffer(tradeOffer);
+    await engine2.createTradeOffer(tradeOffer);
     await Utils.sleep(500);
-    await engine2.acceptTradeOffer(tradeOffer.id);
+    await engine2.endTurn();
   }
 
   async test_buy_houses() {

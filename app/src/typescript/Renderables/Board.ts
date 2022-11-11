@@ -23,6 +23,7 @@ import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { Textures } from './Textures';
 import { ButtonsRender } from './ButtonsRender';
 import { CreateTradeRender } from './CreateTradeRender';
+import { ViewTradesRender } from './ViewTradesRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -38,6 +39,7 @@ export class Board {
   diceRender: DiceRender | undefined;
   buttonsRender: ButtonsRender | undefined;
   createTradeRender: CreateTradeRender | undefined;
+  viewTradesRender: ViewTradesRender | undefined;
 
   constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
@@ -77,8 +79,11 @@ export class Board {
       this.renderData.frame++;
     }, 1000 / 60);
 
-    this.callbacks.createTrade = () => {
+    this.callbacks.openCreateTrade = () => {
       this.createTradeRender?.open();
+    };
+    this.callbacks.openTrades = () => {
+      this.viewTradesRender?.open();
     };
   }
 
@@ -99,6 +104,7 @@ export class Board {
     this.diceRender?.update(gameData, this.prevGameData, this.renderData);
     this.buttonsRender?.update(gameData, this.prevGameData, this.renderData);
     this.createTradeRender?.update(gameData, this.renderData);
+    this.viewTradesRender?.update(gameData, this.renderData);
 
     this.prevGameData = gameData;
   }
@@ -151,6 +157,9 @@ export class Board {
 
     this.createTradeRender = new CreateTradeRender(this.container, this.callbacks);
     await this.createTradeRender.drawInitial(gameData, this.renderData);
+
+    this.viewTradesRender = new ViewTradesRender(this.container, this.callbacks);
+    await this.viewTradesRender.drawInitial();
   }
 
   getTileRenderFromTile(tile: IClientTile) {

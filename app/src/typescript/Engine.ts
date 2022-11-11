@@ -60,7 +60,10 @@ export class Engine {
           buyBuilding: (tileId: number) => this.buyBuilding(tileId),
           sellBuilding: (tileId: number) => {},
           openTrades: () => {},
-          createTrade: () => {},
+          openCreateTrade: () => {},
+          createTrade: (tradeOffer: TradeOffer) => {
+            this.createTradeOffer(tradeOffer);
+          },
           declareBankruptcy: () => {},
         });
         await this.board.drawBoardInitial(gameData);

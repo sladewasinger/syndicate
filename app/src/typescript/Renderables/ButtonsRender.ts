@@ -43,8 +43,8 @@ export class ButtonsRender {
     this.unmortgageButton?.disable();
     this.buyBuildingButton?.disable();
     this.sellBuildingButton?.disable();
-    // this.openTradesButtonn?.disable();
-    this.seeTradesButton?.disable();
+    // ]this.openTradesButton?.disable();
+    //this.seeTradesButton?.disable();
     this.bankruptcyButton?.disable();
 
     switch (gameData.state) {
@@ -60,6 +60,11 @@ export class ButtonsRender {
         this.buyPropertyButton?.enable();
         this.auctionPropertyButton?.enable();
         break;
+    }
+
+    if (this.seeTradesButton) {
+      const myTrades = gameData.tradeOffers.filter((trade) => trade.targetPlayerId === gameData.myId);
+      this.seeTradesButton!.buttonText.text = `Trades (${myTrades.length})`;
     }
   }
 
@@ -114,7 +119,7 @@ export class ButtonsRender {
     this.sellBuildingButton.y = this.buyBuildingButton.y + this.buyBuildingButton.height + 10;
 
     // Column 5:
-    this.createTradeButton = new ButtonRender(this.container, 'Create Trade', 0xb14e00, this.callbacks.createTrade);
+    this.createTradeButton = new ButtonRender(this.container, 'Create Trade', 0xb14e00, this.callbacks.openCreateTrade);
     this.createTradeButton.x = 800;
 
     this.seeTradesButton = new ButtonRender(this.container, 'Trades (0)', 0xb14e00, this.callbacks.openTrades);

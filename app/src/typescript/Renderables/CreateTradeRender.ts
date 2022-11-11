@@ -2,9 +2,11 @@ import * as PIXI from 'pixi.js';
 import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { BOARD_HEIGHT, BOARD_WIDTH, TILE_HEIGHT } from '../models/BoardPositions';
 import type { IClientGameData } from '../models/shared/IClientGameData';
+import type { TradeOffer } from '../models/shared/TradeOffer';
 import { GameDataHelpers } from '../Utils/GameDataHelpers';
 import { RenderHelpers } from '../Utils/RenderHelpers';
 import { ButtonRender } from './ButtonRender';
+import { Checkbox } from './Checkbox';
 import type { RenderData } from './RenderData';
 
 export class CreateTradeRender {
@@ -165,6 +167,7 @@ export class CreateTradeRender {
         `${player.name} $${player.money}`,
         (checkbox: Checkbox) => {
           this.playerCheckboxes.filter((c) => c !== checkbox).forEach((c) => c.setChecked(false));
+          this.selectedTileIds = [];
           // this.requestMoneySlider?.setValue(0);
         },
         player.color
@@ -237,7 +240,24 @@ export class CreateTradeRender {
       () => {
         const checkedPlayer = this.playerCheckboxes.find((c) => c.checked);
         if (checkedPlayer) {
-          this.callbacks.createTrade();
+          const authorOwnedSelectedTiles = gameData.tiles
+            .filter((t) => this.selectedTileIds.includes(t.id))
+            .filter((t) => t.ownerId === gameData.myId);
+          const targetOwnedSelectedTiles = gameData.tiles
+            .filter((t) => this.selectedTileIds.includes(t.id))
+            .filter((t) => t.ownerId === checkedPlayer.id);
+
+          const tradeOffer = <TradeOffer>{
+            id: '',
+            authorPlayerId: gameData.myId,
+            targetPlayerId: checkedPlayer.id,
+            authorOfferMoney: this.giveMoneySlider?.value || 0,
+            targetOfferMoney: this.requestMoneySlider?.value || 0,
+            authorOfferProperties: authorOwnedSelectedTiles,
+            targetOfferProperties: targetOwnedSelectedTiles,
+          };
+          this.callbacks.createTrade(tradeOffer);
+          this.close();
         }
       },
       0x000000
@@ -366,66 +386,5 @@ class Slider {
     this.container.interactive = true;
     this.container.buttonMode = true;
     this.container.alpha = 1;
-  }
-}
-
-class Checkbox {
-  container: PIXI.Container;
-  checkbox = new PIXI.Graphics();
-  checked: boolean = false;
-  text: PIXI.Text;
-
-  constructor(
-    public id: string,
-    public parentContainer: PIXI.Container,
-    public label: string,
-    public clickCallback: (checkbox: Checkbox) => void,
-    public color: number = 0x000000
-  ) {
-    this.container = new PIXI.Container();
-    this.parentContainer.addChild(this.container);
-
-    const checkbox = new PIXI.Graphics();
-    this.container.interactive = true;
-    this.container.buttonMode = true;
-    this.container.on('pointerdown', () => {
-      this.checked = !this.checked;
-      this.setChecked(this.checked);
-      this.clickCallback(this);
-    });
-    this.container.addChild(checkbox);
-
-    const text = new PIXI.Text(this.label, {
-      fontFamily: 'Arial',
-      fontSize: 38,
-      stroke: 0x000000,
-      strokeThickness: 4,
-      letterSpacing: 2,
-      fill: this.color,
-      align: 'center',
-    });
-    text.x = 30;
-    text.y = checkbox.height / 2 - text.height / 2;
-    this.container.addChild(text);
-
-    this.checkbox = checkbox;
-    this.text = text;
-
-    this.setChecked(false);
-  }
-
-  setChecked(checked: boolean) {
-    this.checked = checked;
-    if (this.checked) {
-      this.checkbox.lineStyle(2, 0x000000, 1);
-      this.checkbox.beginFill(0x000000);
-      this.checkbox.drawCircle(7.5, 0, 15);
-      this.checkbox.endFill();
-    } else {
-      this.checkbox.lineStyle(2, 0x000000, 1);
-      this.checkbox.beginFill(0xffffff);
-      this.checkbox.drawCircle(7.5, 0, 15);
-      this.checkbox.endFill();
-    }
   }
 }
