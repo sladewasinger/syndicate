@@ -3,6 +3,7 @@ import type { BoardCallbacks } from '../models/BoardCallbacks';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import { StateName } from '../models/shared/StateNames';
 import { GameDataHelpers } from '../Utils/GameDataHelpers';
+import { ButtonRender } from './ButtonRender';
 import type { RenderData } from './RenderData';
 
 // export interface ButtonCallbacks {
@@ -25,8 +26,8 @@ export class ButtonsRender {
   unmortgageButton: ButtonRender | undefined;
   buyBuildingButton: ButtonRender | undefined;
   sellBuildingButton: ButtonRender | undefined;
-  openTradesButtonn: ButtonRender | undefined;
   createTradeButton: ButtonRender | undefined;
+  seeTradesButton: ButtonRender | undefined;
   bankruptcyButton: ButtonRender | undefined;
 
   constructor(public parentContainer: PIXI.Container, public callbacks: BoardCallbacks) {
@@ -42,15 +43,15 @@ export class ButtonsRender {
     this.unmortgageButton?.disable();
     this.buyBuildingButton?.disable();
     this.sellBuildingButton?.disable();
-    this.openTradesButtonn?.disable();
-    this.createTradeButton?.disable();
+    // this.openTradesButtonn?.disable();
+    this.seeTradesButton?.disable();
     this.bankruptcyButton?.disable();
 
     switch (gameData.state) {
       case StateName.TurnEnd:
         this.endTurnButton?.enable();
-        this.openTradesButtonn?.enable();
         this.createTradeButton?.enable();
+        this.seeTradesButton?.enable();
         if (GameDataHelpers.playerCanMortgage(gameData.currentPlayer!, gameData)) {
           this.mortgageButton?.enable();
         }
@@ -113,101 +114,14 @@ export class ButtonsRender {
     this.sellBuildingButton.y = this.buyBuildingButton.y + this.buyBuildingButton.height + 10;
 
     // Column 5:
-    this.openTradesButtonn = new ButtonRender(this.container, 'Open Trades', 0xb14e00, this.callbacks.openTrades);
-    this.openTradesButtonn.x = 800;
+    this.createTradeButton = new ButtonRender(this.container, 'Create Trade', 0xb14e00, this.callbacks.createTrade);
+    this.createTradeButton.x = 800;
 
-    this.createTradeButton = new ButtonRender(this.container, 'Trades (0)', 0xb14e00, this.callbacks.createTrade);
-    this.createTradeButton.x = this.openTradesButtonn.x;
-    this.createTradeButton.y = this.openTradesButtonn.y + this.openTradesButtonn.height + 10;
+    this.seeTradesButton = new ButtonRender(this.container, 'Trades (0)', 0xb14e00, this.callbacks.openTrades);
+    this.seeTradesButton.x = this.createTradeButton.x;
+    this.seeTradesButton.y = this.createTradeButton.y + this.createTradeButton.height + 10;
 
     this.container.x = position.x - this.container.width / 2;
     this.container.y = position.y + 100;
-  }
-}
-
-export class ButtonRender {
-  container: PIXI.Container;
-
-  constructor(
-    public parentContainer: PIXI.Container,
-    public text: string,
-    public color: number,
-    public callback: () => void
-  ) {
-    this.container = new PIXI.Container();
-    this.parentContainer.addChild(this.container);
-
-    const button = new PIXI.Graphics();
-    button.beginFill(this.color);
-    button.lineStyle(2, 0x000000);
-    button.drawRoundedRect(0, 0, 150, 100, 10);
-    button.endFill();
-
-    let fontSize = 34;
-    if (this.text.split(' ').some((word) => word.length > 8)) {
-      fontSize = 28;
-    }
-    const buttonText = new PIXI.Text(this.text, {
-      fontFamily: 'Arial',
-      fontSize: fontSize,
-      wordWrap: true,
-      wordWrapWidth: button.width,
-      fill: 0xffffff,
-      align: 'center',
-    });
-    buttonText.x = button.width / 2 - buttonText.width / 2;
-    buttonText.y = button.height / 2 - buttonText.height / 2;
-
-    this.container.addChild(button, buttonText);
-    this.container.buttonMode = true;
-    this.container.interactive = true;
-    this.container.on('pointerup', this.callback);
-  }
-
-  get x() {
-    return this.container.x;
-  }
-
-  set x(value) {
-    this.container.x = value;
-  }
-
-  get y() {
-    return this.container.y;
-  }
-
-  set y(value) {
-    this.container.y = value;
-  }
-
-  get width() {
-    return this.container.width;
-  }
-
-  set width(value) {
-    this.container.width = value;
-  }
-
-  get height() {
-    return this.container.height;
-  }
-
-  set height(value) {
-    this.container.height = value;
-  }
-
-  disable() {
-    const darkenFilter = new PIXI.filters.ColorMatrixFilter();
-    darkenFilter.matrix = [0.5, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 1, 0];
-
-    this.container.filters = [new PIXI.filters.BlurFilter(2), darkenFilter];
-    this.container.interactive = false;
-    this.container.buttonMode = false;
-  }
-
-  enable() {
-    this.container.filters = [];
-    this.container.interactive = true;
-    this.container.buttonMode = true;
   }
 }

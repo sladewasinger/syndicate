@@ -27,8 +27,8 @@ export class DiceRender {
     }
 
     if (gameData.state === StateName.RollDice) {
-      this.dice1?.gotoAndStop(Math.random() * 6);
-      this.dice2?.gotoAndStop(Math.random() * 6);
+      this.dice1?.gotoAndStop(Math.random() * 5);
+      this.dice2?.gotoAndStop(Math.random() * 5);
     } else {
       this.dice1?.gotoAndStop((gameData.dice[0] || 1) - 1);
       this.dice2?.gotoAndStop((gameData.dice[1] || 1) - 1);

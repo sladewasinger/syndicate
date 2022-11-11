@@ -74,9 +74,9 @@ export class PlayersRender {
       const playerRender = this.playerRenders.find((pr) => pr.player.id === player.id);
       if (playerRender) {
         playerRender.container.x +=
-          (tilePosition.x + radius * Math.cos(i * angle + Math.PI) - playerRender.container.x) * 0.05;
+          (tilePosition.x + radius * Math.cos(i * angle + Math.PI + Math.PI / 6) - playerRender.container.x) * 0.05;
         playerRender.container.y +=
-          (tilePosition.y + radius * Math.sin(i * angle + Math.PI) - playerRender.container.y) * 0.05;
+          (tilePosition.y + radius * Math.sin(i * angle + Math.PI + Math.PI / 6) - playerRender.container.y) * 0.05;
       }
     }
   }

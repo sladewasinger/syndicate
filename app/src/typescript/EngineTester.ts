@@ -11,6 +11,48 @@ export class EngineTester {
     this.vueForceUpdateCallback = vueForceUpdateCallback;
   }
 
+  async one_player_test() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 2);
+    while (engine1.gameData?.currentPlayer?.position != 3) {
+      await Utils.sleep(500);
+    }
+    engine1.buyProperty();
+  }
+
+  async buy_1_property_test() {
+    await Utils.sleep(500);
+    const emptyCallback = () => {};
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+    const engine2 = new Engine(emptyCallback, false);
+    const engine3 = new Engine(emptyCallback, false);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+    await Utils.emitWithPromise(engine2.socket, 'registerName', 'Bravo');
+    await Utils.emitWithPromise(engine3.socket, 'registerName', 'Charlie');
+
+    const lobby = await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    engine2.joinLobby(lobby.id);
+    engine3.joinLobby(lobby.id);
+
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 2);
+    while (engine1.gameData?.currentPlayer?.position != 3) {
+      await Utils.sleep(500);
+    }
+    engine1.buyProperty();
+  }
+
   async test_pass_go() {
     await Utils.sleep(500);
 

@@ -22,6 +22,7 @@ import { DiceRender } from './DiceRender';
 import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { Textures } from './Textures';
 import { ButtonsRender } from './ButtonsRender';
+import { CreateTradeRender } from './CreateTradeRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -36,6 +37,7 @@ export class Board {
   leaderboard: Leaderboard | undefined;
   diceRender: DiceRender | undefined;
   buttonsRender: ButtonsRender | undefined;
+  createTradeRender: CreateTradeRender | undefined;
 
   constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
@@ -47,6 +49,9 @@ export class Board {
     this.canvas = canvas as HTMLCanvasElement;
     this.width = BOARD_WIDTH;
     this.height = BOARD_HEIGHT;
+
+    // extensions.add(InteractionManager);
+
     this.app = new PIXI.Application({
       view: this.canvas,
       width: this.width,
@@ -55,8 +60,6 @@ export class Board {
       antialias: true,
       resolution: 1, // window.devicePixelRatio || 1,\
     });
-
-    extensions.add(InteractionManager);
 
     console.log(this.app);
 
@@ -73,6 +76,10 @@ export class Board {
     setInterval(() => {
       this.renderData.frame++;
     }, 1000 / 60);
+
+    this.callbacks.createTrade = () => {
+      this.createTradeRender?.open();
+    };
   }
 
   resize() {
@@ -91,6 +98,7 @@ export class Board {
     this.leaderboard?.update(gameData, this.prevGameData, this.renderData);
     this.diceRender?.update(gameData, this.prevGameData, this.renderData);
     this.buttonsRender?.update(gameData, this.prevGameData, this.renderData);
+    this.createTradeRender?.update(gameData, this.renderData);
 
     this.prevGameData = gameData;
   }
@@ -140,6 +148,9 @@ export class Board {
     this.playersRender = new PlayersRender(gameData.players);
     this.renderData.playersRender = this.playersRender;
     await this.playersRender.drawInitial({}, this.container);
+
+    this.createTradeRender = new CreateTradeRender(this.container, this.callbacks);
+    await this.createTradeRender.drawInitial(gameData, this.renderData);
   }
 
   getTileRenderFromTile(tile: IClientTile) {

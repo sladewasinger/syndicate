@@ -209,6 +209,7 @@ Buyback:     $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
   fade(): void {
     TileRenderUtils.fade(this.container);
   }
+
   unfade(): void {
     TileRenderUtils.unfade(this.container);
   }
