@@ -37,6 +37,12 @@ export class DistrictTileRender implements ITileRender {
       this.tileBackground?.beginFill(owner.color, 1);
       this.tileBackground?.drawRect(0, 0, this.width, this.height);
       this.tileBackground?.endFill();
+    } else {
+      this.tileBackground?.clear();
+      this.tileBackground?.lineStyle(2, 0x000000, 1);
+      this.tileBackground?.beginFill(0xffffff, 1);
+      this.tileBackground?.drawRect(0, 0, this.width, this.height);
+      this.tileBackground?.endFill();
     }
 
     if (gameTile.buildingCount === 1 && this.building1 !== undefined) {

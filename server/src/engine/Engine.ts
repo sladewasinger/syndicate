@@ -115,6 +115,11 @@ export class Engine {
     const lobby = this.lobbies.find((l) => l.users.find((u) => u.socketId === socketId));
     if (user && lobby) {
       lobby.removeUser(user);
+      if (lobby.game) {
+        lobby.game.stateMachine.gameData.tradeOffers = lobby.game.stateMachine.gameData.tradeOffers.filter(
+          (o) => o.targetPlayerId !== user.socketId && o.authorPlayerId !== user.socketId
+        );
+      }
       if (lobby.users.length === 0) {
         this.lobbies = this.lobbies.filter((l) => l !== lobby);
       } else {
