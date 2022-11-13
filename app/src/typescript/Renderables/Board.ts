@@ -24,6 +24,7 @@ import { Textures } from './Textures';
 import { ButtonsRender } from './ButtonsRender';
 import { CreateTradeRender } from './CreateTradeRender';
 import { ViewTradesRender } from './ViewTradesRender';
+import { StatusRender } from './StatusRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -40,6 +41,7 @@ export class Board {
   buttonsRender: ButtonsRender | undefined;
   createTradeRender: CreateTradeRender | undefined;
   viewTradesRender: ViewTradesRender | undefined;
+  statusRender: StatusRender | undefined;
 
   constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
@@ -105,6 +107,7 @@ export class Board {
     this.buttonsRender?.update(gameData, this.prevGameData, this.renderData);
     this.createTradeRender?.update(gameData, this.renderData);
     this.viewTradesRender?.update(gameData, this.renderData);
+    this.statusRender?.update(gameData, this.prevGameData, this.renderData);
 
     this.prevGameData = gameData;
   }
@@ -160,6 +163,9 @@ export class Board {
 
     this.viewTradesRender = new ViewTradesRender(this.container, this.callbacks);
     await this.viewTradesRender.drawInitial();
+
+    this.statusRender = new StatusRender(this.container);
+    await this.statusRender.drawInitial();
   }
 
   getTileRenderFromTile(tile: IClientTile) {

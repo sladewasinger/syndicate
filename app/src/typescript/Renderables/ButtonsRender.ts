@@ -43,8 +43,8 @@ export class ButtonsRender {
     this.unmortgageButton?.disable();
     this.buyBuildingButton?.disable();
     this.sellBuildingButton?.disable();
-    // ]this.openTradesButton?.disable();
-    //this.seeTradesButton?.disable();
+    this.createTradeButton?.disable();
+    this.seeTradesButton?.disable();
     this.bankruptcyButton?.disable();
 
     switch (gameData.state) {
