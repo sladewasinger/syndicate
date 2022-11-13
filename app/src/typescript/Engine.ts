@@ -64,6 +64,9 @@ export class Engine {
           createTrade: (tradeOffer: TradeOffer) => {
             this.createTradeOffer(tradeOffer);
           },
+          acceptTrade: (tradeOfferId: string) => {
+            this.acceptTradeOffer(tradeOfferId);
+          },
           declareBankruptcy: () => {},
         });
         await this.board.drawBoardInitial(gameData);

@@ -17,6 +17,8 @@ export class ViewTradesRender {
   youGetTextLabel: PIXI.Text | undefined;
   youGiveText: PIXI.Text | undefined;
   youGetText: PIXI.Text | undefined;
+  acceptTradeButton: ButtonRender | undefined;
+  selectedTradeId: string | undefined = undefined;
 
   constructor(public parentContainer: PIXI.Container, public callbacks: BoardCallbacks) {
     this.container = new PIXI.Container();
@@ -25,7 +27,6 @@ export class ViewTradesRender {
 
   open() {
     if (!this.renderData || !this.gameData) {
-      console.log('******************** ERROR: ViewTradesRender.open() called before update()');
       return;
     }
 
@@ -34,7 +35,9 @@ export class ViewTradesRender {
     this.playerCheckboxesContainer.y = TILE_HEIGHT + 100;
 
     this.playerCheckboxes = [];
-    const players = this.gameData.players.filter((p) => p.id !== this.gameData!.myId);
+    const players = this.gameData.players
+      .filter((p) => p.id !== this.gameData!.myId)
+      .filter((p) => this.gameData?.tradeOffers.some((t) => t.authorPlayerId === p.id));
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
       const tradesForPlayer = this.gameData.tradeOffers.filter((t) => t.authorPlayerId === player.id);
@@ -48,6 +51,10 @@ export class ViewTradesRender {
         text,
         (checkbox: Checkbox) => {
           this.playerCheckboxes.filter((c) => c !== checkbox).forEach((c) => c.setChecked(false));
+          if (!checkbox.checked) {
+            this.resetViewTrade();
+            this.selectedTradeId = undefined;
+          }
         },
         player.color
       );
@@ -58,9 +65,21 @@ export class ViewTradesRender {
     this.renderData.renderMode = 'viewTrade';
   }
 
+  resetViewTrade() {
+    if (!this.renderData || !this.gameData) {
+      return;
+    }
+    for (const tile of this.renderData.renderTiles) {
+      tile.unfade();
+    }
+    if (this.youGiveText && this.youGetText) {
+      this.youGiveText.text = '';
+      this.youGetText.text = '';
+    }
+  }
+
   close() {
     if (!this.renderData || !this.gameData) {
-      console.log('******************** ERROR: ViewTradesRender.close() called before update()');
       return;
     }
     this.renderData.renderMode = 'game';
@@ -76,6 +95,11 @@ export class ViewTradesRender {
     }
 
     this.playerCheckboxes = [];
+
+    this.resetViewTrade();
+    this.playerCheckboxes.forEach((c) => {
+      c.setChecked(false);
+    });
   }
 
   update(gameData: IClientGameData, renderData: RenderData) {
@@ -88,6 +112,12 @@ export class ViewTradesRender {
 
     if (this.renderData.renderMode !== 'viewTrade') {
       return;
+    }
+
+    if (this.selectedTradeId != undefined) {
+      this.acceptTradeButton?.enable();
+    } else {
+      this.acceptTradeButton?.disable();
     }
 
     const selectedCheckbox = this.playerCheckboxes.find((c) => c.checked);
@@ -104,6 +134,8 @@ export class ViewTradesRender {
     if (!trade) {
       return;
     }
+
+    this.selectedTradeId = trade.id;
 
     this.youGiveTextLabel.y = this.playerCheckboxesContainer.y + this.playerCheckboxesContainer.height + 25;
     this.youGetTextLabel.y = this.youGiveTextLabel.y;
@@ -198,6 +230,19 @@ export class ViewTradesRender {
     this.container.addChild(this.youGetText);
 
     this.container.addChild(this.playerCheckboxesContainer);
+
+    this.acceptTradeButton = new ButtonRender(this.container, 'Accept Trade', 0x00aa00, () => {
+      if (this.selectedTradeId) {
+        console.log('Accept trade');
+        this.callbacks.acceptTrade(this.selectedTradeId);
+      } else {
+        console.log('No trade selected');
+      }
+      this.close();
+    });
+    this.acceptTradeButton.x = TILE_HEIGHT + background.width / 2 - this.acceptTradeButton.width / 2;
+    this.acceptTradeButton.y = TILE_HEIGHT + background.height - this.acceptTradeButton.height - 8;
+    this.container.addChild(this.acceptTradeButton.container);
 
     this.container.visible = false;
   }

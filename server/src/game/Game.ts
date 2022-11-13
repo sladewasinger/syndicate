@@ -16,6 +16,7 @@ import { TurnEnd } from './states/TurnEnd';
 import { IClientPlayer } from 'src/models/shared/IClientPlayer';
 import { BuyBuilding } from './states/BuyBuilding';
 import { TradeOffer } from 'src/models/shared/TradeOffer';
+import { randomUUID } from 'crypto';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -171,6 +172,7 @@ export class Game {
   }
 
   createTradeOffer(offer: TradeOffer) {
+    offer.id = randomUUID();
     this.stateMachine.gameData.tradeOffers.push(offer);
     this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
   }

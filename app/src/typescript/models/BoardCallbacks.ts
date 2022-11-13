@@ -12,5 +12,6 @@ export interface BoardCallbacks {
   openTrades: () => void;
   openCreateTrade: () => void;
   createTrade: (tradeOffer: TradeOffer) => void;
+  acceptTrade: (tradeOfferId: string) => void;
   declareBankruptcy: () => void;
 }
