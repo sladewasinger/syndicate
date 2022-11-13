@@ -92,6 +92,11 @@ export class Engine {
         this.buyBuilding(socket.id, propertyIndex, callback);
       });
 
+      socket.on('sellBuilding', (propertyIndex, callback) => {
+        console.log('sellBuilding');
+        this.sellBuilding(socket.id, propertyIndex, callback);
+      });
+
       socket.on('createTradeOffer', (offer, callback) => {
         console.log('createTradeOffer');
         this.createTradeOffer(socket.id, offer, callback);
@@ -300,6 +305,29 @@ export class Engine {
     }
 
     lobby.game!.buyBuilding(tilePosition);
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
+  }
+
+  sellBuilding(
+    socketId: string,
+    tilePosition: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    if (tilePosition < 0 || tilePosition >= lobby!.game!.stateMachine.gameData.tiles.length) {
+      callback({ code: 'invalid_tile_position', message: 'Invalid tile position' }, null);
+      return;
+    }
+
+    lobby.game!.sellBuilding(tilePosition);
 
     callback(null, lobby.game!.getClientGameData(user.socketId));
   }

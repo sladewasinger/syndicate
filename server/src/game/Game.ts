@@ -15,6 +15,7 @@ import { BuyProperty } from './states/BuyProperty';
 import { TurnEnd } from './states/TurnEnd';
 import { IClientPlayer } from 'src/models/shared/IClientPlayer';
 import { BuyBuilding } from './states/BuyBuilding';
+import { SellBuilding } from './states/SellBuilding';
 import { TradeOffer } from 'src/models/shared/TradeOffer';
 import { randomUUID } from 'crypto';
 
@@ -74,6 +75,7 @@ export class Game {
     this.stateMachine.addState(new LandedOnTile());
     this.stateMachine.addState(new BuyProperty());
     this.stateMachine.addState(new BuyBuilding());
+    this.stateMachine.addState(new SellBuilding());
     this.stateMachine.addState(new TurnEnd());
     this.stateMachine.addState(new GameOver());
   }
@@ -165,6 +167,11 @@ export class Game {
   buyBuilding(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.BuyBuilding);
+  }
+
+  sellBuilding(tilePosition: number) {
+    this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
+    this.stateMachine.event(StateEvent.SellBuilding);
   }
 
   endTurn() {

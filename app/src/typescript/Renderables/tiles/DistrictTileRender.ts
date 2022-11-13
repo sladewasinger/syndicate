@@ -45,22 +45,36 @@ export class DistrictTileRender implements ITileRender {
       this.tileBackground?.endFill();
     }
 
-    if (gameTile.buildingCount === 1 && this.building1 !== undefined) {
-      this.building1.visible = true;
-      const targetPosY = this.colorBar!.height * 0.5 - this.building1.height * 0.5;
-      this.building1.y += (targetPosY - this.building1.y) * 0.01;
-    }
-    if (gameTile.buildingCount === 2 && this.building2 !== undefined) {
-      this.building2.visible = true;
-    }
-    if (gameTile.buildingCount === 3 && this.building3 !== undefined) {
-      this.building3.visible = true;
-    }
-    if (gameTile.buildingCount === 4 && this.building4 !== undefined) {
-      this.building4.visible = true;
-    }
-    if (gameTile.buildingCount === 5 && this.skyscraper !== undefined) {
-      this.skyscraper.visible = true;
+    if (
+      this.building1 &&
+      this.building2 &&
+      this.building3 &&
+      this.building4 &&
+      this.skyscraper &&
+      gameTile.buildingCount != undefined
+    ) {
+      this.building1.visible = false;
+      this.building2.visible = false;
+      this.building3.visible = false;
+      this.building4.visible = false;
+      this.skyscraper.visible = false;
+      if (gameTile.buildingCount >= 1) {
+        this.building1.visible = true;
+        const targetPosY = this.colorBar!.height * 0.5 - this.building1.height * 0.5;
+        this.building1.y += (targetPosY - this.building1.y) * 0.01;
+      }
+      if (gameTile.buildingCount >= 2) {
+        this.building2.visible = true;
+      }
+      if (gameTile.buildingCount >= 3) {
+        this.building3.visible = true;
+      }
+      if (gameTile.buildingCount >= 4) {
+        this.building4.visible = true;
+      }
+      if (gameTile.buildingCount >= 5) {
+        this.skyscraper.visible = true;
+      }
     }
   }
 

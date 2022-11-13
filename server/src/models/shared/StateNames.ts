@@ -9,4 +9,5 @@ export enum StateName {
   RollDice = 'RollDice',
   BuyProperty = 'BuyProperty',
   BuyBuilding = 'BuyBuilding',
+  SellBuilding = 'SellBuilding',
 }

@@ -20,6 +20,10 @@ export interface ClientToServerEvents {
     propertyIndex: number,
     callback: (error: SocketError | null, data: IClientGameData | null) => void
   ) => void;
+  sellBuilding: (
+    propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
   createTradeOffer: (
     offer: TradeOffer,
     callback: (error: SocketError | null, data: IClientGameData | null) => void

@@ -26,45 +26,15 @@ export class TurnEnd implements IGameState {
         this.nextState = this.nextPlayer(gameData);
         break;
       case StateEvent.BuyBuilding:
-        this.nextState = this.buyBuilding(gameData);
+        this.nextState = StateName.BuyBuilding;
+        break;
+      case StateEvent.SellBuilding:
+        this.nextState = StateName.SellBuilding;
         break;
       default:
         this.nextState = this.name;
         break;
     }
-  }
-
-  buyBuilding(gameData: GameData): StateName {
-    // const tilePosition = gameData.lastSelectedTilePosition;
-    // if (!tilePosition) {
-    //   gameData.log('No tile selected');
-    //   return this.name;
-    // }
-    // const tile = gameData.tiles[tilePosition] as IBuildableTile;
-    // if (tile.buildingCount === undefined || tile.buildingCost === undefined) {
-    //   gameData.log('Cannot build on this tile');
-    //   return this.name;
-    // }
-    // if (!tile.owner || tile.owner?.id !== gameData.currentPlayer?.id) {
-    //   gameData.log('You do not own this property');
-    //   return this.name;
-    // }
-    // if (tile.buildingCount >= 5) {
-    //   gameData.log('You cannot build any more buildings on this property');
-    //   return this.name;
-    // }
-    // if (gameData.currentPlayer.money < tile.buildingCost) {
-    //   gameData.log('You do not have enough money to build a building');
-    //   return this.name;
-    // }
-
-    return StateName.BuyBuilding;
-
-    // tile.buildingCount++;
-    // gameData.currentPlayer.money -= tile.buildingCost;
-
-    // const buildingOrSkyscraper = tile.buildingCount === 5 ? 'skyscraper' : 'building';
-    // gameData.log(`Player ${gameData.currentPlayer?.name} bought a ${buildingOrSkyscraper} on ${tile.name}`);
   }
 
   nextPlayer(gameData: GameData): StateName {
