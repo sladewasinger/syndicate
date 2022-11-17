@@ -25,6 +25,7 @@ import { ButtonsRender } from './ButtonsRender';
 import { CreateTradeRender } from './CreateTradeRender';
 import { ViewTradesRender } from './ViewTradesRender';
 import { StatusRender } from './StatusRender';
+import { AuctionBidRender } from './AuctionBidRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -42,6 +43,7 @@ export class Board {
   createTradeRender: CreateTradeRender | undefined;
   viewTradesRender: ViewTradesRender | undefined;
   statusRender: StatusRender | undefined;
+  auctionBidRender: AuctionBidRender | undefined;
 
   constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
@@ -108,6 +110,7 @@ export class Board {
     this.createTradeRender?.update(gameData, this.renderData);
     this.viewTradesRender?.update(gameData, this.renderData);
     this.statusRender?.update(gameData, this.prevGameData, this.renderData);
+    this.auctionBidRender?.update(gameData, this.prevGameData, this.renderData);
 
     this.prevGameData = gameData;
   }
@@ -130,6 +133,15 @@ export class Board {
     this.buttonsRender = new ButtonsRender(this.container, this.callbacks);
     await this.buttonsRender.drawInitial(gameData, new PIXI.Point(BOARD_WIDTH / 2, BOARD_HEIGHT / 2));
 
+    this.auctionBidRender = new AuctionBidRender(this.container, this.callbacks);
+    await this.auctionBidRender.drawInitial();
+
+    this.leaderboard = new Leaderboard(this.container);
+    await this.leaderboard.drawInitial({
+      gameData: gameData,
+      position: new PIXI.Point(TILE_HEIGHT + 30, TILE_HEIGHT + 30),
+    });
+
     const renderTiles = gameData.tiles.map(this.getTileRenderFromTile);
     for (let i = 0; i < boardPositions.length; i++) {
       const renderTile = renderTiles[i];
@@ -147,12 +159,6 @@ export class Board {
       );
       this.renderData.renderTiles.push(renderTile);
     }
-
-    this.leaderboard = new Leaderboard(this.container);
-    await this.leaderboard.drawInitial({
-      gameData: gameData,
-      position: new PIXI.Point(TILE_HEIGHT + 30, TILE_HEIGHT + 30),
-    });
 
     this.playersRender = new PlayersRender(gameData.players);
     this.renderData.playersRender = this.playersRender;

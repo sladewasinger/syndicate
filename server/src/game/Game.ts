@@ -20,6 +20,8 @@ import { TradeOffer } from 'src/models/shared/TradeOffer';
 import { randomUUID } from 'crypto';
 import { MortgageProperty } from './states/MortgageProperty';
 import { UnmortgageProperty } from './states/UnmortgageProperty';
+import { AuctionProperty } from './states/AuctionProperty';
+import { AuctionFinished } from './states/AuctionFinished';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -27,20 +29,6 @@ export type GameDataCallbacks = {
 
 export class Game {
   stateMachine: StateMachine;
-  // colors: number[] = [
-  //   0x0000ff, // blue
-  //   0xff0000, // red
-  //   0x00ff00, // green
-  //   0xffff00, // yellow
-  //   0xff00ff, // magenta
-  //   0x00ffff, // cyan
-  //   0xffa500, // orange
-  //   0x800080, // purple
-  //   0x800000, // maroon
-  //   0x000080, // navy
-  //   0x808000, // olive
-  //   0x008080, // teal
-  // ];
   colors: number[] = [
     0xe6194b, // red
     0x3cb44b, // green
@@ -76,6 +64,8 @@ export class Game {
     this.stateMachine.addState(new PostDiceRoll());
     this.stateMachine.addState(new LandedOnTile());
     this.stateMachine.addState(new BuyProperty());
+    this.stateMachine.addState(new AuctionProperty());
+    this.stateMachine.addState(new AuctionFinished());
     this.stateMachine.addState(new BuyBuilding());
     this.stateMachine.addState(new SellBuilding());
     this.stateMachine.addState(new MortgageProperty());
@@ -104,6 +94,7 @@ export class Game {
       state: this.stateMachine.currentState.name,
       lastSelectedTilePosition: this.stateMachine.gameData.lastSelectedTilePosition,
       tradeOffers: this.stateMachine.gameData.tradeOffers,
+      auctionParticipants: this.stateMachine.gameData.auction?.bidders.map((p) => p.clientAuctionParticipant) || [],
     };
     return clientGameData;
   }
@@ -166,6 +157,17 @@ export class Game {
 
   buyProperty() {
     this.stateMachine.event(StateEvent.BuyProperty);
+  }
+
+  auctionProperty() {
+    this.stateMachine.event(StateEvent.AuctionProperty);
+  }
+
+  auctionBid(playerId: string, bid: number) {
+    if (this.stateMachine.gameData.auction) {
+      this.stateMachine.gameData.auction.bid(playerId, bid, this.stateMachine.gameData);
+      this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
+    }
   }
 
   buyBuilding(tilePosition: number) {

@@ -7,4 +7,5 @@ export enum StateEvent {
   SellBuilding = 'SellBuilding',
   UnmortgageProperty = 'UnmortgageProperty',
   MortgageProperty = 'MortgageProperty',
+  AuctionBid = 'AuctionBid',
 }

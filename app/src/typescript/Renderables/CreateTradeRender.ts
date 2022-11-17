@@ -269,7 +269,7 @@ export class CreateTradeRender {
   }
 }
 
-class Slider {
+export class Slider {
   container: PIXI.Container;
   value: number;
   width: number;

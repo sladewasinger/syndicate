@@ -7,4 +7,5 @@ export interface IClientPlayer {
   properties: string[];
   color: number;
   turnOrder: number;
+  bidAmount: number | undefined;
 }

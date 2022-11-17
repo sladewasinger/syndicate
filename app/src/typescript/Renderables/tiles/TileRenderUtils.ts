@@ -8,4 +8,16 @@ export class TileRenderUtils {
   static unfade(container: PIXI.Container) {
     container.filters = [];
   }
+
+  static darken(container: PIXI.Container) {
+    const darkenFilter = new PIXI.filters.ColorMatrixFilter();
+    darkenFilter.brightness(0.5, false);
+    container.filters = [darkenFilter];
+  }
+
+  static undarken(container: PIXI.Container) {
+    if (container.filters) {
+      container.filters = container.filters.filter((f) => !(f instanceof PIXI.filters.ColorMatrixFilter));
+    }
+  }
 }

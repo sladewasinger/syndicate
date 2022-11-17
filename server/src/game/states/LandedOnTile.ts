@@ -34,6 +34,9 @@ export class LandedOnTile implements IGameState {
       case StateEvent.BuyProperty:
         this.nextState = StateName.BuyProperty;
         break;
+      case StateEvent.AuctionProperty:
+        this.nextState = StateName.AuctionProperty;
+        break;
       default:
         this.nextState = this.name;
         break;

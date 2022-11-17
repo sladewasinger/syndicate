@@ -54,7 +54,8 @@ export class Engine {
           rollDice: () => this.rollDice(),
           endTurn: () => this.endTurn(),
           buyProperty: () => this.buyProperty(),
-          auctionProperty: () => {},
+          auctionProperty: () => this.auctionProperty(),
+          auctionBid: (bidAmount: number) => this.placeAuctionBid(bidAmount),
           mortgageProperty: (tileIndex: number) => this.mortgageProperty(tileIndex),
           unmortgageProperty: (tileIndex: number) => this.unmortgageProperty(tileIndex),
           buyBuilding: (tileId: number) => this.buyBuilding(tileId),
@@ -165,6 +166,14 @@ export class Engine {
         console.log('Buy Property Result: ', result);
       }
     });
+  }
+
+  async auctionProperty() {
+    await Utils.emitWithPromise(this.socket, 'auctionProperty');
+  }
+
+  async placeAuctionBid(bidAmount: number) {
+    await Utils.emitWithPromise(this.socket, 'auctionBid', bidAmount);
   }
 
   async buyBuilding(tilePosition: number) {

@@ -1,4 +1,5 @@
 import { GameDataCallbacks } from 'src/game/Game';
+import { Auction } from './Auction';
 import { Player } from './Player';
 import { TileType } from './shared/TileType';
 import { TradeOffer } from './shared/TradeOffer';
@@ -25,6 +26,7 @@ export class GameData {
   callbacks: GameDataCallbacks;
   lastSelectedTilePosition: number | undefined;
   tradeOffers: TradeOffer[] = [];
+  auction: Auction | undefined;
 
   constructor(callbacks: GameDataCallbacks) {
     this.callbacks = callbacks;

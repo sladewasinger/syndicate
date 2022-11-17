@@ -25,7 +25,6 @@ export class EngineTester {
     while (engine1.gameData?.currentPlayer?.position != 3) {
       await Utils.sleep(500);
     }
-    engine1.buyProperty();
   }
 
   async three_player_test() {

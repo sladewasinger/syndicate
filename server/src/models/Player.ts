@@ -10,6 +10,7 @@ export class Player {
   properties: string[] = [];
   color: number = 0;
   turnOrder: number = 0;
+  bidAmount: number | undefined = undefined;
 
   constructor(name: string, id: string) {
     this.name = name;
@@ -33,7 +34,14 @@ export class Player {
       properties: this.properties,
       color: this.color,
       turnOrder: this.turnOrder,
+      bidAmount: this.bidAmount,
     };
     return clientPlayer;
+  }
+
+  clone() {
+    const player = new Player(this.name, this.id);
+    Object.assign(player, this);
+    return player;
   }
 }

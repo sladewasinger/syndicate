@@ -4,6 +4,7 @@ export interface BoardCallbacks {
   rollDice: () => void;
   endTurn: () => void;
   buyProperty: () => void;
+  auctionBid: (bid: number) => void;
   auctionProperty: () => void;
   mortgageProperty: (tileId: number) => void;
   unmortgageProperty: (tileId: number) => void;

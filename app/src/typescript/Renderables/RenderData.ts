@@ -7,7 +7,14 @@ export class RenderData {
   renderTiles: ITileRender[] = [];
   playersRender: PlayersRender | undefined = undefined;
   diceState: 'idle' | 'rolling' | 'rolled' = 'idle';
-  renderMode: 'game' | 'mortgage' | 'unmortgage' | 'buyBuilding' | 'sellBuilding' | 'createTrade' | 'viewTrade' =
-    'game';
+  renderMode:
+    | 'game'
+    | 'mortgage'
+    | 'unmortgage'
+    | 'buyBuilding'
+    | 'sellBuilding'
+    | 'createTrade'
+    | 'viewTrade'
+    | 'auctionBid' = 'game';
   tradeTargetPlayerId: string = '';
 }

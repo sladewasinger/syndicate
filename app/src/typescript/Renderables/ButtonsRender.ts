@@ -53,7 +53,9 @@ export class ButtonsRender {
     switch (gameData.state) {
       case StateName.TurnEnd:
         if (renderData.renderMode == 'game') {
-          this.endTurnButton?.enable();
+          if (gameData.currentPlayer.id == gameData.myId) {
+            this.endTurnButton?.enable();
+          }
           this.createTradeButton?.enable();
           this.seeTradesButton?.enable();
           if (GameDataHelpers.playerCanMortgage(gameData.currentPlayer!, gameData)) {

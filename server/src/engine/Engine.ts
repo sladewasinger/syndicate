@@ -82,6 +82,16 @@ export class Engine {
         this.buyProperty(socket.id, callback);
       });
 
+      socket.on('auctionProperty', (callback) => {
+        console.log('auctionProperty');
+        this.auctionProperty(socket.id, callback);
+      });
+
+      socket.on('auctionBid', (bid, callback) => {
+        console.log('auctionBid');
+        this.auctionBid(socket.id, bid, callback);
+      });
+
       socket.on('endTurn', (callback) => {
         console.log('endTurn');
         this.endTurn(socket.id, callback);
@@ -278,6 +288,38 @@ export class Engine {
     const { user, lobby } = result;
 
     lobby.game?.buyProperty();
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
+  }
+
+  auctionProperty(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game?.auctionProperty();
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
+  }
+
+  auctionBid(
+    socketId: string,
+    bid: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game?.auctionBid(user.socketId, bid);
 
     callback(null, lobby.game!.getClientGameData(user.socketId));
   }
