@@ -1,7 +1,8 @@
 import type { IClientGameData } from './IClientGameData';
 import type { IClientLobbyData } from './IClientLobbyData';
-import { IClientUser } from './IClientUser';
+import type { IClientUser } from './IClientUser';
 import type { SocketError } from './SocketError';
+import type { TradeOffer } from './TradeOffer';
 
 export interface ClientToServerEvents {
   registerName: (name: string, callback: (error: SocketError | null, data: IClientUser | undefined) => void) => void;
@@ -14,5 +15,31 @@ export interface ClientToServerEvents {
     callback: (error: SocketError | null, data: IClientGameData | null) => void
   ) => void;
   buyProperty: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
+  auctionProperty: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
+  auctionBid: (bid: number, callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
   endTurn: (callback: (error: SocketError | null, data: IClientGameData | null) => void) => void;
+  buyBuilding: (
+    propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  sellBuilding: (
+    propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  mortgageProperty: (
+    propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  unmortgageProperty: (
+    propertyIndex: number,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  createTradeOffer: (
+    offer: TradeOffer,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
+  acceptTradeOffer: (
+    offerId: string,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
 }
