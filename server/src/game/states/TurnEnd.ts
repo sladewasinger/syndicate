@@ -28,6 +28,12 @@ export class TurnEnd implements IGameState {
       case StateEvent.BuyBuilding:
         this.nextState = StateName.BuyBuilding;
         break;
+      case StateEvent.MortgageProperty:
+        this.nextState = StateName.MortgageProperty;
+        break;
+      case StateEvent.UnmortgageProperty:
+        this.nextState = StateName.UnmortgageProperty;
+        break;
       case StateEvent.SellBuilding:
         this.nextState = StateName.SellBuilding;
         break;

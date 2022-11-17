@@ -10,4 +10,6 @@ export enum StateName {
   BuyProperty = 'BuyProperty',
   BuyBuilding = 'BuyBuilding',
   SellBuilding = 'SellBuilding',
+  MortgageProperty = 'MortgageProperty',
+  UnmortgageProperty = 'UnmortgageProperty',
 }

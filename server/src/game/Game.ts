@@ -18,6 +18,8 @@ import { BuyBuilding } from './states/BuyBuilding';
 import { SellBuilding } from './states/SellBuilding';
 import { TradeOffer } from 'src/models/shared/TradeOffer';
 import { randomUUID } from 'crypto';
+import { MortgageProperty } from './states/MortgageProperty';
+import { UnmortgageProperty } from './states/UnmortgageProperty';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -76,6 +78,8 @@ export class Game {
     this.stateMachine.addState(new BuyProperty());
     this.stateMachine.addState(new BuyBuilding());
     this.stateMachine.addState(new SellBuilding());
+    this.stateMachine.addState(new MortgageProperty());
+    this.stateMachine.addState(new UnmortgageProperty());
     this.stateMachine.addState(new TurnEnd());
     this.stateMachine.addState(new GameOver());
   }
@@ -172,6 +176,16 @@ export class Game {
   sellBuilding(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.SellBuilding);
+  }
+
+  mortgageProperty(tilePosition: number) {
+    this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
+    this.stateMachine.event(StateEvent.MortgageProperty);
+  }
+
+  unmortgageProperty(tilePosition: number) {
+    this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
+    this.stateMachine.event(StateEvent.UnmortgageProperty);
   }
 
   endTurn() {

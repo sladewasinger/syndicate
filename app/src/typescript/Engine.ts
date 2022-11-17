@@ -55,8 +55,8 @@ export class Engine {
           endTurn: () => this.endTurn(),
           buyProperty: () => this.buyProperty(),
           auctionProperty: () => {},
-          mortgageProperty: (tileId: number) => {},
-          unmortgageProperty: (tileId: number) => {},
+          mortgageProperty: (tileIndex: number) => this.mortgageProperty(tileIndex),
+          unmortgageProperty: (tileIndex: number) => this.unmortgageProperty(tileIndex),
           buyBuilding: (tileId: number) => this.buyBuilding(tileId),
           sellBuilding: (tileId: number) => this.sellBuilding(tileId),
           openTrades: () => {},
@@ -173,6 +173,14 @@ export class Engine {
 
   async sellBuilding(tileId: number) {
     await Utils.emitWithPromise(this.socket, 'sellBuilding', tileId);
+  }
+
+  async mortgageProperty(tileIndex: number) {
+    await Utils.emitWithPromise(this.socket, 'mortgageProperty', tileIndex);
+  }
+
+  async unmortgageProperty(tileIndex: number) {
+    await Utils.emitWithPromise(this.socket, 'unmortgageProperty', tileIndex);
   }
 
   async createTradeOffer(tradeOffer: TradeOffer) {

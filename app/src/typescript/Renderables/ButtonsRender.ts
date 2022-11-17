@@ -6,17 +6,6 @@ import { GameDataHelpers } from '../Utils/GameDataHelpers';
 import { ButtonRender } from './ButtonRender';
 import type { RenderData } from './RenderData';
 
-// export interface ButtonCallbacks {
-//   endTurn: () => void;
-//   buyProperty(): void;
-//   auctionProperty(): void;
-//   mortgageProperty(tileId: number): void;
-//   unmortgageProperty(tileId: number): void;
-//   openTrades(): void;
-//   createTrade(): void;
-//   declareBankruptcy(): void;
-// }
-
 export class ButtonsRender {
   container: PIXI.Container;
   endTurnButton: ButtonRender | undefined;
@@ -107,6 +96,12 @@ export class ButtonsRender {
       case 'sellBuilding':
         this.sellBuildingMode();
         break;
+      case 'mortgage':
+        this.mortgageMode();
+        break;
+      case 'unmortgage':
+        this.unmortgageMode();
+        break;
       case 'game':
         for (let i = 0; i < this.renderData.renderTiles.length; i++) {
           this.renderData.renderTiles[i].container.buttonMode = false;
@@ -162,6 +157,58 @@ export class ButtonsRender {
         tile.container.off('pointerdown');
         tile.container.on('pointerdown', () => {
           this.callbacks.sellBuilding(i);
+        });
+        tile.unfade();
+      } else {
+        tile.container.buttonMode = false;
+        tile.container.off('pointerdown');
+        tile.fade();
+      }
+    }
+  }
+
+  mortgageMode() {
+    if (!this.gameData || !this.renderData) {
+      return;
+    }
+
+    for (let i = 0; i < this.renderData.renderTiles.length; i++) {
+      const tile = this.renderData.renderTiles[i];
+      const gameTile = this.gameData.tiles.find((t) => t.id === tile.tile.id);
+      if (!gameTile) {
+        continue;
+      }
+      if (gameTile.ownerId === this.gameData.myId && !gameTile.mortgaged) {
+        tile.container.buttonMode = true;
+        tile.container.off('pointerdown');
+        tile.container.on('pointerdown', () => {
+          this.callbacks.mortgageProperty(i);
+        });
+        tile.unfade();
+      } else {
+        tile.container.buttonMode = false;
+        tile.container.off('pointerdown');
+        tile.fade();
+      }
+    }
+  }
+
+  unmortgageMode() {
+    if (!this.gameData || !this.renderData) {
+      return;
+    }
+
+    for (let i = 0; i < this.renderData.renderTiles.length; i++) {
+      const tile = this.renderData.renderTiles[i];
+      const gameTile = this.gameData.tiles.find((t) => t.id === tile.tile.id);
+      if (!gameTile) {
+        continue;
+      }
+      if (gameTile.ownerId === this.gameData.myId && gameTile.mortgaged) {
+        tile.container.buttonMode = true;
+        tile.container.off('pointerdown');
+        tile.container.on('pointerdown', () => {
+          this.callbacks.unmortgageProperty(i);
         });
         tile.unfade();
       } else {

@@ -3,6 +3,7 @@ import type { IClientGameData } from '@/typescript/models/shared/IClientGameData
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
+import { Textures } from '../Textures';
 import type { ITileRender, ITileRenderArgs } from './ITileRender';
 import { TileRenderUtils } from './TileRenderUtils';
 
@@ -18,6 +19,7 @@ export class DistrictTileRender implements ITileRender {
   building3: PIXI.Graphics | undefined;
   building4: PIXI.Graphics | undefined;
   skyscraper: PIXI.Graphics | undefined;
+  mortgagedSymbol: PIXI.Sprite | undefined;
   faded: boolean = false;
 
   constructor(public tile: IClientTile) {
@@ -51,6 +53,7 @@ export class DistrictTileRender implements ITileRender {
       this.building3 &&
       this.building4 &&
       this.skyscraper &&
+      this.mortgagedSymbol &&
       gameTile.buildingCount != undefined
     ) {
       this.building1.visible = false;
@@ -74,6 +77,12 @@ export class DistrictTileRender implements ITileRender {
       }
       if (gameTile.buildingCount >= 5) {
         this.skyscraper.visible = true;
+      }
+
+      if (gameTile.mortgaged) {
+        this.mortgagedSymbol.visible = true;
+      } else {
+        this.mortgagedSymbol.visible = false;
       }
     }
   }
@@ -149,6 +158,16 @@ export class DistrictTileRender implements ITileRender {
 
     this.drawInfoCard(parentContainer);
 
+    const mortgagedSymbol = new PIXI.Sprite(Textures.mortgagedTexture);
+    const scale =
+      Math.min(tileBackground.width, tileBackground.height) / Math.max(mortgagedSymbol.width, mortgagedSymbol.height);
+    mortgagedSymbol.width = mortgagedSymbol.width * scale;
+    mortgagedSymbol.height = mortgagedSymbol.height * scale;
+    mortgagedSymbol.x = tileBackground.width - mortgagedSymbol.width;
+    mortgagedSymbol.y = tileBackground.height - mortgagedSymbol.height;
+    mortgagedSymbol.visible = false;
+    this.mortgagedSymbol = mortgagedSymbol;
+
     const tileContainer = this.container;
     tileContainer.addChild(
       tileBackground,
@@ -159,7 +178,8 @@ export class DistrictTileRender implements ITileRender {
       building4,
       skyscraper,
       priceText,
-      tileText
+      tileText,
+      mortgagedSymbol
     );
     tileContainer.x = args.x;
     tileContainer.y = args.y;
