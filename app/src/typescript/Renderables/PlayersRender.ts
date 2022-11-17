@@ -2,7 +2,7 @@ import type { IClientPlayer } from '../models/shared/IClientPlayer';
 import * as PIXI from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import type { RenderData } from './RenderData';
-import { boardPositions } from '../models/BoardPositions';
+import { Leaderboard } from './Leaderboard';
 
 export class PlayerRender {
   container: PIXI.Container;
@@ -17,13 +17,13 @@ export class PlayerRender {
 export class PlayersRender {
   playerRenders: PlayerRender[] = [];
   container: PIXI.Container;
+  currentPlayerIndicator: PIXI.Sprite | undefined;
 
   constructor(public players: IClientPlayer[]) {
     this.container = new PIXI.Container();
 
     for (const player of players) {
-      const playerRender = new PlayerRender(player, new PIXI.Point(0, 0));
-      this.playerRenders.push(playerRender);
+      this.addPlayer(player);
     }
   }
 
@@ -31,33 +31,65 @@ export class PlayersRender {
     for (const playerRender of this.playerRenders) {
       const player = gameData.players.find((p) => p.id === playerRender.player.id);
       if (player) {
-        playerRender.container.x = renderData.renderTiles[player.position].container.x;
-        playerRender.container.y = renderData.renderTiles[player.position].container.y;
-        this.distributePlayersOnSameTile(gameData, player, renderData);
+        // ease player to new position
+        const tilePosition = renderData.renderTiles[player.position].container.position;
+
+        const playersOnSameTile = gameData.players
+          .sort((a, b) => a.turnOrder - b.turnOrder)
+          .filter((p) => p.position === player.position);
+
+        if (playersOnSameTile.length <= 1) {
+          playerRender.container.x += (tilePosition.x - playerRender.container.x) * 0.05;
+          playerRender.container.y += (tilePosition.y - playerRender.container.y) * 0.05;
+        } else {
+          this.distributePlayersOnSameTile(gameData, player.position, playersOnSameTile, renderData);
+        }
       } else {
         this.removePlayer(playerRender.player);
       }
     }
+
+    const currentPlayerRender = this.playerRenders.find((pr) => pr.player.id === gameData.currentPlayer?.id);
+    if (currentPlayerRender && this.currentPlayerIndicator) {
+      this.currentPlayerIndicator.x = currentPlayerRender.container.x;
+      this.currentPlayerIndicator.y =
+        currentPlayerRender.container.y -
+        this.currentPlayerIndicator.height -
+        40 -
+        Math.sin(renderData.frame * 0.05) * 40;
+    }
   }
 
-  private distributePlayersOnSameTile(gameData: IClientGameData, player: IClientPlayer, renderData: RenderData) {
-    const playersOnSameTile = gameData.players.filter((p) => p.position === player.position);
-    if (playersOnSameTile.length > 1) {
-      const tilePosition = renderData.renderTiles[player.position].container.position;
-      const radius = 25;
-      const angle = (2 * Math.PI) / playersOnSameTile.length;
-      for (let i = 0; i < playersOnSameTile.length; i++) {
-        const player = playersOnSameTile[i];
-        const playerRender = this.playerRenders.find((pr) => pr.player.id === player.id);
-        if (playerRender) {
-          playerRender.container.x = tilePosition.x + radius * Math.cos(i * angle - Math.PI / 2);
-          playerRender.container.y = tilePosition.y + radius * Math.sin(i * angle - Math.PI / 2);
-        }
+  private distributePlayersOnSameTile(
+    gameData: IClientGameData,
+    position: number,
+    playersOnSameTile: IClientPlayer[],
+    renderData: RenderData
+  ) {
+    const tilePosition = renderData.renderTiles[position].container.position;
+    const radius = 25;
+    const angle = (2 * Math.PI) / playersOnSameTile.length;
+    for (let i = 0; i < playersOnSameTile.length; i++) {
+      const player = playersOnSameTile[i];
+      const playerRender = this.playerRenders.find((pr) => pr.player.id === player.id);
+      if (playerRender) {
+        playerRender.container.x +=
+          (tilePosition.x + radius * Math.cos(i * angle + Math.PI + Math.PI / 6) - playerRender.container.x) * 0.05;
+        playerRender.container.y +=
+          (tilePosition.y + radius * Math.sin(i * angle + Math.PI + Math.PI / 6) - playerRender.container.y) * 0.05;
       }
     }
   }
 
-  drawInitial(args: IPlayersRenderArgs, container: PIXI.Container) {
+  async drawInitial(args: IPlayersRenderArgs, container: PIXI.Container) {
+    this.currentPlayerIndicator = new PIXI.Sprite(Leaderboard.indicatorTexture);
+    this.currentPlayerIndicator.x = 50;
+    this.currentPlayerIndicator.y = 50;
+    this.currentPlayerIndicator.scale.set(0.5);
+    this.currentPlayerIndicator.alpha = 0.75;
+    this.currentPlayerIndicator.anchor.set(0.5, 0.5);
+    this.container.addChild(this.currentPlayerIndicator);
+
     for (const playerRender of this.playerRenders) {
       const token = new PIXI.Graphics();
       token.lineStyle(5, 0x000000, 1);

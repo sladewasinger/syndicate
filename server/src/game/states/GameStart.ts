@@ -1,5 +1,5 @@
 import type { GameData } from '../../models/GameData';
-import { StateName } from './StateNames';
+import { StateName } from '../../models/shared/StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
 
@@ -14,7 +14,5 @@ export class GameStart implements IGameState {
     return this.name;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
-    return this.name;
-  }
+  event(eventName: StateEvent, gameData: GameData): void {}
 }

@@ -1,26 +1,45 @@
 import type { GameData } from '../../models/GameData';
-import { StateName } from './StateNames';
+import { StateName } from '../../models/shared/StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
-import { Player } from 'src/models/shared/Player';
+import { Player } from 'src/models/Player';
+import { IBuildableTile } from 'src/models/tiles/ITile';
 
 export class TurnEnd implements IGameState {
   name: StateName = StateName.TurnEnd;
+  nextState: StateName = this.name;
 
   onEnter(): void {}
 
-  onExit(): void {}
-
-  update(gameData: GameData): StateName {
-    return this.name;
+  onExit(): void {
+    this.nextState = this.name;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
+  update(gameData: GameData): StateName {
+    return this.nextState;
+  }
+
+  event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.EndTurn:
-        return this.nextPlayer(gameData);
+        console.log('TurnEnd: EndTurn');
+        this.nextState = this.nextPlayer(gameData);
+        break;
+      case StateEvent.BuyBuilding:
+        this.nextState = StateName.BuyBuilding;
+        break;
+      case StateEvent.MortgageProperty:
+        this.nextState = StateName.MortgageProperty;
+        break;
+      case StateEvent.UnmortgageProperty:
+        this.nextState = StateName.UnmortgageProperty;
+        break;
+      case StateEvent.SellBuilding:
+        this.nextState = StateName.SellBuilding;
+        break;
       default:
-        return this.name;
+        this.nextState = this.name;
+        break;
     }
   }
 
@@ -32,7 +51,6 @@ export class TurnEnd implements IGameState {
     }
 
     if (gameData.players.length == 1) {
-      nextPlayer = gameData.currentPlayer;
       return StateName.TurnStart;
     }
 
@@ -43,7 +61,7 @@ export class TurnEnd implements IGameState {
       count++;
     } while (nextPlayer.bankrupt && count < gameData.players.length);
 
-    if (count == gameData.players.length - 1) {
+    if (count == gameData.players.length) {
       gameData.winner = gameData.currentPlayer;
       return StateName.GameOver;
     }

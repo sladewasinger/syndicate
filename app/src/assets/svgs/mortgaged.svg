@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="..\..\..\public\mortgaged.png"
+   inkscape:export-xdpi="21.166666"
+   inkscape:export-ydpi="21.166666"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="mortgaged.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.52724989"
+     inkscape:cx="990.04289"
+     inkscape:cy="470.3652"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <rect
+       x="-5.6899017"
+       y="-1.8966339"
+       width="804.17277"
+       height="1119.014"
+       id="rect1020" />
+    <rect
+       x="123.2812"
+       y="-66.382186"
+       width="825.03574"
+       height="354.67054"
+       id="rect1014" />
+    <rect
+       x="-140.35091"
+       y="466.57194"
+       width="15.173071"
+       height="22.759607"
+       id="rect1004" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text1002"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial;white-space:pre;shape-inside:url(#rect1004);display:inline;fill:none;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.37070029,0.37070028,-0.37070028,0.37070029,70.806149,3.1689085)"
+       id="text1018"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:192px;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:7.57035px;white-space:pre;shape-inside:url(#rect1020);display:inline;fill:#ff0000;stroke:#000000;stroke-width:12.6172;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       inkscape:export-filename="..\..\..\public\mortgaged.png"
+       inkscape:export-xdpi="21.166666"
+       inkscape:export-ydpi="21.166666"><tspan
+         x="-5.6894531"
+         y="173.27094"
+         id="tspan1940"><tspan
+           style="font-size:85.3333px"
+           id="tspan1938">MORTGAGED</tspan></tspan></text>
+  </g>
+</svg>

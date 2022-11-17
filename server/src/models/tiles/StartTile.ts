@@ -1,9 +1,10 @@
 import { randomUUID } from 'crypto';
 import type { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
-import { Player } from '../shared/Player';
+import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import type { ITile } from './ITile';
+import { StateName } from '../shared/StateNames';
 
 export class StartTile implements ITile {
   id: string;
@@ -17,8 +18,9 @@ export class StartTile implements ITile {
     this.id = randomUUID();
   }
 
-  onLanded(gameData: GameData): void {
+  onLanded(gameData: GameData, currentState: StateName): StateName {
     gameData.currentPlayer.money += 200;
+    return currentState;
   }
 
   getClientTile(gameData: GameData): IClientTile {
@@ -30,13 +32,14 @@ export class StartTile implements ITile {
       color: 0x000000,
       buyable: this.buyable,
       price: 0,
-      owner: this.owner?.id,
+      ownerId: this.owner?.id,
+      mortgageValue: undefined,
       entranceFees: undefined,
-      buildingPrice: undefined,
+      buildingCost: undefined,
       skyscraperPrice: undefined,
       skyscraper: undefined,
       rent: undefined,
-      buba: null,
+      buildingCount: undefined,
     };
   }
 }

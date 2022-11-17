@@ -1,14 +1,17 @@
 import type { GameData } from '../../models/GameData';
-import { StateName } from './StateNames';
+import { StateName } from '../../models/shared/StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
 
 export class PostDiceRoll implements IGameState {
   name: StateName = StateName.PostDiceRoll;
+  nextState: StateName = this.name;
 
   onEnter(gameData: GameData): void {}
 
-  onExit(gameData: GameData): void {}
+  onExit(gameData: GameData): void {
+    this.nextState = this.name;
+  }
 
   update(gameData: GameData): StateName {
     gameData.currentPlayer.position += 1; // Move one tile at a time
@@ -21,7 +24,5 @@ export class PostDiceRoll implements IGameState {
     return this.name;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
-    return this.name;
-  }
+  event(eventName: StateEvent, gameData: GameData): void {}
 }

@@ -1,9 +1,10 @@
 import { randomUUID } from 'crypto';
 import { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
-import { Player } from '../shared/Player';
+import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import { IBuyableTile } from './ITile';
+import { StateName } from '../shared/StateNames';
 
 export class SubwayTile implements IBuyableTile {
   id: string;
@@ -13,9 +14,11 @@ export class SubwayTile implements IBuyableTile {
   buyable: boolean = true;
   mortgaged: boolean = false;
   type: TileType = TileType.Subway;
+  mortgageValue: number;
 
   constructor(public name: string, public price: number) {
     this.id = randomUUID();
+    this.mortgageValue = Math.floor(this.price * 0.5);
   }
 
   entranceFee(gameData: GameData) {
@@ -27,11 +30,13 @@ export class SubwayTile implements IBuyableTile {
     return fees[subwayCount - 1];
   }
 
-  onLanded(gameData: GameData): void {
+  onLanded(gameData: GameData, currentState: StateName): StateName {
     if (this.owner != null && this.owner !== gameData.currentPlayer) {
       gameData.currentPlayer.money -= this.entranceFee(gameData);
       this.owner.money += this.entranceFee(gameData);
     }
+
+    return currentState;
   }
 
   getClientTile(gameData: GameData): IClientTile {
@@ -42,12 +47,15 @@ export class SubwayTile implements IBuyableTile {
       buyable: this.buyable,
       type: this.type,
       price: this.price,
-      owner: this.owner?.id,
+      mortgageValue: this.mortgageValue,
+      mortgaged: this.mortgaged,
+      ownerId: this.owner?.id,
       entranceFees: undefined,
-      buildingPrice: undefined,
+      buildingCost: undefined,
       skyscraperPrice: undefined,
       skyscraper: this.skyscraper,
       rent: this.entranceFee(gameData),
+      buildingCount: undefined,
     };
     return clientTile;
   }

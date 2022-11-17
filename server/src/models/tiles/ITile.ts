@@ -1,7 +1,8 @@
 import type { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
-import { Player } from '../shared/Player';
+import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
+import { StateName } from '../shared/StateNames';
 
 export interface ITile {
   name: string;
@@ -9,10 +10,18 @@ export interface ITile {
   buyable: boolean;
   type: TileType;
   owner: Player | undefined;
-  onLanded(gameData: GameData): void;
+  onLanded(gameData: GameData, currentState: StateName): StateName;
   getClientTile(gameData: GameData): IClientTile;
 }
 
 export interface IBuyableTile extends ITile {
   mortgaged: boolean;
+  price: number;
+  mortgageValue: number;
+}
+
+export interface IBuildableTile extends IBuyableTile {
+  buildingCount: number;
+  buildingCost: number;
+  skyscraperPrice: number;
 }

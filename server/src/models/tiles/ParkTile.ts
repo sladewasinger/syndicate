@@ -1,8 +1,9 @@
 import { GameData } from '../GameData';
 import { IClientTile } from '../shared/IClientTile';
-import { Player } from '../shared/Player';
+import { Player } from '../Player';
 import { TileType } from '../shared/TileType';
 import { ITile } from './ITile';
+import { StateName } from '../shared/StateNames';
 
 export class ParkTile implements ITile {
   id: string;
@@ -16,7 +17,9 @@ export class ParkTile implements ITile {
     this.id = 'park';
   }
 
-  onLanded(gameData: GameData): void {}
+  onLanded(gameData: GameData, currentState: StateName): StateName {
+    return StateName.TurnEnd;
+  }
 
   getClientTile(gameData: GameData): IClientTile {
     return <IClientTile>(<unknown>{

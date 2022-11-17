@@ -7,9 +7,13 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "@pixi/assets": "^6.0.0",
+    "@pixi/interaction": "^6.0.0",
+    "pixi-filters": "^4.0.0",
     "pixi.js": "^6.0.0",
     "socket.io-client": "^4.5.3",
     "vue": "^3.2.41",

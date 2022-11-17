@@ -1,39 +1,30 @@
 import type { GameData } from '../../models/GameData';
-import { StateName } from './StateNames';
+import { StateName } from '../../models/shared/StateNames';
 import type { IGameState } from './IGameState';
 import { StateEvent } from './StateEvents';
 
 export class PreDiceRoll implements IGameState {
   name: StateName = StateName.PreDiceRoll;
+  nextState: StateName = this.name;
 
   onEnter(gameData: GameData): void {}
 
-  onExit(gameData: GameData): void {}
+  onExit(gameData: GameData): void {
+    this.nextState = this.name;
+  }
 
   update(gameData: GameData): StateName {
-    return this.name;
+    return this.nextState;
   }
 
-  event(eventName: StateEvent, gameData: GameData): StateName {
+  event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.RollDice:
-        return this.rollDice(gameData);
+        this.nextState = StateName.RollDice;
+        break;
       default:
-        return this.name;
+        this.nextState = this.name;
+        break;
     }
-  }
-
-  rollDice(gameData: GameData): StateName {
-    const dice1 = Math.floor(Math.random() * 6) + 1;
-    const dice2 = Math.floor(Math.random() * 6) + 1;
-    gameData.dice = gameData.diceOverride || [dice1, dice2];
-    gameData.currentPlayer.targetPosition =
-      gameData.currentPlayer.position + gameData.dice.reduce((cur, next) => cur + next, 0);
-
-    if (gameData.currentPlayer.targetPosition > gameData.tiles.length) {
-      gameData.currentPlayer.targetPosition = gameData.currentPlayer.position % gameData.tiles.length;
-    }
-
-    return StateName.PostDiceRoll;
   }
 }
