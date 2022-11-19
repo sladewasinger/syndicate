@@ -56,7 +56,9 @@ export class AuctionBidRender {
       return;
     }
 
-    this.renderData.renderMode = 'game';
+    if (this.renderData.renderMode === 'auctionBid') {
+      this.renderData.renderMode = 'game';
+    }
     this.container.visible = false;
   }
 
@@ -82,8 +84,6 @@ export class AuctionBidRender {
       ) {
         if (!myAuctionParticipant.hasBid) {
           this.open();
-        } else {
-          this.close();
         }
       }
     }

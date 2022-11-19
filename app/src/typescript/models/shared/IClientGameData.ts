@@ -13,4 +13,5 @@ export interface IClientGameData {
   lastSelectedTilePosition: number | undefined;
   tradeOffers: TradeOffer[];
   auctionParticipants: IClientAuctionParticipant[];
+  auctionWinner: IClientPlayer | undefined;
 }

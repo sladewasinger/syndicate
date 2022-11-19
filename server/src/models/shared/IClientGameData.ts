@@ -1,3 +1,4 @@
+import { Player } from '../Player';
 import { IClientAuctionParticipant } from './IClientAuctionParticipant';
 import type { IClientPlayer } from './IClientPlayer';
 import type { IClientTile } from './IClientTile';
@@ -13,4 +14,5 @@ export interface IClientGameData {
   lastSelectedTilePosition: number | undefined;
   tradeOffers: TradeOffer[];
   auctionParticipants: IClientAuctionParticipant[];
+  auctionWinner: IClientPlayer | undefined;
 }

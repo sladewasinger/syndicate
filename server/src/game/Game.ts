@@ -95,6 +95,7 @@ export class Game {
       lastSelectedTilePosition: this.stateMachine.gameData.lastSelectedTilePosition,
       tradeOffers: this.stateMachine.gameData.tradeOffers,
       auctionParticipants: this.stateMachine.gameData.auction?.bidders.map((p) => p.clientAuctionParticipant) || [],
+      auctionWinner: this.stateMachine.gameData.auction?.highestBidder?.player.clientPlayer,
     };
     return clientGameData;
   }
@@ -157,10 +158,12 @@ export class Game {
 
   buyProperty() {
     this.stateMachine.event(StateEvent.BuyProperty);
+    this.tick();
   }
 
   auctionProperty() {
     this.stateMachine.event(StateEvent.AuctionProperty);
+    this.tick();
   }
 
   auctionBid(playerId: string, bid: number) {
@@ -173,25 +176,30 @@ export class Game {
   buyBuilding(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.BuyBuilding);
+    this.tick();
   }
 
   sellBuilding(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.SellBuilding);
+    this.tick();
   }
 
   mortgageProperty(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.MortgageProperty);
+    this.tick();
   }
 
   unmortgageProperty(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.UnmortgageProperty);
+    this.tick();
   }
 
   endTurn() {
     this.stateMachine.event(StateEvent.EndTurn);
+    this.tick();
   }
 
   createTradeOffer(offer: TradeOffer) {
