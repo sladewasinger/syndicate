@@ -41,6 +41,14 @@ export class UtilityTile implements IBuyableTile {
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
+    if (this.owner != null) {
+      if (this.owner !== gameData.currentPlayer) {
+        gameData.currentPlayer.money -= this.entranceFee(gameData);
+        this.owner.money += this.entranceFee(gameData);
+      }
+      return StateName.TurnEnd;
+    }
+
     return currentState;
   }
 

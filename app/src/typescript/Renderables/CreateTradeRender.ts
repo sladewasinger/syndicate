@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { BOARD_HEIGHT, BOARD_WIDTH, TILE_HEIGHT } from '../models/BoardPositions';
 import type { IClientGameData } from '../models/shared/IClientGameData';
-import type { TradeOffer } from '../models/shared/TradeOffer';
+import type { TradeOffer, TradeOfferProperty } from '../models/shared/TradeOffer';
 import { GameDataHelpers } from '../Utils/GameDataHelpers';
 import { RenderHelpers } from '../Utils/RenderHelpers';
 import { ButtonRender } from './ButtonRender';
@@ -239,11 +239,11 @@ export class CreateTradeRender {
       0xcccc00,
       () => {
         const checkedPlayer = this.playerCheckboxes.find((c) => c.checked);
-        if (checkedPlayer) {
-          const authorOwnedSelectedTiles = gameData.tiles
+        if (checkedPlayer && this.gameData) {
+          const authorOwnedSelectedTiles = this.gameData.tiles
             .filter((t) => this.selectedTileIds.includes(t.id))
-            .filter((t) => t.ownerId === gameData.myId);
-          const targetOwnedSelectedTiles = gameData.tiles
+            .filter((t) => t.ownerId === this.gameData!.myId);
+          const targetOwnedSelectedTiles = this.gameData.tiles
             .filter((t) => this.selectedTileIds.includes(t.id))
             .filter((t) => t.ownerId === checkedPlayer.id);
 
@@ -253,8 +253,12 @@ export class CreateTradeRender {
             targetPlayerId: checkedPlayer.id,
             authorOfferMoney: this.giveMoneySlider?.value || 0,
             targetOfferMoney: this.requestMoneySlider?.value || 0,
-            authorOfferProperties: authorOwnedSelectedTiles,
-            targetOfferProperties: targetOwnedSelectedTiles,
+            authorOfferProperties: authorOwnedSelectedTiles.map(
+              (t) => <TradeOfferProperty>{ id: t.id, name: t.name, color: t.color }
+            ),
+            targetOfferProperties: targetOwnedSelectedTiles.map(
+              (t) => <TradeOfferProperty>{ id: t.id, name: t.name, color: t.color }
+            ),
           };
           this.callbacks.createTrade(tradeOffer);
           this.close();

@@ -180,9 +180,9 @@ export class EngineTester {
     );
     await engine2.createTradeOffer(tradeOffer);
     await Utils.sleep(500);
-    await engine2.endTurn();
-    await Utils.sleep(500);
-    engine2.socket.disconnect();
+    //await engine2.endTurn();
+    // await Utils.sleep(500);
+    // engine2.socket.disconnect();
   }
 
   async test_buy_houses() {

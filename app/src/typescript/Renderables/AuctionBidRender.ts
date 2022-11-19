@@ -66,7 +66,7 @@ export class AuctionBidRender {
     this.gameData = gameData;
     this.renderData = renderData;
 
-    if (gameData.state !== 'AuctionProperty') {
+    if (gameData.state !== 'AuctionProperty' && this.dialogOpen) {
       this.close();
       return;
     }
@@ -84,6 +84,8 @@ export class AuctionBidRender {
       ) {
         if (!myAuctionParticipant.hasBid) {
           this.open();
+        } else {
+          this.close();
         }
       }
     }
