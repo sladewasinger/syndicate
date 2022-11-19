@@ -11,6 +11,41 @@ export class EngineTester {
     this.vueForceUpdateCallback = vueForceUpdateCallback;
   }
 
+  async buy_subway_electric_internet_test() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 4);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(500);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 6);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 15);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+  }
+
   async one_player_test() {
     await Utils.sleep(500);
     const engine1 = new Engine(this.vueForceUpdateCallback, true);

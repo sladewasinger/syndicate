@@ -12,12 +12,37 @@ export class ElectricTileRender implements ITileRender {
   height: number = TILE_HEIGHT;
   container: PIXI.Container;
   static electricTexture: any;
+  tileBackground: PIXI.Graphics | undefined;
+  gameData: IClientGameData | undefined;
+  renderData: RenderData | undefined;
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
   }
 
-  update(gameData: IClientGameData, renderData: RenderData) {}
+  update(gameData: IClientGameData, renderData: RenderData) {
+    this.gameData = gameData;
+    this.renderData = renderData;
+
+    const gameTile = gameData.tiles.find((t) => t.id === this.tile.id);
+    if (gameTile === undefined) {
+      throw new Error(`Tile with id '${this.tile.id}' not found`);
+    }
+    const owner = gameData.players.find((p) => p.id === gameTile.ownerId);
+    if (owner) {
+      this.tileBackground?.clear();
+      this.tileBackground?.lineStyle(2, 0x000000, 1);
+      this.tileBackground?.beginFill(owner.color, 1);
+      this.tileBackground?.drawRect(0, 0, this.width, this.height);
+      this.tileBackground?.endFill();
+    } else {
+      this.tileBackground?.clear();
+      this.tileBackground?.lineStyle(2, 0x000000, 1);
+      this.tileBackground?.beginFill(0xffffff, 1);
+      this.tileBackground?.drawRect(0, 0, this.width, this.height);
+      this.tileBackground?.endFill();
+    }
+  }
 
   async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
     if (!ElectricTileRender.electricTexture) {
@@ -29,6 +54,7 @@ export class ElectricTileRender implements ITileRender {
     tileBackground.beginFill(0xffffff, 1);
     tileBackground.drawRect(0, 0, this.width, this.height);
     tileBackground.endFill();
+    this.tileBackground = tileBackground;
 
     const price = new PIXI.Text(`$${this.tile.price}`, {
       fill: 0x000000,
