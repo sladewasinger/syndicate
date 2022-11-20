@@ -20,7 +20,7 @@ export class AuctionFinished implements IGameState {
       tile.owner = player;
       gameData.log(`${player.name} won the auction and bought ${tile.name} for $${auction.highestBid}`);
     } else {
-      gameData.log('No one bought this property');
+      gameData.log('No one bought this property??');
     }
 
     this.nextState = StateName.TurnEnd;

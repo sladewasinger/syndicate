@@ -27,7 +27,7 @@ export default defineComponent({
 
     if (this.RUN_TESTS) {
       const engineTester = new EngineTester(vueForceUpdateCallback);
-      engineTester.buy_subway_electric_internet_test(); // CHANGE THIS TO THE TEST METHOD YOU WANT
+      engineTester.test_doubles(); // CHANGE THIS TO THE TEST METHOD YOU WANT
     } else {
       this.engine = new Engine(vueForceUpdateCallback);
       this.engineVueProperties = this.engine.engineVueProperties;

@@ -5,18 +5,36 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "command": "cd server/src && npm start",
+      "name": "Run npm start",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
       "name": "Launch via NPM",
       "request": "launch",
-      "runtimeArgs": ["test"],
-      "runtimeExecutable": "npm",
-      "skipFiles": ["<node_internals>/**"],
+      "runtimeArgs": ["${workspaceFolder}\\dist\\server\\src\\index.js"],
+      // "runtimeExecutable": "npm",
+      //"skipFiles": ["<node_internals>/**"],
       "type": "node"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Node",
+      "program": "${workspaceFolder}/server/src/index.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
     },
     {
       "name": "Linux: Jest",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand"],
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand"
+      ],
       "console": "externalTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -24,7 +42,11 @@
       "name": "Windows: Jest",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/jest/bin/jest.js", "--runInBand"],
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest.js",
+        "--runInBand"
+      ],
       "console": "internalConsole", // integratedTerminal does not work if default terminal is wsl
       "internalConsoleOptions": "neverOpen"
     }

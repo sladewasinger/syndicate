@@ -148,24 +148,12 @@ export class Engine {
     });
   }
 
-  rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
-    this.socket.emit('rollDice', dice1Override, dice2Override, (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(result);
-      }
-    });
+  async rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
+    Utils.emitWithPromise(this.socket, 'rollDice', dice1Override, dice2Override);
   }
 
-  buyProperty() {
-    this.socket.emit('buyProperty', (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Buy Property Result: ', result);
-      }
-    });
+  async buyProperty() {
+    Utils.emitWithPromise(this.socket, 'buyProperty');
   }
 
   async auctionProperty() {

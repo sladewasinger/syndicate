@@ -9,19 +9,19 @@ export class PostDiceRoll implements IGameState {
 
   onEnter(gameData: GameData): void {}
 
-  onExit(gameData: GameData): void {
-    this.nextState = this.name;
-  }
+  onExit(gameData: GameData): void {}
 
   update(gameData: GameData): StateName {
+    if (gameData.currentPlayer.position == gameData.currentPlayer.targetPosition) {
+      return StateName.LandedOnTile;
+    }
+
     gameData.currentPlayer.position += 1; // Move one tile at a time
     if (gameData.currentPlayer.position >= gameData.tiles.length) {
       gameData.currentPlayer.position = 0; // Wrap around
     }
-    if (gameData.currentPlayer.position == gameData.currentPlayer.targetPosition) {
-      return StateName.LandedOnTile;
-    }
-    return this.name;
+
+    return this.nextState;
   }
 
   event(eventName: StateEvent, gameData: GameData): void {}

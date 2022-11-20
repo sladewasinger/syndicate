@@ -22,6 +22,8 @@ import { MortgageProperty } from './states/MortgageProperty';
 import { UnmortgageProperty } from './states/UnmortgageProperty';
 import { AuctionProperty } from './states/AuctionProperty';
 import { AuctionFinished } from './states/AuctionFinished';
+import { InTraffic } from './states/InTraffic';
+import { EnterTraffic } from './states/EnterTraffic';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
@@ -72,9 +74,12 @@ export class Game {
     this.stateMachine.addState(new UnmortgageProperty());
     this.stateMachine.addState(new TurnEnd());
     this.stateMachine.addState(new GameOver());
+    this.stateMachine.addState(new InTraffic());
+    this.stateMachine.addState(new EnterTraffic());
   }
 
   tick() {
+    // I know this is nasty code. Don't judge me... I'm in a hurry.
     const prevGameData = JSON.stringify(this.stateMachine);
 
     this.stateMachine.update();

@@ -9,9 +9,15 @@ export class TurnEnd implements IGameState {
   name: StateName = StateName.TurnEnd;
   nextState: StateName = this.name;
 
-  onEnter(): void {}
+  onEnter(gameData: GameData): void {
+    if (gameData.dice[0] === gameData.dice[1] && gameData.diceDoublesInARow < 3 && !gameData.currentPlayer.isInJail) {
+      this.nextState = StateName.PreDiceRoll;
+    } else {
+      this.nextState = this.name;
+    }
+  }
 
-  onExit(): void {
+  onExit(gameData: GameData): void {
     this.nextState = this.name;
   }
 

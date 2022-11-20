@@ -11,6 +11,8 @@ export class Player {
   color: number = 0;
   turnOrder: number = 0;
   bidAmount: number | undefined = undefined;
+  isInJail: boolean = false;
+  jailTurns: number = 0;
 
   constructor(name: string, id: string) {
     this.name = name;
