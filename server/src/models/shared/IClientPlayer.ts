@@ -8,4 +8,6 @@ export interface IClientPlayer {
   color: number;
   turnOrder: number;
   bidAmount: number | undefined;
+  jailTurns: number;
+  isInJail: boolean;
 }

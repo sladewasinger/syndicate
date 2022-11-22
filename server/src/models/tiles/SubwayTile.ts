@@ -26,7 +26,6 @@ export class SubwayTile implements IBuyableTile {
       .filter((tile) => tile.type === TileType.Subway)
       .filter((tile) => tile.owner === this.owner).length;
     const fees = [100, 200, 400, 800];
-    const fee = 2 ** subwayCount * 100;
     return fees[subwayCount - 1];
   }
 

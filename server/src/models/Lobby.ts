@@ -52,6 +52,9 @@ export class Lobby {
           console.log('onStateChange', name);
           this.emitGameData();
         },
+        onGameMessage: (msg) => {
+          this.emitGameMessage(msg);
+        },
       }
     );
     this.game.startGame();
@@ -80,6 +83,17 @@ export class Lobby {
         const gameData = this.game.getClientGameData(user.socketId);
         this.io?.to(user.socketId).emit('gameData', gameData);
       }
+    }
+  }
+
+  emitGameMessage(msg: string) {
+    if (!this.game) {
+      return;
+    }
+
+    for (const user of this.users) {
+      const gameData = this.game.getClientGameData(user.socketId);
+      this.io?.to(user.socketId).emit('gameMessage', msg);
     }
   }
 }

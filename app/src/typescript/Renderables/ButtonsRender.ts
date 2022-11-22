@@ -81,8 +81,11 @@ export class ButtonsRender {
           }
           break;
         case StateName.LandedOnTile:
-          this.buyPropertyButton?.enable();
-          this.auctionPropertyButton?.enable();
+          const tile = gameData.tiles[gameData.currentPlayer.position];
+          if (tile.buyable && tile.ownerId === undefined) {
+            this.buyPropertyButton?.enable();
+            this.auctionPropertyButton?.enable();
+          }
           break;
       }
     }

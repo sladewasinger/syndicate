@@ -37,6 +37,8 @@ export class Player {
       color: this.color,
       turnOrder: this.turnOrder,
       bidAmount: this.bidAmount,
+      jailTurns: this.jailTurns,
+      isInJail: this.isInJail,
     };
     return clientPlayer;
   }

@@ -28,8 +28,12 @@ export class TurnEnd implements IGameState {
   event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.EndTurn:
-        console.log('TurnEnd: EndTurn');
-        this.nextState = this.nextPlayer(gameData);
+        if (
+          !(gameData.dice[0] === gameData.dice[1] && gameData.diceDoublesInARow < 3 && !gameData.currentPlayer.isInJail)
+        ) {
+          console.log('TurnEnd: EndTurn');
+          this.nextState = this.nextPlayer(gameData);
+        }
         break;
       case StateEvent.BuyBuilding:
         this.nextState = StateName.BuyBuilding;

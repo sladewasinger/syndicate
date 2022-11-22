@@ -46,6 +46,11 @@ export class Engine {
       this.gameData = gameData;
       this.vueForceUpdateCallback();
     });
+    this.socket.on('gameMessage', (message: any) => {
+      console.log('gameMessage', message);
+      this.board?.onGameMessage(message);
+      this.vueForceUpdateCallback();
+    });
     this.socket.on('gameStarted', async (gameData: IClientGameData) => {
       console.log('gameStarted');
       this.gameRunning = true;

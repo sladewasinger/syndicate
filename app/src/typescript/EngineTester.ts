@@ -11,6 +11,23 @@ export class EngineTester {
     this.vueForceUpdateCallback = vueForceUpdateCallback;
   }
 
+  async test_goToJail() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 29);
+    while (engine1.gameData?.state != StateName.TurnEnd) {
+      await Utils.sleep(500);
+    }
+    await Utils.sleep(500);
+  }
+
   async test_doubles() {
     await Utils.sleep(500);
     const engine1 = new Engine(this.vueForceUpdateCallback, true);
@@ -21,12 +38,10 @@ export class EngineTester {
     await Utils.sleep(500);
     engine1.startGame();
     await Utils.sleep(500);
-    engine1.rollDice(3, 3);
-    while (engine1.gameData?.state != StateName.LandedOnTile) {
+    engine1.rollDice(2, 2);
+    while (engine1.gameData?.state != StateName.TurnEnd) {
       await Utils.sleep(500);
     }
-    await Utils.sleep(500);
-    await engine1.buyProperty();
     await Utils.sleep(500);
     engine1.endTurn();
     await Utils.sleep(500);

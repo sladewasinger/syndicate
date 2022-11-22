@@ -18,6 +18,14 @@ export class GoToPrisonTile implements ITile {
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
+    gameData.currentPlayer.isInJail = true;
+    gameData.currentPlayer.jailTurns = 3;
+    gameData.currentPlayer.position = 10;
+    gameData.currentPlayer.targetPosition = 10;
+
+    gameData.log(`${gameData.currentPlayer.name} entered traffic!`);
+    gameData.callbacks.onGameMessage(`${gameData.currentPlayer.name} entered traffic!`);
+
     return StateName.TurnEnd;
   }
 

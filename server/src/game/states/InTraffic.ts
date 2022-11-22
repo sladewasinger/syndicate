@@ -20,6 +20,8 @@ export class InTraffic implements IGameState {
     gameData.currentPlayer.jailTurns = 3;
 
     this.nextState = StateName.TurnEnd;
+
+    gameData.callbacks.onGameMessage(`Player ${gameData.currentPlayer.name} is in traffic!`);
   }
 
   onExit(gameData: GameData): void {}

@@ -27,6 +27,7 @@ import { EnterTraffic } from './states/EnterTraffic';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
+  onGameMessage: (message: string) => void;
 };
 
 export class Game {

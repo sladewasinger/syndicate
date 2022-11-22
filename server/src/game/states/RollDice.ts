@@ -20,14 +20,16 @@ export class RollDice implements IGameState {
         gameData.currentPlayer.isInJail = false;
         gameData.currentPlayer.jailTurns = 0;
         gameData.log(`Player ${gameData.currentPlayer.name} rolled doubles and got out of jail!`);
+        gameData.callbacks.onGameMessage(`${gameData.currentPlayer.name} rolled doubles and got out of jail!`);
       } else {
         gameData.currentPlayer.jailTurns--;
-      }
 
-      if (gameData.currentPlayer.jailTurns <= 0) {
-        gameData.currentPlayer.isInJail = false;
-        gameData.currentPlayer.money -= 100;
-        gameData.log(`Player ${gameData.currentPlayer.name} paid 100 to get out of jail.`);
+        if (gameData.currentPlayer.jailTurns <= 0) {
+          gameData.currentPlayer.isInJail = false;
+          gameData.currentPlayer.money -= 100;
+          gameData.log(`Player ${gameData.currentPlayer.name} paid 100 to get out of jail.`);
+          gameData.callbacks.onGameMessage(`${gameData.currentPlayer.name} paid 100 to get out of jail.`);
+        }
       }
     }
 
