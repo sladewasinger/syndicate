@@ -19,6 +19,8 @@ export class PostDiceRoll implements IGameState {
     gameData.currentPlayer.position += 1; // Move one tile at a time
     if (gameData.currentPlayer.position >= gameData.tiles.length) {
       gameData.currentPlayer.position = 0; // Wrap around
+      gameData.currentPlayer.money += 200; // Collect $200
+      gameData.log(`${gameData.currentPlayer.name} passed Go and collected $200`);
     }
 
     return this.nextState;

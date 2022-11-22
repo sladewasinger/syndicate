@@ -229,7 +229,7 @@ export class EngineTester {
     await engine1.endTurn();
     await Utils.sleep(1000);
 
-    engine1.rollDice(4, 6);
+    engine1.rollDice(1, 23);
     while (engine1.gameData?.state != StateName.LandedOnTile) {
       await Utils.sleep(100);
     }
