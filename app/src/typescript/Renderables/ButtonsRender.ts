@@ -54,8 +54,10 @@ export class ButtonsRender {
       switch (gameData.state) {
         case StateName.TurnEnd:
           if (renderData.renderMode == 'game') {
-            if (gameData.currentPlayer.id == gameData.myId) {
+            if (gameData.currentPlayer.money >= 0) {
               this.endTurnButton?.enable();
+            } else {
+              this.bankruptcyButton?.enable();
             }
             this.createTradeButton?.enable();
             if (GameDataHelpers.playerCanMortgage(gameData.currentPlayer!, gameData)) {
@@ -82,8 +84,10 @@ export class ButtonsRender {
           break;
         case StateName.LandedOnTile:
           const tile = gameData.tiles[gameData.currentPlayer.position];
-          if (tile.buyable && tile.ownerId === undefined) {
-            this.buyPropertyButton?.enable();
+          if (tile && tile.buyable && tile.ownerId === undefined && tile.price) {
+            if (gameData.currentPlayer.money >= tile.price) {
+              this.buyPropertyButton?.enable();
+            }
             this.auctionPropertyButton?.enable();
           }
           break;

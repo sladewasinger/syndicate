@@ -19,7 +19,6 @@ export class StartTile implements ITile {
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
-    gameData.currentPlayer.money += 200;
     return StateName.TurnEnd;
   }
 

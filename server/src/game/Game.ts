@@ -127,6 +127,7 @@ export class Game {
       } else if (player === this.stateMachine.gameData.currentPlayer) {
         this.stateMachine.setState('TurnStart');
       }
+      this.stateMachine.gameData.log(`${player.name} left the game.`);
     }
   }
 
@@ -206,6 +207,12 @@ export class Game {
   endTurn() {
     this.stateMachine.event(StateEvent.EndTurn);
     this.tick();
+  }
+
+  declareBankruptcy(playerId: string) {
+    this.stateMachine.gameData.log(`${this.stateMachine.gameData.currentPlayer?.name} declared bankruptcy.`);
+    this.removePlayer(playerId);
+    this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
   }
 
   createTradeOffer(offer: TradeOffer) {

@@ -73,7 +73,7 @@ export class Engine {
           acceptTrade: (tradeOfferId: string) => {
             this.acceptTradeOffer(tradeOfferId);
           },
-          declareBankruptcy: () => {},
+          declareBankruptcy: () => this.declareBankruptcy(),
         });
         await this.board.drawBoardInitial(gameData);
       }
@@ -195,5 +195,9 @@ export class Engine {
 
   async endTurn() {
     await Utils.emitWithPromise(this.socket, 'endTurn');
+  }
+
+  async declareBankruptcy() {
+    await Utils.emitWithPromise(this.socket, 'declareBankruptcy');
   }
 }

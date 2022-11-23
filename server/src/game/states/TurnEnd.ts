@@ -69,7 +69,7 @@ export class TurnEnd implements IGameState {
       nextPlayer = gameData.players.shift() as Player;
       gameData.players.push(nextPlayer);
       count++;
-    } while (nextPlayer.bankrupt && count < gameData.players.length);
+    } while (nextPlayer.money < 0 && count < gameData.players.length);
 
     if (count == gameData.players.length) {
       gameData.winner = gameData.currentPlayer;

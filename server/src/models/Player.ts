@@ -1,5 +1,7 @@
+import { GameData } from './GameData';
 import { IClientGameData } from './shared/IClientGameData';
 import { IClientPlayer } from './shared/IClientPlayer';
+import { IBuildableTile, IBuyableTile } from './tiles/ITile';
 
 export class Player {
   targetPosition: number;
@@ -22,8 +24,16 @@ export class Player {
     this.targetPosition = 0;
   }
 
-  get bankrupt(): boolean {
-    return this.money <= 0;
+  isBankrupt(gameData: GameData): boolean {
+    const ownedProperties = gameData.tiles
+      .filter((tile) => tile.owner?.id === this.id)
+      .map((tile) => tile as IBuyableTile);
+    const mortgageableProperties = ownedProperties.filter((t) => t.mortgaged === false);
+    const propertiesWithHouses = ownedProperties
+      .map((t) => t as IBuildableTile)
+      .filter((t) => t.buildingCount != undefined)
+      .filter((t) => t.buildingCount > 0);
+    return this.money <= 0 && mortgageableProperties.length === 0 && propertiesWithHouses.length === 0;
   }
 
   get clientPlayer(): IClientPlayer {
