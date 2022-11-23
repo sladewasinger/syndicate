@@ -85,7 +85,7 @@ export default defineComponent({
         </form>
       </div>
       <div v-if="myLobby">
-        <button @click="startGame">Start Game</button>
+        <button @click="startGame" v-if="myLobby.owner.id == engineVueProperties?.myUser.id">Start Game</button>
         <div>
           <strong>Lobby ID:</strong> {{ myLobby?.id }}
           <div>
