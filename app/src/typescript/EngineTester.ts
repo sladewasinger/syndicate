@@ -24,7 +24,7 @@ export class EngineTester {
     await Utils.sleep(500);
     engine1.startGame();
     await Utils.sleep(500);
-    engine1.rollDice(1, 4);
+    engine1.rollDice(1, 2);
     while (engine1.gameData?.state != StateName.LandedOnTile) {
       await Utils.sleep(100);
     }
@@ -36,7 +36,7 @@ export class EngineTester {
     await engine1.endTurn();
     await Utils.sleep(500);
 
-    engine2.rollDice(1, 2);
+    engine2.rollDice(1, 4);
     while (engine2.gameData?.state != StateName.LandedOnTile) {
       await Utils.sleep(100);
     }
@@ -52,15 +52,15 @@ export class EngineTester {
     while (engine1.gameData?.state != StateName.TurnEnd) {
       await Utils.sleep(100);
     }
-    await engine1.endTurn();
-    await Utils.sleep(500);
+    // await engine1.endTurn();
+    // await Utils.sleep(500);
 
-    await engine2.rollDice(1, 1);
-    while (engine1.gameData?.state != StateName.LandedOnTile) {
-      await Utils.sleep(100);
-    }
-    await Utils.sleep(500);
-    await engine2.declareBankruptcy();
+    // await engine2.rollDice(1, 1);
+    // while (engine1.gameData?.state != StateName.LandedOnTile) {
+    //   await Utils.sleep(100);
+    // }
+    // await Utils.sleep(500);
+    // await engine2.declareBankruptcy();
   }
 
   async test_railroad_rent() {
