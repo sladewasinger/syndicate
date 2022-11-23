@@ -49,9 +49,10 @@ export class EngineTester {
     await Utils.sleep(500);
 
     await engine1.rollDice(0, 2);
-    while (engine1.gameData?.state != StateName.TurnEnd) {
-      await Utils.sleep(100);
-    }
+    await Utils.sleep(2500);
+    // while (engine1.gameData?.state != StateName.TurnEnd) {
+    //   await Utils.sleep(100);
+    // }
     // await engine1.endTurn();
     // await Utils.sleep(500);
 
@@ -143,20 +144,20 @@ export class EngineTester {
     engine1.endTurn();
     await Utils.sleep(500);
     await engine1.rollDice(1, 1);
-    await Utils.sleep(500);
-    while (engine1.gameData?.state != StateName.LandedOnTile) {
-      await Utils.sleep(255);
-      console.log('sleeping');
-    }
+    await Utils.sleep(2500);
+    // while (engine1.gameData?.state != StateName.LandedOnTile) {
+    //   await Utils.sleep(255);
+    //   console.log('sleeping');
+    // }
     engine1.buyProperty();
     await Utils.sleep(500);
     engine1.endTurn();
     await Utils.sleep(500);
     engine1.rollDice(2, 2);
-    while (engine1.gameData?.state != StateName.LandedOnTile) {
-      await Utils.sleep(100);
-    }
-    await Utils.sleep(500);
+    // while (engine1.gameData?.state != StateName.LandedOnTile) {
+    //   await Utils.sleep(100);
+    // }
+    await Utils.sleep(2000);
   }
 
   async buy_subway_electric_internet_test() {
