@@ -13,18 +13,12 @@ A game that is suspiciously close to a board game about properties and rent
 - EditorConfig for VS Code
 
 ## Running the game
+There are 2 parts to this game: the server and the client. The server is a Node.js server that hosts the game and the client is a Vue app that connects to the server and allows you to play the game.
 1. Install [Node.js](https://nodejs.org/en/)
 2. Clone the repository
-3. Run `npm install` in the repository directory
-4. Run `npm run dev` to start the server (node-mon)  
-  a. Production: `npm start`
-5. Open `localhost:3000` in your browser
-6. Profit.
-
-## Running the tests
-1. Run `npm test` to run the tests  
-
-Note: If you are on windows and using `wsl` as your default terminal, you need to switch it to `git bash` so the tests can run.
+3. In 1 terminal, run `cd server && npm install && npm run dev`
+4. In a 2nd terminal, run `cd app && npm install && npm run dev`
+5. Open `127.0.0.1:3001` in your browser
 
 ## Linting
 1. Run `npm run lint` to lint the code
