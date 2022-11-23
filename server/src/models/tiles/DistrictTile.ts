@@ -36,9 +36,11 @@ export class DistrictTile implements IBuyableTile, IBuildableTile {
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
-    if (this.owner != null && this.owner !== gameData.currentPlayer) {
-      gameData.currentPlayer.money -= this.entranceFee(gameData);
-      this.owner.money += this.entranceFee(gameData);
+    if (this.owner != null) {
+      if (this.owner !== gameData.currentPlayer) {
+        gameData.currentPlayer.money -= this.entranceFee(gameData);
+        this.owner.money += this.entranceFee(gameData);
+      }
       return StateName.TurnEnd;
     }
 

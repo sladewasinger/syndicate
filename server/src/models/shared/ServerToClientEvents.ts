@@ -9,4 +9,5 @@ export interface ServerToClientEvents {
   gameData: (gameData: IClientGameData) => void;
   lobbyData: (lobbyData: IClientLobbyData[]) => void;
   gameStarted: (gameData: IClientGameData) => void;
+  gameMessage: (message: string) => void;
 }

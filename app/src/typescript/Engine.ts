@@ -46,6 +46,11 @@ export class Engine {
       this.gameData = gameData;
       this.vueForceUpdateCallback();
     });
+    this.socket.on('gameMessage', (message: any) => {
+      console.log('gameMessage', message);
+      this.board?.onGameMessage(message);
+      this.vueForceUpdateCallback();
+    });
     this.socket.on('gameStarted', async (gameData: IClientGameData) => {
       console.log('gameStarted');
       this.gameRunning = true;
@@ -68,7 +73,7 @@ export class Engine {
           acceptTrade: (tradeOfferId: string) => {
             this.acceptTradeOffer(tradeOfferId);
           },
-          declareBankruptcy: () => {},
+          declareBankruptcy: () => this.declareBankruptcy(),
         });
         await this.board.drawBoardInitial(gameData);
       }
@@ -148,24 +153,12 @@ export class Engine {
     });
   }
 
-  rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
-    this.socket.emit('rollDice', dice1Override, dice2Override, (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(result);
-      }
-    });
+  async rollDice(dice1Override: number | undefined = undefined, dice2Override: number | undefined = undefined) {
+    Utils.emitWithPromise(this.socket, 'rollDice', dice1Override, dice2Override);
   }
 
-  buyProperty() {
-    this.socket.emit('buyProperty', (error: any, result: any) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Buy Property Result: ', result);
-      }
-    });
+  async buyProperty() {
+    Utils.emitWithPromise(this.socket, 'buyProperty');
   }
 
   async auctionProperty() {
@@ -202,5 +195,9 @@ export class Engine {
 
   async endTurn() {
     await Utils.emitWithPromise(this.socket, 'endTurn');
+  }
+
+  async declareBankruptcy() {
+    await Utils.emitWithPromise(this.socket, 'declareBankruptcy');
   }
 }

@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { GameDataCallbacks } from 'src/game/Game';
 import { Auction } from './Auction';
 import { Player } from './Player';
@@ -20,6 +21,7 @@ export class GameData {
   players: Player[] = [];
   dice: number[] = [];
   diceOverride: number[] | null = null;
+  diceDoublesInARow: number = 0;
   tiles: ITile[] = [];
   winner: Player | null = null;
   shuffleTiles: boolean = false;
@@ -92,7 +94,7 @@ export class GameData {
   }
 
   get currentPlayer(): Player {
-    return this.players[0];
+    return this.players[0] || new Player('No player', randomUUID()); // TODO: remove this;
   }
 
   getLog(): string[] {

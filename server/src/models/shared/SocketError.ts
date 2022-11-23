@@ -8,7 +8,8 @@ export type ErrorCode =
   | 'missing_key'
   | 'invalid_tile_position'
   | 'trade_not_found'
-  | 'invalid_trade_recipient';
+  | 'invalid_trade_recipient'
+  | 'not_your_turn';
 
 export class SocketError {
   constructor(public code: ErrorCode, public message: string) {}

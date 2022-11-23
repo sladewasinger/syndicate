@@ -22,9 +22,12 @@ import { MortgageProperty } from './states/MortgageProperty';
 import { UnmortgageProperty } from './states/UnmortgageProperty';
 import { AuctionProperty } from './states/AuctionProperty';
 import { AuctionFinished } from './states/AuctionFinished';
+import { InTraffic } from './states/InTraffic';
+import { EnterTraffic } from './states/EnterTraffic';
 
 export type GameDataCallbacks = {
   onStateChange: (state: string) => void;
+  onGameMessage: (message: string) => void;
 };
 
 export class Game {
@@ -72,9 +75,12 @@ export class Game {
     this.stateMachine.addState(new UnmortgageProperty());
     this.stateMachine.addState(new TurnEnd());
     this.stateMachine.addState(new GameOver());
+    this.stateMachine.addState(new InTraffic());
+    this.stateMachine.addState(new EnterTraffic());
   }
 
   tick() {
+    // I know this is nasty code. Don't judge me... I'm in a hurry.
     const prevGameData = JSON.stringify(this.stateMachine);
 
     this.stateMachine.update();
@@ -95,6 +101,7 @@ export class Game {
       lastSelectedTilePosition: this.stateMachine.gameData.lastSelectedTilePosition,
       tradeOffers: this.stateMachine.gameData.tradeOffers,
       auctionParticipants: this.stateMachine.gameData.auction?.bidders.map((p) => p.clientAuctionParticipant) || [],
+      auctionWinner: this.stateMachine.gameData.auction?.highestBidder?.player.clientPlayer,
     };
     return clientGameData;
   }
@@ -120,6 +127,7 @@ export class Game {
       } else if (player === this.stateMachine.gameData.currentPlayer) {
         this.stateMachine.setState('TurnStart');
       }
+      this.stateMachine.gameData.log(`${player.name} left the game.`);
     }
   }
 
@@ -157,10 +165,12 @@ export class Game {
 
   buyProperty() {
     this.stateMachine.event(StateEvent.BuyProperty);
+    this.tick();
   }
 
   auctionProperty() {
     this.stateMachine.event(StateEvent.AuctionProperty);
+    this.tick();
   }
 
   auctionBid(playerId: string, bid: number) {
@@ -173,25 +183,36 @@ export class Game {
   buyBuilding(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.BuyBuilding);
+    this.tick();
   }
 
   sellBuilding(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.SellBuilding);
+    this.tick();
   }
 
   mortgageProperty(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.MortgageProperty);
+    this.tick();
   }
 
   unmortgageProperty(tilePosition: number) {
     this.stateMachine.gameData.lastSelectedTilePosition = tilePosition;
     this.stateMachine.event(StateEvent.UnmortgageProperty);
+    this.tick();
   }
 
   endTurn() {
     this.stateMachine.event(StateEvent.EndTurn);
+    this.tick();
+  }
+
+  declareBankruptcy(playerId: string) {
+    this.stateMachine.gameData.log(`${this.stateMachine.gameData.currentPlayer?.name} declared bankruptcy.`);
+    this.removePlayer(playerId);
+    this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
   }
 
   createTradeOffer(offer: TradeOffer) {

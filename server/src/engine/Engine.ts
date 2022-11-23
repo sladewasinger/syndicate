@@ -97,6 +97,11 @@ export class Engine {
         this.endTurn(socket.id, callback);
       });
 
+      socket.on('declareBankruptcy', (callback) => {
+        console.log('declareBankruptcy');
+        this.declareBankruptcy(socket.id, callback);
+      });
+
       socket.on('buyBuilding', (propertyIndex, callback) => {
         console.log('buyBuilding');
         this.buyBuilding(socket.id, propertyIndex, callback);
@@ -336,6 +341,24 @@ export class Engine {
     lobby.game?.endTurn();
 
     callback(null, lobby!.game!.getClientGameData(socketId));
+  }
+
+  declareBankruptcy(socketId: string, callback: (error: SocketError | null, data: IClientGameData | null) => void) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+    const { user, lobby } = result;
+    if (lobby.game?.stateMachine.gameData.currentPlayer.id !== user.socketId) {
+      callback({ code: 'not_your_turn', message: 'Not your turn' }, null);
+      return;
+    }
+
+    lobby.game?.declareBankruptcy(user.socketId);
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
   }
 
   buyBuilding(

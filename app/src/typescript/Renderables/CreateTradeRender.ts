@@ -2,12 +2,13 @@ import * as PIXI from 'pixi.js';
 import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { BOARD_HEIGHT, BOARD_WIDTH, TILE_HEIGHT } from '../models/BoardPositions';
 import type { IClientGameData } from '../models/shared/IClientGameData';
-import type { TradeOffer } from '../models/shared/TradeOffer';
+import type { TradeOffer, TradeOfferProperty } from '../models/shared/TradeOffer';
 import { GameDataHelpers } from '../Utils/GameDataHelpers';
 import { RenderHelpers } from '../Utils/RenderHelpers';
 import { ButtonRender } from './ButtonRender';
 import { Checkbox } from './Checkbox';
 import type { RenderData } from './RenderData';
+import { Slider } from './Slider';
 
 export class CreateTradeRender {
   container: PIXI.Container;
@@ -239,11 +240,11 @@ export class CreateTradeRender {
       0xcccc00,
       () => {
         const checkedPlayer = this.playerCheckboxes.find((c) => c.checked);
-        if (checkedPlayer) {
-          const authorOwnedSelectedTiles = gameData.tiles
+        if (checkedPlayer && this.gameData) {
+          const authorOwnedSelectedTiles = this.gameData.tiles
             .filter((t) => this.selectedTileIds.includes(t.id))
-            .filter((t) => t.ownerId === gameData.myId);
-          const targetOwnedSelectedTiles = gameData.tiles
+            .filter((t) => t.ownerId === this.gameData!.myId);
+          const targetOwnedSelectedTiles = this.gameData.tiles
             .filter((t) => this.selectedTileIds.includes(t.id))
             .filter((t) => t.ownerId === checkedPlayer.id);
 
@@ -253,8 +254,12 @@ export class CreateTradeRender {
             targetPlayerId: checkedPlayer.id,
             authorOfferMoney: this.giveMoneySlider?.value || 0,
             targetOfferMoney: this.requestMoneySlider?.value || 0,
-            authorOfferProperties: authorOwnedSelectedTiles,
-            targetOfferProperties: targetOwnedSelectedTiles,
+            authorOfferProperties: authorOwnedSelectedTiles.map(
+              (t) => <TradeOfferProperty>{ id: t.id, name: t.name, color: t.color }
+            ),
+            targetOfferProperties: targetOwnedSelectedTiles.map(
+              (t) => <TradeOfferProperty>{ id: t.id, name: t.name, color: t.color }
+            ),
           };
           this.callbacks.createTrade(tradeOffer);
           this.close();
@@ -266,125 +271,5 @@ export class CreateTradeRender {
     tradeButton.container.y = BOARD_HEIGHT - TILE_HEIGHT - 10 - tradeButton.container.height;
 
     this.container.visible = false;
-  }
-}
-
-export class Slider {
-  container: PIXI.Container;
-  value: number;
-  width: number;
-  dragging: boolean = false;
-  label: PIXI.Text;
-  moneyValue: PIXI.Text;
-
-  constructor(
-    public parentContainer: PIXI.Container,
-    public labelText: string,
-    public min: number,
-    public max: number,
-    public step: number
-  ) {
-    this.container = new PIXI.Container();
-    this.value = min;
-
-    this.width = this.parentContainer.width * 0.8;
-
-    const label = new PIXI.Text(labelText, {
-      fontFamily: 'Arial',
-      fontSize: 36,
-      fill: 0x000000,
-      align: 'center',
-    });
-    this.container.addChild(label);
-    this.label = label;
-
-    const background = new PIXI.Graphics();
-    background.lineStyle(2, 0x000000, 1);
-    background.beginFill(0xffffff);
-    background.drawRect(0, 0, this.width, 20);
-    background.endFill();
-    background.y = label.height + 5;
-    this.container.addChild(background);
-
-    const slider = new PIXI.Graphics();
-    slider.lineStyle(2, 0x000000, 1);
-    slider.beginFill(0x000000);
-    slider.drawRect(0, 0, 10, 20);
-    slider.endFill();
-    slider.y = label.height + 5;
-    this.container.addChild(slider);
-
-    const moneyValue = new PIXI.Text('$0', {
-      fontFamily: 'Arial',
-      fontSize: 36,
-      fill: 0x000000,
-      align: 'center',
-    });
-    moneyValue.x = background.width / 2 - moneyValue.width;
-    moneyValue.y = 0;
-    this.container.addChild(moneyValue);
-    this.moneyValue = moneyValue;
-
-    this.container.interactive = true;
-    this.container.buttonMode = true;
-    this.setMax(max);
-
-    parentContainer.addChild(this.container);
-  }
-
-  setMax(max: number) {
-    this.max = max;
-    if (this.value > max) {
-      this.setValue(max);
-      this.setSliderPosition(this.value);
-    }
-
-    this.container.removeListener('pointerdown');
-    this.container.on('pointerdown', (event: PIXI.InteractionEvent) => {
-      this.dragging = true;
-      this.setSliderPosition(event.data.getLocalPosition(this.container).x);
-    });
-    this.container.removeListener('pointerup');
-    this.container.on('pointerup', (event: PIXI.InteractionEvent) => {
-      this.dragging = false;
-    });
-    this.container.on('mousemove', (event: PIXI.InteractionEvent) => {
-      if (this.dragging) {
-        this.setSliderPosition(event.data.getLocalPosition(this.container).x);
-      }
-    });
-    this.container.on('pointerupoutside', (event: PIXI.InteractionEvent) => {
-      this.dragging = false;
-    });
-  }
-
-  private setSliderPosition(x: number) {
-    let value = Math.round((x / this.width) * (this.max - this.min) + this.min);
-    value = Math.round(value / this.step) * this.step;
-    value = Math.min(this.max, Math.max(this.min, value));
-    this.setValue(value);
-  }
-
-  setValue(value: number) {
-    this.value = value;
-    this.moneyValue.text = `$${this.value}`;
-    const slider = this.container.children[2] as PIXI.Graphics;
-    slider.x = ((value - this.min) / (this.max - this.min)) * this.width;
-  }
-
-  getValue() {
-    return this.value;
-  }
-
-  disable() {
-    this.container.interactive = false;
-    this.container.buttonMode = false;
-    this.container.alpha = 0.5;
-  }
-
-  enable() {
-    this.container.interactive = true;
-    this.container.buttonMode = true;
-    this.container.alpha = 1;
   }
 }

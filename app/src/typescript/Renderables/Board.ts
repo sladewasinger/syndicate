@@ -99,6 +99,10 @@ export class Board {
     this.container.scale.set(scale);
   }
 
+  onGameMessage(message: string) {
+    this.statusRender?.onGameMessage(message);
+  }
+
   update(gameData: IClientGameData) {
     for (const tile of this.renderData.renderTiles) {
       tile.update(gameData, this.renderData);

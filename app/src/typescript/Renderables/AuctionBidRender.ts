@@ -3,7 +3,7 @@ import type { BoardCallbacks } from '../models/BoardCallbacks';
 import { BOARD_HEIGHT, BOARD_WIDTH, TILE_HEIGHT, TILE_WIDTH } from '../models/BoardPositions';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import { ButtonRender } from './ButtonRender';
-import { Slider } from './CreateTradeRender';
+import { Slider } from './Slider';
 import type { RenderData } from './RenderData';
 import { TileRenderUtils } from './tiles/TileRenderUtils';
 
@@ -56,7 +56,9 @@ export class AuctionBidRender {
       return;
     }
 
-    this.renderData.renderMode = 'game';
+    if (this.renderData.renderMode === 'auctionBid') {
+      this.renderData.renderMode = 'game';
+    }
     this.container.visible = false;
   }
 
@@ -64,7 +66,7 @@ export class AuctionBidRender {
     this.gameData = gameData;
     this.renderData = renderData;
 
-    if (gameData.state !== 'AuctionProperty') {
+    if (gameData.state !== 'AuctionProperty' && this.dialogOpen) {
       this.close();
       return;
     }
@@ -74,15 +76,10 @@ export class AuctionBidRender {
       this.bidAmountSlider?.setMax(myPlayer.money);
 
       const myAuctionParticipant = gameData.auctionParticipants.find((p) => p.id === gameData.myId);
-      if (
-        gameData.state == 'AuctionProperty' &&
-        myAuctionParticipant &&
-        !myAuctionParticipant.hasBid &&
-        !this.dialogOpen
-      ) {
-        if (!myAuctionParticipant.hasBid) {
+      if (gameData.state == 'AuctionProperty' && myAuctionParticipant) {
+        if (!myAuctionParticipant.hasBid && !this.dialogOpen) {
           this.open();
-        } else {
+        } else if (myAuctionParticipant.hasBid) {
           this.close();
         }
       }
@@ -125,7 +122,7 @@ export class AuctionBidRender {
     this.tileNameLabel = tileName;
     this.container.addChild(tileName);
 
-    const bidAmountSlider = new Slider(this.container, 'Bid:', 0, 9999, 5);
+    const bidAmountSlider = new Slider(this.container, 'Bid:', 0, 9999, 1);
     bidAmountSlider.container.pivot.x = bidAmountSlider.width / 2;
     bidAmountSlider.container.x = BOARD_WIDTH / 2;
     bidAmountSlider.container.y = TILE_HEIGHT + 100;

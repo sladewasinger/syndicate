@@ -50,45 +50,56 @@ export class ButtonsRender {
     this.seeTradesButton?.disable();
     this.bankruptcyButton?.disable();
 
-    switch (gameData.state) {
-      case StateName.TurnEnd:
-        if (renderData.renderMode == 'game') {
-          if (gameData.currentPlayer.id == gameData.myId) {
-            this.endTurnButton?.enable();
-          }
-          this.createTradeButton?.enable();
-          this.seeTradesButton?.enable();
-          if (GameDataHelpers.playerCanMortgage(gameData.currentPlayer!, gameData)) {
+    if (gameData.myId === gameData.currentPlayer.id) {
+      switch (gameData.state) {
+        case StateName.TurnEnd:
+          if (renderData.renderMode == 'game') {
+            if (gameData.currentPlayer.money >= 0) {
+              this.endTurnButton?.enable();
+            } else {
+              this.bankruptcyButton?.enable();
+            }
+            this.createTradeButton?.enable();
+            if (GameDataHelpers.playerCanMortgage(gameData.currentPlayer!, gameData)) {
+              this.mortgageButton?.enable();
+            }
+            if (GameDataHelpers.playerCanUnmortgage(gameData.currentPlayer!, gameData)) {
+              this.unmortgageButton?.enable();
+            }
+            if (GameDataHelpers.playerCanBuyBuilding(gameData.currentPlayer!, gameData)) {
+              this.buyBuildingButton?.enable();
+            }
+            if (GameDataHelpers.playerCanSellBuilding(gameData.currentPlayer!, gameData)) {
+              this.sellBuildingButton?.enable();
+            }
+          } else if (renderData.renderMode == 'buyBuilding') {
+            this.buyBuildingButton?.enable();
+          } else if (renderData.renderMode == 'sellBuilding') {
+            this.sellBuildingButton?.enable();
+          } else if (renderData.renderMode == 'mortgage') {
             this.mortgageButton?.enable();
-          }
-          if (GameDataHelpers.playerCanUnmortgage(gameData.currentPlayer!, gameData)) {
+          } else if (renderData.renderMode == 'unmortgage') {
             this.unmortgageButton?.enable();
           }
-          if (GameDataHelpers.playerCanBuyBuilding(gameData.currentPlayer!, gameData)) {
-            this.buyBuildingButton?.enable();
+          break;
+        case StateName.LandedOnTile:
+          const tile = gameData.tiles[gameData.currentPlayer.position];
+          if (tile && tile.buyable && tile.ownerId === undefined && tile.price) {
+            if (gameData.currentPlayer.money >= tile.price) {
+              this.buyPropertyButton?.enable();
+            }
+            this.auctionPropertyButton?.enable();
           }
-          if (GameDataHelpers.playerCanSellBuilding(gameData.currentPlayer!, gameData)) {
-            this.sellBuildingButton?.enable();
-          }
-        } else if (renderData.renderMode == 'buyBuilding') {
-          this.buyBuildingButton?.enable();
-        } else if (renderData.renderMode == 'sellBuilding') {
-          this.sellBuildingButton?.enable();
-        } else if (renderData.renderMode == 'mortgage') {
-          this.mortgageButton?.enable();
-        } else if (renderData.renderMode == 'unmortgage') {
-          this.unmortgageButton?.enable();
-        }
-        break;
-      case StateName.LandedOnTile:
-        this.buyPropertyButton?.enable();
-        this.auctionPropertyButton?.enable();
-        break;
+          break;
+      }
     }
 
     if (this.seeTradesButton) {
       const myTrades = gameData.tradeOffers.filter((trade) => trade.targetPlayerId === gameData.myId);
       this.seeTradesButton!.buttonText.text = `Trades (${myTrades.length})`;
+      if (myTrades.length > 0 && renderData.renderMode == 'game') {
+        this.seeTradesButton.enable();
+      }
     }
 
     switch (renderData.renderMode) {

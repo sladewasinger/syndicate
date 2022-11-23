@@ -5,7 +5,9 @@ import type { IGameState } from './IGameState';
 export class TurnStart implements IGameState {
   name: StateName = StateName.TurnStart;
 
-  onEnter(): void {}
+  onEnter(gameData: GameData): void {
+    gameData.diceDoublesInARow = 0;
+  }
 
   onExit(): void {}
 

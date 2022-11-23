@@ -13,6 +13,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
+    'no-case-declarations': 'off',
     'prettier/prettier': [
       'error',
       {

@@ -11,6 +11,189 @@ export class EngineTester {
     this.vueForceUpdateCallback = vueForceUpdateCallback;
   }
 
+  async test_bankruptcy() {
+    const emptyCallback = () => {};
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+    const engine2 = new Engine(emptyCallback, false);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+    await Utils.emitWithPromise(engine2.socket, 'registerName', 'Bravo');
+
+    const lobby = await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    engine2.joinLobby(lobby.id);
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 2);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    engine1.auctionProperty();
+    await Utils.sleep(500);
+    await engine1.placeAuctionBid(1500);
+    await engine2.placeAuctionBid(1);
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(500);
+
+    engine2.rollDice(1, 4);
+    while (engine2.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await engine2.auctionProperty();
+    await Utils.sleep(500);
+    await engine2.placeAuctionBid(1500);
+    await engine1.placeAuctionBid(0);
+    await Utils.sleep(500);
+    await engine2.endTurn();
+    await Utils.sleep(500);
+
+    await engine1.rollDice(0, 2);
+    while (engine1.gameData?.state != StateName.TurnEnd) {
+      await Utils.sleep(100);
+    }
+    // await engine1.endTurn();
+    // await Utils.sleep(500);
+
+    // await engine2.rollDice(1, 1);
+    // while (engine1.gameData?.state != StateName.LandedOnTile) {
+    //   await Utils.sleep(100);
+    // }
+    // await Utils.sleep(500);
+    // await engine2.declareBankruptcy();
+  }
+
+  async test_railroad_rent() {
+    const emptyCallback = () => {};
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+    const engine2 = new Engine(emptyCallback, false);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+    await Utils.emitWithPromise(engine2.socket, 'registerName', 'Bravo');
+
+    const lobby = await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    engine2.joinLobby(lobby.id);
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 4);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(500);
+
+    engine2.rollDice(3, 2);
+    while (engine2.gameData?.state != StateName.TurnEnd) {
+      await Utils.sleep(100);
+    }
+    await engine2.endTurn();
+    await Utils.sleep(500);
+
+    await engine1.rollDice(1, 9);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await engine1.buyProperty();
+    await Utils.sleep(500);
+    await engine1.endTurn();
+    await Utils.sleep(500);
+
+    await engine2.rollDice(9, 1);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+  }
+
+  async test_goToJail() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 29);
+    while (engine1.gameData?.state != StateName.TurnEnd) {
+      await Utils.sleep(500);
+    }
+    await Utils.sleep(500);
+  }
+
+  async test_doubles() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(2, 2);
+    while (engine1.gameData?.state != StateName.TurnEnd) {
+      await Utils.sleep(500);
+    }
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    await engine1.rollDice(1, 1);
+    await Utils.sleep(500);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(255);
+      console.log('sleeping');
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    engine1.rollDice(2, 2);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+  }
+
+  async buy_subway_electric_internet_test() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 4);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(500);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 6);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    engine1.rollDice(1, 15);
+    while (engine1.gameData?.state != StateName.LandedOnTile) {
+      await Utils.sleep(100);
+    }
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+  }
+
   async one_player_test() {
     await Utils.sleep(500);
     const engine1 = new Engine(this.vueForceUpdateCallback, true);
@@ -98,7 +281,7 @@ export class EngineTester {
     await engine1.endTurn();
     await Utils.sleep(1000);
 
-    engine1.rollDice(4, 6);
+    engine1.rollDice(1, 23);
     while (engine1.gameData?.state != StateName.LandedOnTile) {
       await Utils.sleep(100);
     }
@@ -180,9 +363,9 @@ export class EngineTester {
     );
     await engine2.createTradeOffer(tradeOffer);
     await Utils.sleep(500);
-    await engine2.endTurn();
-    await Utils.sleep(500);
-    engine2.socket.disconnect();
+    //await engine2.endTurn();
+    // await Utils.sleep(500);
+    // engine2.socket.disconnect();
   }
 
   async test_buy_houses() {

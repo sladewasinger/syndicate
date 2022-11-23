@@ -19,6 +19,7 @@ export class TaxTile implements ITile {
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
+    gameData.currentPlayer.money -= this.price;
     return StateName.TurnEnd;
   }
 

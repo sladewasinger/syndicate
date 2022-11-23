@@ -3,6 +3,8 @@ import * as PIXI from 'pixi.js';
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import type { RenderData } from './RenderData';
 import { Leaderboard } from './Leaderboard';
+import { Utils } from '../Utils/Utils';
+import { BOARD_HEIGHT, BOARD_WIDTH } from '../models/BoardPositions';
 
 export class PlayerRender {
   container: PIXI.Container;
@@ -39,8 +41,17 @@ export class PlayersRender {
           .filter((p) => p.position === player.position);
 
         if (playersOnSameTile.length <= 1) {
-          playerRender.container.x += (tilePosition.x - playerRender.container.x) * 0.05;
-          playerRender.container.y += (tilePosition.y - playerRender.container.y) * 0.05;
+          const maxSpeed = 10;
+          playerRender.container.x += Utils.clamp(
+            (tilePosition.x - playerRender.container.x) * 0.05,
+            -maxSpeed,
+            maxSpeed
+          );
+          playerRender.container.y += Utils.clamp(
+            (tilePosition.y - playerRender.container.y) * 0.05,
+            -maxSpeed,
+            maxSpeed
+          );
         } else {
           this.distributePlayersOnSameTile(gameData, player.position, playersOnSameTile, renderData);
         }
@@ -104,7 +115,7 @@ export class PlayersRender {
   }
 
   addPlayer(player: IClientPlayer) {
-    const playerRender = new PlayerRender(player, new PIXI.Point(0, 0));
+    const playerRender = new PlayerRender(player, new PIXI.Point(BOARD_WIDTH, BOARD_HEIGHT));
     this.playerRenders.push(playerRender);
   }
 

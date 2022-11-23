@@ -26,14 +26,16 @@ export class SubwayTile implements IBuyableTile {
       .filter((tile) => tile.type === TileType.Subway)
       .filter((tile) => tile.owner === this.owner).length;
     const fees = [100, 200, 400, 800];
-    const fee = 2 ** subwayCount * 100;
     return fees[subwayCount - 1];
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
-    if (this.owner != null && this.owner !== gameData.currentPlayer) {
-      gameData.currentPlayer.money -= this.entranceFee(gameData);
-      this.owner.money += this.entranceFee(gameData);
+    if (this.owner != null) {
+      if (this.owner !== gameData.currentPlayer) {
+        gameData.currentPlayer.money -= this.entranceFee(gameData);
+        this.owner.money += this.entranceFee(gameData);
+      }
+      return StateName.TurnEnd;
     }
 
     return currentState;

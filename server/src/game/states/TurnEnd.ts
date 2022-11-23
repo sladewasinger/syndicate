@@ -9,9 +9,15 @@ export class TurnEnd implements IGameState {
   name: StateName = StateName.TurnEnd;
   nextState: StateName = this.name;
 
-  onEnter(): void {}
+  onEnter(gameData: GameData): void {
+    if (gameData.dice[0] === gameData.dice[1] && gameData.diceDoublesInARow < 3 && !gameData.currentPlayer.isInJail) {
+      this.nextState = StateName.PreDiceRoll;
+    } else {
+      this.nextState = this.name;
+    }
+  }
 
-  onExit(): void {
+  onExit(gameData: GameData): void {
     this.nextState = this.name;
   }
 
@@ -22,8 +28,12 @@ export class TurnEnd implements IGameState {
   event(eventName: StateEvent, gameData: GameData): void {
     switch (eventName) {
       case StateEvent.EndTurn:
-        console.log('TurnEnd: EndTurn');
-        this.nextState = this.nextPlayer(gameData);
+        if (
+          !(gameData.dice[0] === gameData.dice[1] && gameData.diceDoublesInARow < 3 && !gameData.currentPlayer.isInJail)
+        ) {
+          console.log('TurnEnd: EndTurn');
+          this.nextState = this.nextPlayer(gameData);
+        }
         break;
       case StateEvent.BuyBuilding:
         this.nextState = StateName.BuyBuilding;
@@ -59,7 +69,7 @@ export class TurnEnd implements IGameState {
       nextPlayer = gameData.players.shift() as Player;
       gameData.players.push(nextPlayer);
       count++;
-    } while (nextPlayer.bankrupt && count < gameData.players.length);
+    } while (nextPlayer.money < 0 && count < gameData.players.length);
 
     if (count == gameData.players.length) {
       gameData.winner = gameData.currentPlayer;

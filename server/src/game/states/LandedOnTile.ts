@@ -15,15 +15,9 @@ export class LandedOnTile implements IGameState {
       throw new Error(`Tile at player position '${gameData.currentPlayer.position}' not found`);
     }
     this.nextState = tile.onLanded(gameData, this.name);
-    // const buyableTile = tile as IBuyableTile;
-    // if (buyableTile && buyableTile.owner != undefined) {
-    //   this.nextState = StateName.TurnEnd;
-    // } else if ()
   }
 
-  onExit(gameData: GameData): void {
-    this.nextState = this.name;
-  }
+  onExit(gameData: GameData): void {}
 
   update(gameData: GameData): StateName {
     return this.nextState;
@@ -38,7 +32,7 @@ export class LandedOnTile implements IGameState {
         this.nextState = StateName.AuctionProperty;
         break;
       default:
-        this.nextState = this.name;
+        this.nextState = this.nextState;
         break;
     }
   }

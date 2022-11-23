@@ -14,4 +14,6 @@ export enum StateName {
   UnmortgageProperty = 'UnmortgageProperty',
   AuctionProperty = 'AuctionProperty',
   AuctionFinished = 'AuctionFinished',
+  InTraffic = 'InTraffic',
+  EnterTraffic = 'EnterTraffic',
 }
