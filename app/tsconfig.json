@@ -6,7 +6,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "src/../../shared/*": ["../shared/*"]
-    }
+    },
+    "target": "esnext",
+    "lib": ["esnext", "dom"]
   },
   "references": [
     {

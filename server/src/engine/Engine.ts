@@ -242,6 +242,11 @@ export class Engine {
       return;
     }
 
+    if (lobby.owner?.socketId !== user.socketId) {
+      callback({ code: 'not_your_turn', message: 'Not owner' }, null);
+      return;
+    }
+
     for (const user of lobby.users) {
       this.io?.to(user.socketId).emit('gameStarted', lobby.game.getClientGameData(user.socketId));
     }

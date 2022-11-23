@@ -20,6 +20,7 @@ export class CreateTradeRender {
   giveMoneySlider: Slider | undefined;
   youGiveTilesText: PIXI.Text | undefined;
   youGetTilesText: PIXI.Text | undefined;
+  tradeButton: ButtonRender | undefined;
 
   constructor(public parentContainer: PIXI.Container, public callbacks: BoardCallbacks) {
     this.container = new PIXI.Container();
@@ -97,6 +98,8 @@ export class CreateTradeRender {
     const selectedCheckbox = this.playerCheckboxes.find((c) => c.checked);
     const selectedPlayer = this.gameData.players.find((p) => p.id === selectedCheckbox?.id);
     if (selectedCheckbox && selectedPlayer && this.requestMoneySlider) {
+      this.tradeButton?.enable();
+
       this.renderData.tradeTargetPlayerId = selectedPlayer.id;
 
       this.giveMoneySlider?.enable();
@@ -107,6 +110,7 @@ export class CreateTradeRender {
     } else {
       this.requestMoneySlider?.disable();
       this.giveMoneySlider?.disable();
+      this.tradeButton?.disable();
     }
 
     for (const id of this.selectedTileIds) {
@@ -269,6 +273,7 @@ export class CreateTradeRender {
     );
     tradeButton.container.x = BOARD_WIDTH / 2 - tradeButton.container.width / 2;
     tradeButton.container.y = BOARD_HEIGHT - TILE_HEIGHT - 10 - tradeButton.container.height;
+    this.tradeButton = tradeButton;
 
     this.container.visible = false;
   }

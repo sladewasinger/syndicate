@@ -27,7 +27,7 @@ export default defineComponent({
 
     if (this.RUN_TESTS) {
       const engineTester = new EngineTester(vueForceUpdateCallback);
-      engineTester.test_bankruptcy(); // CHANGE THIS TO THE TEST METHOD YOU WANT
+      engineTester.test_buy_houses_single_player(); // CHANGE THIS TO THE TEST METHOD YOU WANT
     } else {
       this.engine = new Engine(vueForceUpdateCallback);
       this.engineVueProperties = this.engine.engineVueProperties;
@@ -85,7 +85,7 @@ export default defineComponent({
         </form>
       </div>
       <div v-if="myLobby">
-        <button @click="startGame">Start Game</button>
+        <button @click="startGame" v-if="myLobby.owner.id == engineVueProperties?.myUser.id">Start Game</button>
         <div>
           <strong>Lobby ID:</strong> {{ myLobby?.id }}
           <div>

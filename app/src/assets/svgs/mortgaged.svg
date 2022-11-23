@@ -27,9 +27,9 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.52724989"
-     inkscape:cx="990.04289"
-     inkscape:cy="470.3652"
+     inkscape:zoom="0.37282197"
+     inkscape:cx="1118.4963"
+     inkscape:cy="388.92557"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
@@ -56,6 +56,29 @@
        width="15.173071"
        height="22.759607"
        id="rect1004" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blur"
+       id="filter1451"
+       x="-0.014008668"
+       y="-0.049411006"
+       width="1.0280173"
+       height="1.098822">
+      <feGaussianBlur
+         stdDeviation="1 0"
+         result="fbSourceGraphic"
+         id="feGaussianBlur1449" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix1453" />
+      <feGaussianBlur
+         id="feGaussianBlur1455"
+         stdDeviation="1 1"
+         result="blur"
+         in="fbSourceGraphic" />
+    </filter>
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -66,9 +89,21 @@
        transform="scale(0.26458333)"
        id="text1002"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial;white-space:pre;shape-inside:url(#rect1004);display:inline;fill:none;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round" />
+    <rect
+       style="fill:#ffffff;stroke:none;stroke-width:4.92086;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;fill-opacity:1;stroke-opacity:0.24535316;filter:url(#filter1451)"
+       id="rect346"
+       width="342.64499"
+       height="48.572174"
+       x="58.020397"
+       y="-21.845654"
+       rx="0.41412672"
+       transform="rotate(45)"
+       inkscape:export-filename="..\..\..\public\mortgaged.png"
+       inkscape:export-xdpi="24.353708"
+       inkscape:export-ydpi="24.353708" />
     <text
        xml:space="preserve"
-       transform="matrix(0.37070029,0.37070028,-0.37070028,0.37070029,70.806149,3.1689085)"
+       transform="matrix(0.37070029,0.37070028,-0.37070028,0.37070029,100.16375,-1.8492686)"
        id="text1018"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:192px;font-family:sans-serif;-inkscape-font-specification:sans-serif;letter-spacing:7.57035px;white-space:pre;shape-inside:url(#rect1020);display:inline;fill:#ff0000;stroke:#000000;stroke-width:12.6172;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
        inkscape:export-filename="..\..\..\public\mortgaged.png"
@@ -76,8 +111,8 @@
        inkscape:export-ydpi="21.166666"><tspan
          x="-5.6894531"
          y="173.27094"
-         id="tspan1955"><tspan
+         id="tspan3310"><tspan
            style="font-size:85.3333px"
-           id="tspan1953">MORTGAGED</tspan></tspan></text>
+           id="tspan3308">MORTGAGED</tspan></tspan></text>
   </g>
 </svg>

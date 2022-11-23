@@ -4,8 +4,9 @@ import { Assets } from '@pixi/assets';
 import type { IClientGameData } from '@/typescript/models/shared/IClientGameData';
 import type { IClientTile } from '@/typescript/models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
-import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import type { ITileRender, ITileRenderArgs, TileMode } from './ITileRender';
 import { TileRenderUtils } from './TileRenderUtils';
+import { Textures } from '../Textures';
 
 export class ElectricTileRender implements ITileRender {
   width: number = TILE_WIDTH;
@@ -15,6 +16,8 @@ export class ElectricTileRender implements ITileRender {
   tileBackground: PIXI.Graphics | undefined;
   gameData: IClientGameData | undefined;
   renderData: RenderData | undefined;
+  mortgagedSymbol: PIXI.Sprite | undefined;
+  mode: TileMode = 'normal';
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
@@ -41,6 +44,14 @@ export class ElectricTileRender implements ITileRender {
       this.tileBackground?.beginFill(0xffffff, 1);
       this.tileBackground?.drawRect(0, 0, this.width, this.height);
       this.tileBackground?.endFill();
+    }
+
+    if (this.mortgagedSymbol) {
+      if (gameTile.mortgaged) {
+        this.mortgagedSymbol.visible = true;
+      } else {
+        this.mortgagedSymbol.visible = false;
+      }
     }
   }
 
@@ -83,8 +94,18 @@ export class ElectricTileRender implements ITileRender {
     tileText.x = this.width / 2;
     tileText.y = this.height * 0.2;
 
+    const mortgagedSymbol = new PIXI.Sprite(Textures.mortgagedTexture);
+    const mortgageScale =
+      Math.min(tileBackground.width, tileBackground.height) / Math.max(mortgagedSymbol.width, mortgagedSymbol.height);
+    mortgagedSymbol.width = mortgagedSymbol.width * mortgageScale;
+    mortgagedSymbol.height = mortgagedSymbol.height * mortgageScale;
+    mortgagedSymbol.x = tileBackground.width - mortgagedSymbol.width;
+    mortgagedSymbol.y = tileBackground.height - mortgagedSymbol.height;
+    mortgagedSymbol.visible = false;
+    this.mortgagedSymbol = mortgagedSymbol;
+
     const tileContainer = this.container;
-    tileContainer.addChild(tileBackground, electricIcon, price, tileText);
+    tileContainer.addChild(tileBackground, electricIcon, price, tileText, mortgagedSymbol);
     tileContainer.x = args.x;
     tileContainer.y = args.y;
     tileContainer.pivot.x = this.width / 2;

@@ -139,14 +139,20 @@ export class ButtonsRender {
       if (
         gameTile.buildingCount !== undefined &&
         gameTile.ownerId === this.gameData.myId &&
-        gameTile.buildingCount < 5
+        gameTile.buildingCount < 5 &&
+        GameDataHelpers.playerCanBuyBuildingOnProperty(this.gameData.currentPlayer, gameTile, this.gameData)
       ) {
+        //if (tile.mode == 'normal') {
+        tile.mode = 'buyBuilding';
         tile.container.buttonMode = true;
+        tile.container.off('pointerdown');
         tile.container.on('pointerdown', () => {
           this.callbacks.buyBuilding(i);
         });
         tile.unfade();
+        //}
       } else {
+        tile.mode = 'normal';
         tile.container.buttonMode = false;
         tile.container.off('pointerdown');
         tile.fade();
@@ -166,13 +172,17 @@ export class ButtonsRender {
         continue;
       }
       if ((gameTile.ownerId === this.gameData.myId && gameTile.buildingCount) || 0 > 0) {
+        //if (tile.mode == 'normal') {
+        tile.mode = 'sellBuilding';
         tile.container.buttonMode = true;
         tile.container.off('pointerdown');
         tile.container.on('pointerdown', () => {
           this.callbacks.sellBuilding(i);
         });
         tile.unfade();
+        //}
       } else {
+        tile.mode = 'normal';
         tile.container.buttonMode = false;
         tile.container.off('pointerdown');
         tile.fade();
@@ -193,6 +203,7 @@ export class ButtonsRender {
       }
       if (gameTile.ownerId === this.gameData.myId && !gameTile.mortgaged) {
         tile.container.buttonMode = true;
+        tile.container.interactive = true;
         tile.container.off('pointerdown');
         tile.container.on('pointerdown', () => {
           this.callbacks.mortgageProperty(i);
