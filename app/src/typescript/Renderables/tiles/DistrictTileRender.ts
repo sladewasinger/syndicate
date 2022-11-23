@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
 import { Textures } from '../Textures';
-import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import type { ITileRender, ITileRenderArgs, TileMode } from './ITileRender';
 import { TileRenderUtils } from './TileRenderUtils';
 
 export class DistrictTileRender implements ITileRender {
@@ -21,6 +21,7 @@ export class DistrictTileRender implements ITileRender {
   skyscraper: PIXI.Graphics | undefined;
   mortgagedSymbol: PIXI.Sprite | undefined;
   faded: boolean = false;
+  mode: TileMode = 'normal';
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();

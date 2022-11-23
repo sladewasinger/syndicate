@@ -1,11 +1,30 @@
 import type { IClientGameData } from '../models/shared/IClientGameData';
 import type { IClientPlayer } from '../models/shared/IClientPlayer';
+import type { IClientTile } from '../models/shared/IClientTile';
 
 export class GameDataHelpers {
   static playerCanBuyBuilding(player: IClientPlayer, gameData: IClientGameData) {
-    const playerProperties = gameData.tiles.filter((p) => p.ownerId === player.id);
-    const buyableProperties = playerProperties.filter((p) => p.buildingCount || 0 < 5);
-    return buyableProperties.length > 0;
+    const colorGroups = gameData.tiles
+      .filter((p) => p.buildingCount != undefined)
+      .reduce((map, p) => {
+        if (!map[p.color]) {
+          map[p.color] = [];
+        }
+        map[p.color].push(p);
+        return map;
+      }, {} as Record<number, IClientTile[]>);
+
+    let canBuild = false;
+    for (const colorGroup of Object.values(colorGroups)) {
+      const playerOwnedBuildablePropertiesInGroup = colorGroup
+        .filter((p) => p.ownerId === player.id)
+        .filter((p) => p.buildingCount! < 5);
+      if (playerOwnedBuildablePropertiesInGroup.length === colorGroup.length) {
+        canBuild = true;
+        break;
+      }
+    }
+    return canBuild;
   }
 
   static playerCanSellBuilding(player: IClientPlayer, gameData: IClientGameData) {

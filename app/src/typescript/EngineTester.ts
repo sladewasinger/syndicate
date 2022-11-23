@@ -50,18 +50,6 @@ export class EngineTester {
 
     await engine1.rollDice(0, 2);
     await Utils.sleep(2500);
-    // while (engine1.gameData?.state != StateName.TurnEnd) {
-    //   await Utils.sleep(100);
-    // }
-    // await engine1.endTurn();
-    // await Utils.sleep(500);
-
-    // await engine2.rollDice(1, 1);
-    // while (engine1.gameData?.state != StateName.LandedOnTile) {
-    //   await Utils.sleep(100);
-    // }
-    // await Utils.sleep(500);
-    // await engine2.declareBankruptcy();
   }
 
   async test_railroad_rent() {
@@ -191,8 +179,6 @@ export class EngineTester {
       await Utils.sleep(100);
     }
     engine1.buyProperty();
-    await Utils.sleep(500);
-    engine1.endTurn();
   }
 
   async one_player_test() {
@@ -367,6 +353,31 @@ export class EngineTester {
     //await engine2.endTurn();
     // await Utils.sleep(500);
     // engine2.socket.disconnect();
+  }
+
+  async test_buy_houses_single_player() {
+    await Utils.sleep(500);
+
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(0, 1);
+    await Utils.sleep(1500);
+    engine1.buyProperty();
+    await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(500);
+    await engine1.rollDice(0, 2);
+    while (engine1.gameData?.currentPlayer?.position != 3) {
+      await Utils.sleep(100);
+    }
+    await Utils.sleep(500);
+    await engine1.buyProperty();
   }
 
   async test_buy_houses() {

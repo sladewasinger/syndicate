@@ -3,13 +3,15 @@ import type { IClientGameData } from '@/typescript/models/shared/IClientGameData
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
-import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import type { ITileRender, ITileRenderArgs, TileMode } from './ITileRender';
 import { TileRenderUtils } from './TileRenderUtils';
 
 export class ParkTileRender implements ITileRender {
   width: number = TILE_HEIGHT;
   height: number = TILE_HEIGHT;
   container: PIXI.Container;
+  mode: TileMode = 'normal';
+
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
   }

@@ -4,7 +4,7 @@ import { Assets } from '@pixi/assets';
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
 import type { RenderData } from '../RenderData';
-import type { ITileRender, ITileRenderArgs } from './ITileRender';
+import type { ITileRender, ITileRenderArgs, TileMode } from './ITileRender';
 import { TileRenderUtils } from './TileRenderUtils';
 
 export class TaxTileRender implements ITileRender {
@@ -12,6 +12,7 @@ export class TaxTileRender implements ITileRender {
   height: number = TILE_HEIGHT;
   container: PIXI.Container;
   static taxTexture: any;
+  mode: TileMode = 'normal';
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
