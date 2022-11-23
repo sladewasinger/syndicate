@@ -60,12 +60,12 @@
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Blur"
        id="filter1451"
-       x="-0.042026005"
-       y="-0.29646604"
-       width="1.084052"
-       height="1.5929321">
+       x="-0.014008668"
+       y="-0.049411006"
+       width="1.0280173"
+       height="1.098822">
       <feGaussianBlur
-         stdDeviation="3 3"
+         stdDeviation="1 0"
          result="fbSourceGraphic"
          id="feGaussianBlur1449" />
       <feColorMatrix
@@ -75,7 +75,7 @@
          id="feColorMatrix1453" />
       <feGaussianBlur
          id="feGaussianBlur1455"
-         stdDeviation="3 3"
+         stdDeviation="1 1"
          result="blur"
          in="fbSourceGraphic" />
     </filter>
@@ -90,14 +90,17 @@
        id="text1002"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial;white-space:pre;shape-inside:url(#rect1004);display:inline;fill:none;stroke:#000000;stroke-width:20;stroke-linecap:round;stroke-linejoin:round" />
     <rect
-       style="fill:#bfbfbf;stroke:none;stroke-width:4.92086;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;fill-opacity:1;stroke-opacity:0.24535316;filter:url(#filter1451)"
+       style="fill:#ffffff;stroke:none;stroke-width:4.92086;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;fill-opacity:1;stroke-opacity:0.24535316;filter:url(#filter1451)"
        id="rect346"
        width="342.64499"
        height="48.572174"
        x="58.020397"
        y="-21.845654"
        rx="0.41412672"
-       transform="rotate(45)" />
+       transform="rotate(45)"
+       inkscape:export-filename="..\..\..\public\mortgaged.png"
+       inkscape:export-xdpi="24.353708"
+       inkscape:export-ydpi="24.353708" />
     <text
        xml:space="preserve"
        transform="matrix(0.37070029,0.37070028,-0.37070028,0.37070029,100.16375,-1.8492686)"
@@ -108,8 +111,8 @@
        inkscape:export-ydpi="21.166666"><tspan
          x="-5.6894531"
          y="173.27094"
-         id="tspan1838"><tspan
+         id="tspan3310"><tspan
            style="font-size:85.3333px"
-           id="tspan1836">MORTGAGED</tspan></tspan></text>
+           id="tspan3308">MORTGAGED</tspan></tspan></text>
   </g>
 </svg>
