@@ -13,9 +13,9 @@ export class SubwayTileRender implements ITileRender {
   height: number = TILE_HEIGHT;
   container: PIXI.Container;
   static subwayTexture: any;
-  gameData: IClientGameData;
-  renderData: RenderData;
-  tileBackground: PIXI.Graphics;
+  gameData: IClientGameData | undefined;
+  renderData: RenderData | undefined;
+  tileBackground: PIXI.Graphics | undefined;
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
