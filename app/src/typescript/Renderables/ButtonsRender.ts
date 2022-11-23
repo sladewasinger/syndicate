@@ -139,7 +139,8 @@ export class ButtonsRender {
       if (
         gameTile.buildingCount !== undefined &&
         gameTile.ownerId === this.gameData.myId &&
-        gameTile.buildingCount < 5
+        gameTile.buildingCount < 5 &&
+        GameDataHelpers.playerCanBuyBuildingOnProperty(this.gameData.currentPlayer, gameTile, this.gameData)
       ) {
         //if (tile.mode == 'normal') {
         tile.mode = 'buyBuilding';

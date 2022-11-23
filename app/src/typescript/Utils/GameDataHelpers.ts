@@ -3,6 +3,27 @@ import type { IClientPlayer } from '../models/shared/IClientPlayer';
 import type { IClientTile } from '../models/shared/IClientTile';
 
 export class GameDataHelpers {
+  static playerCanBuyBuildingOnProperty(player: IClientPlayer, property: IClientTile, gameData: IClientGameData) {
+    if (!property || property.ownerId !== player.id) {
+      return false;
+    }
+
+    if (property.buildingCount == undefined || property.buildingCount >= 5) {
+      return false;
+    }
+
+    const colorGroup = gameData.tiles
+      .filter((p) => p.buildingCount != undefined)
+      .filter((p) => p.color === property.color);
+
+    const playerOwnedBuildablePropertiesInGroup = colorGroup.filter((p) => p.ownerId === player.id);
+    if (playerOwnedBuildablePropertiesInGroup.length === colorGroup.length) {
+      return true;
+    }
+
+    return false;
+  }
+
   static playerCanBuyBuilding(player: IClientPlayer, gameData: IClientGameData) {
     const colorGroups = gameData.tiles
       .filter((p) => p.buildingCount != undefined)
