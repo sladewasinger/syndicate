@@ -16,4 +16,5 @@ export enum StateName {
   AuctionFinished = 'AuctionFinished',
   InTraffic = 'InTraffic',
   EnterTraffic = 'EnterTraffic',
+  Event = 'Event',
 }

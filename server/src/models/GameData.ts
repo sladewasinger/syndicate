@@ -66,6 +66,7 @@ export class GameData {
       new DoctorsFees_Event(),
       new IncomeTaxRefund_Event(),
     ];
+    this.eventCards = [new GoTo39thStreet_Event()];
 
     // shuffle event cards:
     for (let i = this.eventCards.length - 1; i > 0; i--) {
