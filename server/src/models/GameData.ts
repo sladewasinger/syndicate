@@ -14,6 +14,23 @@ import { StartTile } from './tiles/StartTile';
 import { SubwayTile } from './tiles/SubwayTile';
 import { TaxTile } from './tiles/TaxTile';
 import { UtilityTile } from './tiles/UtilityTile';
+import {
+  BankErrorInFavor_Event,
+  DoctorsFees_Event,
+  EventCard,
+  GoTo18thStreet_Event,
+  GoTo1stStreet_Event,
+  GoTo34thStreet_Event,
+  GoTo39thStreet_Event,
+  GoToElectricCompany_Event,
+  GoToInternetCompany_Event,
+  GoToJail_Event,
+  GoToStart_Event,
+  IncomeTaxRefund_Event,
+  PayTaxesOnAllHouses_Event,
+  PayTaxesOnAllProperties_Event,
+  SwapPositionWithAnotherPlayer_Event,
+} from './events/EventCard';
 
 export class GameData {
   private _log: string[] = [];
@@ -29,9 +46,33 @@ export class GameData {
   lastSelectedTilePosition: number | undefined;
   tradeOffers: TradeOffer[] = [];
   auction: Auction | undefined;
+  eventCards: EventCard[] = [];
 
   constructor(callbacks: GameDataCallbacks) {
     this.callbacks = callbacks;
+    this.eventCards = [
+      new GoToStart_Event(),
+      new GoToJail_Event(),
+      new SwapPositionWithAnotherPlayer_Event(),
+      new PayTaxesOnAllHouses_Event(),
+      new PayTaxesOnAllProperties_Event(),
+      new GoToInternetCompany_Event(),
+      new GoTo39thStreet_Event(),
+      new GoToElectricCompany_Event(),
+      new GoTo18thStreet_Event(),
+      new GoTo1stStreet_Event(),
+      new GoTo34thStreet_Event(),
+      new BankErrorInFavor_Event(),
+      new DoctorsFees_Event(),
+      new IncomeTaxRefund_Event(),
+    ];
+
+    // shuffle event cards:
+    for (let i = this.eventCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.eventCards[i], this.eventCards[j]] = [this.eventCards[j], this.eventCards[i]];
+    }
+
     this.tiles = [
       new StartTile(),
       new DistrictTile('1st Street', 60, 0x562074, [2, 10, 30, 90, 160, 500], 50, 50),

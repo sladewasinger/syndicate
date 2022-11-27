@@ -26,6 +26,7 @@ import { CreateTradeRender } from './CreateTradeRender';
 import { ViewTradesRender } from './ViewTradesRender';
 import { StatusRender } from './StatusRender';
 import { AuctionBidRender } from './AuctionBidRender';
+import { GameLogRender } from './GameLogRender';
 
 export class Board {
   canvas: HTMLCanvasElement;
@@ -44,6 +45,7 @@ export class Board {
   viewTradesRender: ViewTradesRender | undefined;
   statusRender: StatusRender | undefined;
   auctionBidRender: AuctionBidRender | undefined;
+  gameLogRender: GameLogRender | undefined;
 
   constructor(gameData: IClientGameData, public callbacks: BoardCallbacks) {
     this.prevGameData = gameData;
@@ -113,6 +115,7 @@ export class Board {
     this.buttonsRender?.update(gameData, this.prevGameData, this.renderData);
     this.createTradeRender?.update(gameData, this.renderData);
     this.viewTradesRender?.update(gameData, this.renderData);
+    this.gameLogRender?.update(gameData, this.renderData);
     this.statusRender?.update(gameData, this.prevGameData, this.renderData);
     this.auctionBidRender?.update(gameData, this.prevGameData, this.renderData);
 
@@ -176,6 +179,9 @@ export class Board {
 
     this.statusRender = new StatusRender(this.container);
     await this.statusRender.drawInitial();
+
+    this.gameLogRender = new GameLogRender(this.container);
+    await this.gameLogRender.drawInitial();
   }
 
   getTileRenderFromTile(tile: IClientTile) {

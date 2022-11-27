@@ -58,4 +58,9 @@ export class Player {
     Object.assign(player, this);
     return player;
   }
+
+  setPosition(position: number) {
+    this.position = position;
+    this.targetPosition = position;
+  }
 }

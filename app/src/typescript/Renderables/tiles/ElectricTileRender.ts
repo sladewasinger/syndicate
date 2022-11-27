@@ -1,4 +1,4 @@
-import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
+import { TILE_WIDTH, TILE_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH } from '@/typescript/models/BoardPositions';
 import * as PIXI from 'pixi.js';
 import { Assets } from '@pixi/assets';
 import type { IClientGameData } from '@/typescript/models/shared/IClientGameData';
@@ -18,6 +18,7 @@ export class ElectricTileRender implements ITileRender {
   renderData: RenderData | undefined;
   mortgagedSymbol: PIXI.Sprite | undefined;
   mode: TileMode = 'normal';
+  infoCardContainer: PIXI.Container | undefined;
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
@@ -55,7 +56,7 @@ export class ElectricTileRender implements ITileRender {
     }
   }
 
-  async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
+  async drawInitial(args: ITileRenderArgs, parentContainer: PIXI.Container) {
     if (!ElectricTileRender.electricTexture) {
       ElectricTileRender.electricTexture = await Assets.load('electric.png');
     }
@@ -104,6 +105,8 @@ export class ElectricTileRender implements ITileRender {
     mortgagedSymbol.visible = false;
     this.mortgagedSymbol = mortgagedSymbol;
 
+    this.drawInfoCard(parentContainer);
+
     const tileContainer = this.container;
     tileContainer.addChild(tileBackground, electricIcon, price, tileText, mortgagedSymbol);
     tileContainer.x = args.x;
@@ -111,7 +114,67 @@ export class ElectricTileRender implements ITileRender {
     tileContainer.pivot.x = this.width / 2;
     tileContainer.pivot.y = this.height / 2;
     tileContainer.rotation = args.rotation;
-    container.addChild(tileContainer);
+    tileContainer.interactive = true;
+    tileContainer.buttonMode = false;
+    tileContainer.on('mouseover', () => {
+      this.infoCardContainer!.visible = true;
+    });
+    tileContainer.on('mouseout', () => {
+      this.infoCardContainer!.visible = false;
+    });
+    parentContainer.addChild(tileContainer);
+  }
+
+  private drawInfoCard(parentContainer: PIXI.Container) {
+    if (!this.tile) {
+      console.error('Cannot draw info card for undefined tile');
+      return;
+    }
+
+    const infoCardContainer = new PIXI.Container();
+    infoCardContainer.x = BOARD_WIDTH * 0.5 - this.width;
+    infoCardContainer.y = BOARD_HEIGHT * 0.5 - this.height;
+    infoCardContainer.visible = false;
+    this.infoCardContainer = infoCardContainer;
+
+    const cardBackground = new PIXI.Graphics();
+    cardBackground.lineStyle(2, 0x000000, 1);
+    cardBackground.beginFill(0xffffff, 1);
+    cardBackground.drawRoundedRect(0, 0, this.width * 2, this.height * 2, 15);
+    cardBackground.endFill();
+
+    const colorBar = new PIXI.Graphics();
+    colorBar.lineStyle(2, 0x000000, 1);
+    colorBar.beginFill(0xffffff, 1);
+    colorBar.drawRect(0, 0, this.width * 2, this.height * 0.2);
+    colorBar.endFill();
+
+    const title = new PIXI.Text(this.tile.name, {
+      fill: 0x000000,
+      stroke: 0xffffff99,
+      strokeThickness: 4,
+      fontSize: this.height * 0.14,
+    });
+    title.pivot.x = title.width / 2;
+    title.x = this.width;
+    title.y = colorBar.height * 0.5 - title.height * 0.5;
+
+    const text = `Electric: 10 x dice\n\nElectric and Internet: 20 x dice\n
+ Mortgage: $${this.tile.mortgageValue}
+  Buyback: $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
+    const infoText = new PIXI.Text(text, {
+      fontFamily: 'monospace',
+      fill: 0x000000,
+      fontSize: 28,
+      align: 'left',
+      wordWrap: true,
+      wordWrapWidth: cardBackground.width,
+    });
+    infoText.x = cardBackground.width * 0.5 - infoText.width * 0.5;
+    infoText.y = colorBar.height;
+
+    infoCardContainer.addChild(cardBackground, colorBar, title, infoText);
+    parentContainer.addChild(infoCardContainer);
   }
 
   fade(): void {

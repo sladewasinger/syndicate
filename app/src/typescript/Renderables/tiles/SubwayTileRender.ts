@@ -1,4 +1,4 @@
-import { TILE_WIDTH, TILE_HEIGHT } from '@/typescript/models/BoardPositions';
+import { TILE_WIDTH, TILE_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH } from '@/typescript/models/BoardPositions';
 import { Utils } from '@/typescript/Utils/Utils';
 import * as PIXI from 'pixi.js';
 import type { IClientTile } from '../../models/shared/IClientTile';
@@ -19,6 +19,7 @@ export class SubwayTileRender implements ITileRender {
   tileBackground: PIXI.Graphics | undefined;
   mortgagedSymbol: PIXI.Sprite | undefined;
   mode: TileMode = 'normal';
+  infoCardContainer: PIXI.Container | undefined;
 
   constructor(public tile: IClientTile) {
     this.container = new PIXI.Container();
@@ -57,7 +58,7 @@ export class SubwayTileRender implements ITileRender {
     }
   }
 
-  async drawInitial(args: ITileRenderArgs, container: PIXI.Container) {
+  async drawInitial(args: ITileRenderArgs, parentContainer: PIXI.Container) {
     if (!SubwayTileRender.subwayTexture) {
       SubwayTileRender.subwayTexture = await Assets.load('subway.png');
     }
@@ -105,6 +106,8 @@ export class SubwayTileRender implements ITileRender {
     mortgagedSymbol.visible = false;
     this.mortgagedSymbol = mortgagedSymbol;
 
+    this.drawInfoCard(parentContainer);
+
     const tileContainer = this.container;
     tileContainer.addChild(tileBackground, subwayIcon, price, tileText, mortgagedSymbol);
     tileContainer.x = args.x;
@@ -112,7 +115,15 @@ export class SubwayTileRender implements ITileRender {
     tileContainer.pivot.x = this.width / 2;
     tileContainer.pivot.y = this.height / 2;
     tileContainer.rotation = args.rotation;
-    container.addChild(tileContainer);
+    tileContainer.interactive = true;
+    tileContainer.buttonMode = false;
+    tileContainer.on('mouseover', () => {
+      this.infoCardContainer!.visible = true;
+    });
+    tileContainer.on('mouseout', () => {
+      this.infoCardContainer!.visible = false;
+    });
+    parentContainer.addChild(tileContainer);
   }
 
   fade(): void {
@@ -121,5 +132,56 @@ export class SubwayTileRender implements ITileRender {
 
   unfade(): void {
     TileRenderUtils.unfade(this.container);
+  }
+
+  private drawInfoCard(parentContainer: PIXI.Container) {
+    if (!this.tile) {
+      console.error('Cannot draw info card for undefined tile');
+      return;
+    }
+
+    const infoCardContainer = new PIXI.Container();
+    infoCardContainer.x = BOARD_WIDTH * 0.5 - this.width;
+    infoCardContainer.y = BOARD_HEIGHT * 0.5 - this.height;
+    infoCardContainer.visible = false;
+    this.infoCardContainer = infoCardContainer;
+
+    const cardBackground = new PIXI.Graphics();
+    cardBackground.lineStyle(2, 0x000000, 1);
+    cardBackground.beginFill(0xffffff, 1);
+    cardBackground.drawRoundedRect(0, 0, this.width * 2, this.height * 2, 15);
+    cardBackground.endFill();
+
+    const colorBar = new PIXI.Graphics();
+    colorBar.lineStyle(2, 0x000000, 1);
+    colorBar.beginFill(this.tile.color, 1);
+    colorBar.drawRect(0, 0, this.width * 2, this.height * 0.2);
+    colorBar.endFill();
+
+    const title = new PIXI.Text(this.tile.name, {
+      fill: 0xffffff,
+      strokeThickness: 4,
+      fontSize: this.height * 0.14,
+    });
+    title.pivot.x = title.width / 2;
+    title.x = this.width;
+    title.y = colorBar.height * 0.5 - title.height * 0.5;
+
+    const text = ` 1 subway: $100\n2 subways: $200\n3 subways: $400\n4 subways: $800\n
+ Mortgage: $${this.tile.mortgageValue}
+  Buyback: $${Math.floor(this.tile.mortgageValue! * 1.1)}`;
+    const infoText = new PIXI.Text(text, {
+      fontFamily: 'monospace',
+      fill: 0x000000,
+      fontSize: 28,
+      align: 'left',
+      wordWrap: true,
+      wordWrapWidth: cardBackground.width,
+    });
+    infoText.x = cardBackground.width * 0.5 - infoText.width * 0.5;
+    infoText.y = colorBar.height;
+
+    infoCardContainer.addChild(cardBackground, colorBar, title, infoText);
+    parentContainer.addChild(infoCardContainer);
   }
 }

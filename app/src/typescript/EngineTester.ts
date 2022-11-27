@@ -181,6 +181,22 @@ export class EngineTester {
     engine1.buyProperty();
   }
 
+  async land_on_first_event() {
+    await Utils.sleep(500);
+    const engine1 = new Engine(this.vueForceUpdateCallback, true);
+
+    await Utils.emitWithPromise(engine1.socket, 'registerName', 'Austin');
+
+    await Utils.emitWithPromise<IClientLobbyData>(engine1.socket, 'createLobby');
+    await Utils.sleep(500);
+    engine1.startGame();
+    await Utils.sleep(500);
+    engine1.rollDice(0, 2);
+    while (engine1.gameData?.currentPlayer?.position != 2) {
+      await Utils.sleep(500);
+    }
+  }
+
   async one_player_test() {
     await Utils.sleep(500);
     const engine1 = new Engine(this.vueForceUpdateCallback, true);

@@ -18,6 +18,13 @@ export class EventTile implements ITile {
   }
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
+    const eventCard = gameData.eventCards.pop();
+    if (eventCard) {
+      gameData.eventCards.unshift(eventCard);
+      eventCard.execute(gameData);
+      gameData.log(`Event: ${gameData.currentPlayer.name} - ${eventCard.description}`);
+      gameData.callbacks.onGameMessage(`Event: ${eventCard.description}`);
+    }
     return StateName.TurnEnd;
   }
 

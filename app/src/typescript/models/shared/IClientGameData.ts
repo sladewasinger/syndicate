@@ -14,4 +14,5 @@ export interface IClientGameData {
   tradeOffers: TradeOffer[];
   auctionParticipants: IClientAuctionParticipant[];
   auctionWinner: IClientPlayer | undefined;
+  log: string[];
 }
