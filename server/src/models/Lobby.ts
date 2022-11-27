@@ -8,6 +8,7 @@ import { Player } from './Player';
 import { ServerToClientEvents } from './shared/ServerToClientEvents';
 import { SocketData } from './shared/SocketData';
 import type { User } from './User';
+import { EventTile } from './tiles/EventTile';
 
 export class Lobby {
   id: string;
@@ -63,8 +64,8 @@ export class Lobby {
       io.to(user.socketId).emit('startGame');
     });
 
-    setInterval(() => {
-      this.game?.tick();
+    setInterval(async () => {
+      await this.game?.tick();
     }, 250);
   }
 
