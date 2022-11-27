@@ -102,6 +102,7 @@ export class Game {
       tradeOffers: this.stateMachine.gameData.tradeOffers,
       auctionParticipants: this.stateMachine.gameData.auction?.bidders.map((p) => p.clientAuctionParticipant) || [],
       auctionWinner: this.stateMachine.gameData.auction?.highestBidder?.player.clientPlayer,
+      log: [...this.stateMachine.gameData.getLog()].reverse().slice(0, 5),
     };
     return clientGameData;
   }

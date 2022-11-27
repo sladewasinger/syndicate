@@ -16,7 +16,7 @@ export class BuyProperty implements IGameState {
       gameData.currentPlayer.money -= buyableTile.price;
       gameData.currentPlayer.properties.push(tile.id);
       tile.owner = gameData.currentPlayer;
-      gameData.log(`${gameData.currentPlayer.name} bought ${tile.name} for ${buyableTile.price}`);
+      gameData.log(`${gameData.currentPlayer.name} bought ${tile.name} for $${buyableTile.price}`);
     } else {
       gameData.log('You cannot buy this property');
     }
