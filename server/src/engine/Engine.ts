@@ -131,6 +131,11 @@ export class Engine {
         console.log('acceptTradeOffer');
         this.acceptTradeOffer(socket.id, offerId, callback);
       });
+
+      socket.on('cancelTradeOffer', (offerId, callback) => {
+        console.log('cancelTradeOffer');
+        this.cancelTradeOffer(socket.id, offerId, callback);
+      });
     });
   }
 
@@ -500,6 +505,34 @@ export class Engine {
     const { user, lobby } = result;
 
     lobby.game!.acceptTradeOffer(offerId);
+
+    callback(null, lobby.game!.getClientGameData(user.socketId));
+  }
+
+  cancelTradeOffer(
+    socketId: string,
+    offerId: string,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) {
+    callback = callback || (() => {});
+
+    const result = this.getUserLobbyGame(socketId, callback);
+    if (!result) {
+      return;
+    }
+
+    const trade = result.lobby.game!.stateMachine.gameData.tradeOffers.find((t) => t.id === offerId);
+    if (!trade) {
+      callback({ code: 'trade_not_found', message: 'Trade not found' }, null);
+      return;
+    }
+    if (trade.authorPlayerId !== socketId) {
+      callback({ code: 'not_your_turn', message: 'Invalid trade sender' }, null);
+      return;
+    }
+    const { user, lobby } = result;
+
+    lobby.game!.cancelTradeOffer(offerId);
 
     callback(null, lobby.game!.getClientGameData(user.socketId));
   }

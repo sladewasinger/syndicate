@@ -171,6 +171,9 @@ export class Board {
     this.renderData.playersRender = this.playersRender;
     await this.playersRender.drawInitial({}, this.container);
 
+    this.gameLogRender = new GameLogRender(this.container);
+    await this.gameLogRender.drawInitial();
+
     this.createTradeRender = new CreateTradeRender(this.container, this.callbacks);
     await this.createTradeRender.drawInitial(gameData, this.renderData);
 
@@ -179,9 +182,6 @@ export class Board {
 
     this.statusRender = new StatusRender(this.container);
     await this.statusRender.drawInitial();
-
-    this.gameLogRender = new GameLogRender(this.container);
-    await this.gameLogRender.drawInitial();
   }
 
   getTileRenderFromTile(tile: IClientTile) {

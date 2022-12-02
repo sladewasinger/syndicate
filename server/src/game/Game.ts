@@ -323,4 +323,9 @@ export class Game {
       this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
     }
   }
+
+  cancelTradeOffer(offerId: string) {
+    this.stateMachine.gameData.tradeOffers = this.stateMachine.gameData.tradeOffers.filter((o) => o.id !== offerId);
+    this.stateMachine.gameData.callbacks.onStateChange(this.stateMachine.currentState.name);
+  }
 }
