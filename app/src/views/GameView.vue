@@ -8,7 +8,7 @@ export default defineComponent({
   name: 'GameView',
   data() {
     return {
-      RUN_TESTS: false,
+      RUN_TESTS: true,
       engine: undefined as Engine | undefined,
       engineVueProperties: ref<any | undefined>(undefined),
       loaded: false,
@@ -27,7 +27,7 @@ export default defineComponent({
 
     if (this.RUN_TESTS) {
       const engineTester = new EngineTester(vueForceUpdateCallback);
-      engineTester.land_on_first_event(); // CHANGE THIS TO THE TEST METHOD YOU WANT
+      engineTester.test_goToJail(); // CHANGE THIS TO THE TEST METHOD YOU WANT
     } else {
       this.engine = new Engine(vueForceUpdateCallback);
       this.engineVueProperties = this.engine.engineVueProperties;

@@ -107,11 +107,14 @@ export class EngineTester {
     await Utils.sleep(500);
     engine1.startGame();
     await Utils.sleep(500);
-    engine1.rollDice(1, 29);
+    engine1.rollDice(1, 9);
     while (engine1.gameData?.state != StateName.TurnEnd) {
       await Utils.sleep(500);
     }
     await Utils.sleep(500);
+    engine1.endTurn();
+    await Utils.sleep(1000);
+    engine1.rollDice(1, 19);
   }
 
   async test_doubles() {
