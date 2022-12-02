@@ -21,6 +21,8 @@ export class CreateTradeRender {
   youGiveTilesText: PIXI.Text | undefined;
   youGetTilesText: PIXI.Text | undefined;
   tradeButton: ButtonRender | undefined;
+  alreadyCreatedTradeText: PIXI.Text | undefined;
+  cancelTradeButton: ButtonRender | undefined;
 
   constructor(public parentContainer: PIXI.Container, public callbacks: BoardCallbacks) {
     this.container = new PIXI.Container();
@@ -97,7 +99,8 @@ export class CreateTradeRender {
 
     const selectedCheckbox = this.playerCheckboxes.find((c) => c.checked);
     const selectedPlayer = this.gameData.players.find((p) => p.id === selectedCheckbox?.id);
-    if (selectedCheckbox && selectedPlayer && this.requestMoneySlider) {
+    const alreadyHasTrade = this.gameData.tradeOffers.some((t) => t.authorPlayerId === gameData?.myId);
+    if (selectedCheckbox && selectedPlayer && this.requestMoneySlider && !alreadyHasTrade) {
       this.tradeButton?.enable();
 
       this.renderData.tradeTargetPlayerId = selectedPlayer.id;
@@ -111,6 +114,17 @@ export class CreateTradeRender {
       this.requestMoneySlider?.disable();
       this.giveMoneySlider?.disable();
       this.tradeButton?.disable();
+    }
+
+    if (this.alreadyCreatedTradeText && this.cancelTradeButton) {
+      if (alreadyHasTrade) {
+        this.alreadyCreatedTradeText.visible = true;
+        this.cancelTradeButton?.enable();
+        this.cancelTradeButton.container.visible = true;
+      } else {
+        this.alreadyCreatedTradeText.visible = false;
+        this.cancelTradeButton.container.visible = false;
+      }
     }
 
     for (const id of this.selectedTileIds) {
@@ -237,6 +251,28 @@ export class CreateTradeRender {
     youGetTilesText.y = youGetTilesLabel.y + youGetTilesLabel.height + 10;
     this.container.addChild(youGetTilesText);
     this.youGetTilesText = youGetTilesText;
+
+    const alreadyCreatedTradeText = new PIXI.Text('You already have a trade in progress.', {
+      fontFamily: 'Arial',
+      fontSize: 36,
+      fill: 0x000000,
+      align: 'center',
+    });
+    alreadyCreatedTradeText.x = BOARD_WIDTH / 2 - alreadyCreatedTradeText.width / 2;
+    alreadyCreatedTradeText.y = youGiveTilesText.y + youGiveTilesText.height + 50;
+    this.container.addChild(alreadyCreatedTradeText);
+    this.alreadyCreatedTradeText = alreadyCreatedTradeText;
+
+    const cancelTradeButton = new ButtonRender(this.container, 'Cancel Trade', 0x000000, () => {
+      const myTrade = this.gameData?.tradeOffers.find((t) => t.authorPlayerId === gameData.myId);
+      if (myTrade) {
+        this.callbacks.cancelTrade(myTrade.id);
+      }
+    });
+    cancelTradeButton.x = BOARD_WIDTH / 2 - cancelTradeButton.width / 2;
+    cancelTradeButton.y = alreadyCreatedTradeText.y + alreadyCreatedTradeText.height + 10;
+    this.container.addChild(cancelTradeButton.container);
+    this.cancelTradeButton = cancelTradeButton;
 
     const tradeButton = new ButtonRender(
       this.container,

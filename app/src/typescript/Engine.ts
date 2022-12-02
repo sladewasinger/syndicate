@@ -73,6 +73,9 @@ export class Engine {
           acceptTrade: (tradeOfferId: string) => {
             this.acceptTradeOffer(tradeOfferId);
           },
+          cancelTrade: (tradeOfferId: string) => {
+            this.cancelTradeOffer(tradeOfferId);
+          },
           declareBankruptcy: () => this.declareBankruptcy(),
         });
         await this.board.drawBoardInitial(gameData);
@@ -191,6 +194,10 @@ export class Engine {
 
   async acceptTradeOffer(tradeOfferId: string) {
     await Utils.emitWithPromise(this.socket, 'acceptTradeOffer', tradeOfferId);
+  }
+
+  async cancelTradeOffer(tradeOfferId: string) {
+    await Utils.emitWithPromise(this.socket, 'cancelTradeOffer', tradeOfferId);
   }
 
   async endTurn() {

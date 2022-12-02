@@ -43,4 +43,8 @@ export interface ClientToServerEvents {
     offerId: string,
     callback: (error: SocketError | null, data: IClientGameData | null) => void
   ) => void;
+  cancelTradeOffer: (
+    offerId: string,
+    callback: (error: SocketError | null, data: IClientGameData | null) => void
+  ) => void;
 }
