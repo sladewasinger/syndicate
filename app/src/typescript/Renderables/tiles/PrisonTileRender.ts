@@ -25,7 +25,7 @@ export class PrisonTileRender implements ITileRender {
     tileBackground.drawRect(0, 0, this.width, this.height);
     tileBackground.endFill();
 
-    const tileText = new PIXI.Text(this.tile.name, {
+    const tileText = new PIXI.Text('Fast Lane', {
       fill: 0x000000,
       fontSize: this.height * 0.15,
       wordWrap: true,
@@ -34,10 +34,27 @@ export class PrisonTileRender implements ITileRender {
     tileText.pivot.x = tileText.width / 2;
     tileText.pivot.y = tileText.height / 2;
     tileText.x = this.width / 2;
-    tileText.y = this.height / 2;
+    tileText.y = this.height - tileText.height / 2;
+
+    const prisonBox = new PIXI.Graphics();
+    prisonBox.lineStyle(1, 0x000000, 1);
+    prisonBox.beginFill(0xffa500, 1);
+    prisonBox.drawRect(0, 0, this.width * 0.65, this.height * 0.65);
+    prisonBox.endFill();
+    prisonBox.x = this.width - prisonBox.width;
+    prisonBox.y = 0;
+
+    const prisonText = new PIXI.Text('Traffic', {
+      fill: 0x000000,
+      fontSize: this.height * 0.15,
+    });
+    prisonText.pivot.x = prisonText.width / 2;
+    prisonText.pivot.y = prisonText.height / 2;
+    prisonText.x = prisonBox.x + prisonBox.width / 2;
+    prisonText.y = prisonBox.y + prisonBox.height / 2;
 
     const tileContainer = this.container;
-    tileContainer.addChild(tileBackground, tileText);
+    tileContainer.addChild(tileBackground, prisonBox, prisonText, tileText);
     tileContainer.pivot.x = tileContainer.width / 2;
     tileContainer.pivot.y = tileContainer.height / 2;
     tileContainer.x = args.x;

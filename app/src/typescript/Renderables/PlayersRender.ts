@@ -33,8 +33,23 @@ export class PlayersRender {
     for (const playerRender of this.playerRenders) {
       const player = gameData.players.find((p) => p.id === playerRender.player.id);
       if (player) {
-        // ease player to new position
-        const tilePosition = renderData.renderTiles[player.position].container.position;
+        const gameTile = gameData.tiles[player.position];
+        if (!gameTile) {
+          continue;
+        }
+
+        let tilePosition = new PIXI.Point(
+          renderData.renderTiles[player.position].container.position.x,
+          renderData.renderTiles[player.position].container.position.y
+        );
+
+        if (gameTile.id == 'prison') {
+          if (player.isInJail) {
+            tilePosition = new PIXI.Point(tilePosition.x + 50, tilePosition.y - 50);
+          } else {
+            tilePosition = new PIXI.Point(tilePosition.x, tilePosition.y + 60);
+          }
+        }
 
         const playersOnSameTile = gameData.players
           .sort((a, b) => a.turnOrder - b.turnOrder)
