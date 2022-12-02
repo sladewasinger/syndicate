@@ -31,7 +31,7 @@ export class SubwayTile implements IBuyableTile {
 
   onLanded(gameData: GameData, currentState: StateName): StateName {
     if (this.owner != null) {
-      if (this.owner !== gameData.currentPlayer) {
+      if (this.owner !== gameData.currentPlayer && !this.mortgaged) {
         gameData.currentPlayer.money -= this.entranceFee(gameData);
         this.owner.money += this.entranceFee(gameData);
       }
